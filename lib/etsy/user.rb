@@ -17,15 +17,15 @@ module Etsy
     end
     
     def username
-      @result[0]['user_name']
+      @result['user_name']
     end
     
     def id
-      @result[0]['user_id']
+      @result['user_id']
     end
     
     def url
-      @result[0]['url']
+      @result['url']
     end
     
   end

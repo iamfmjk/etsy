@@ -32,7 +32,7 @@ class Test::Unit::TestCase
     
     context "when populating data for #{klass} from the #{options[:from]} call" do
       before do
-        @object = klass.new(read_fixture(options[:from]))
+        @object = klass.new(read_fixture(options[:from])[0])
       end
 
       block.call
