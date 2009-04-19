@@ -5,7 +5,10 @@ require 'json'
 
 require 'etsy/request'
 require 'etsy/response'
+
+require 'etsy/model'
 require 'etsy/user'
+require 'etsy/shop'
 
 # = Etsy
 #

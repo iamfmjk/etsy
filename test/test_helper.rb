@@ -13,34 +13,35 @@ class Test::Unit::TestCase
     JSON.parse(File.read(file))['results']
   end
   
-  def self.value_for(method_name, options)
-    @@tests ||= []
+  def mock_request_cycle(options)
+    response = Etsy::Response.new(stub())
+    response.stubs(:result).with().returns(read_fixture(options[:data]).first)
     
+    Etsy::Request.stubs(:get).with(options[:for]).returns(response)
+    
+    response
+  end
+  
+  def self.when_populating(klass, options, &block)
+    class_eval <<-CODE
+      def setup_for_population
+        @object = #{klass}.new(read_fixture('#{options[:from]}')[0])
+      end
+    CODE
+    
+    block.call
+  end
+
+  def self.value_for(method_name, options)
     value = options[:is]
     value = "'#{value}'" if value.kind_of?(String)
     
-    test = <<-EOF
-      it "should have a value for :#{method_name}" do        
+    class_eval <<-CODE
+      it "should have a value for :#{method_name}" do
+        setup_for_population
         @object.send(:#{method_name}).should == #{value}
       end
-    EOF
-    
-    @@tests << test
-  end
-
-  def self.when_populating(klass, options, &block)
-    
-    context "when populating data for #{klass} from the #{options[:from]} call" do
-      before do
-        @object = klass.new(read_fixture(options[:from])[0])
-      end
-
-      block.call
-      
-      class_eval @@tests.join("\n")
-      
-    end
-    
+    CODE
   end
   
 end
