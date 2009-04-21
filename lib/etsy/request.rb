@@ -31,7 +31,7 @@ module Etsy
     end
     
     def parameters # :nodoc:
-      @parameters.merge(:api_key => Etsy.api_key)
+      @parameters.merge(:api_key => Etsy.api_key, :detail_level => 'high')
     end
     
     def query # :nodoc:

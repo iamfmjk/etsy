@@ -24,11 +24,11 @@ module Etsy
    
     describe "An instance of the Request class" do
 
-      it "should append the api_key to the parameters" do
+      it "should append the api_key and detail_level to the parameters" do
         Etsy.expects(:api_key).with().returns('key')
         
         r = Request.new('/user', :limit => '1')
-        r.parameters.should == {:limit => '1', :api_key => 'key'}
+        r.parameters.should == {:limit => '1', :api_key => 'key', :detail_level => 'high'}
       end
 
       it "should be able to generate query parameters" do
