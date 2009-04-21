@@ -13,6 +13,10 @@ module Etsy
         CODE
       end
       
+      def attributes(*names)
+        names.each {|name| attribute(name) }
+      end
+      
     end
     
     module InstanceMethods

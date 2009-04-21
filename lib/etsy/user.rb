@@ -13,16 +13,14 @@ module Etsy
       response = Request.get("/users/#{username}")
       User.new(response.result)
     end
-    
+
     attribute :username, :from => :user_name
     attribute :id, :from => :user_id
-    attribute :url
     attribute :joined, :from => :join_epoch
-    attribute :city
-    attribute :gender
     attribute :seller, :from => :is_seller
     attribute :last_login, :from => :last_login_epoch
-    attribute :bio
+
+    attributes :url, :city, :gender, :bio
     
     def shop
       Shop.find_by_user_id(id)

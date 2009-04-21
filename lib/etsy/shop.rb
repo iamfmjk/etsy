@@ -9,13 +9,11 @@ module Etsy
     end
 
     attribute :name, :from => :shop_name
-    attribute :banner_image_url
-    attribute :listing_count
     attribute :updated, :from => :last_updated_epoch
     attribute :created, :from => :creation_epoch
-    attribute :title
     attribute :message, :from => :sale_message
-    attribute :announcement
+
+    attributes :banner_image_url, :listing_count, :title, :announcement
     
     def created_at
       Time.at(created)
