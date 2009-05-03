@@ -8,9 +8,13 @@ require File.dirname(__FILE__) + '/../lib/etsy'
 
 class Test::Unit::TestCase
   
-  def read_fixture(method_name)
+  def self.read_fixture(method_name)
     file = File.dirname(__FILE__) + "/fixtures/#{method_name}.json"
     JSON.parse(File.read(file))['results']
+  end
+  
+  def read_fixture(method_name)
+    self.class.read_fixture(method_name)
   end
   
   def mock_request_cycle(options)
@@ -27,11 +31,13 @@ class Test::Unit::TestCase
   end
   
   def self.when_populating(klass, options, &block)
-    class_eval <<-CODE
-      def setup_for_population
-        @object = #{klass}.new(read_fixture('#{options[:from]}')[0])
+    data = options[:from].is_a?(String) ? read_fixture(options[:from])[0] : options[:from].call
+    
+    class_eval do
+      define_method "setup_for_population" do
+        @object = klass.new(data)
       end
-    CODE
+    end
     
     block.call
   end

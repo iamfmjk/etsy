@@ -32,5 +32,13 @@ module Etsy
       Time.at(ending)
     end
     
+    def images
+      @result['all_images'].map {|image_data| Image.new(image_data) }
+    end
+    
+    def image
+      images.first
+    end
+    
   end
 end

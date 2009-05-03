@@ -70,6 +70,23 @@ module Etsy
         listing.ending_at.should == Time.at(1240673494.49)
       end
       
+      it "should have associated images" do
+        data = read_fixture('getShopListings')[0]
+        listing = Listing.new(data)
+
+        Image.expects(:new).with(data['all_images'][0]).returns('image_1')
+        Image.expects(:new).with(data['all_images'][1]).returns('image_2')
+        
+        listing.images.should == ['image_1', 'image_2']
+      end
+      
+      it "should have a primary image" do
+        listing = Listing.new
+        listing.expects(:images).with().returns(%w(one two))
+        
+        listing.image.should == 'one'
+      end
+      
     end
   end
 end

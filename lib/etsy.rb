@@ -10,6 +10,7 @@ require 'etsy/model'
 require 'etsy/user'
 require 'etsy/shop'
 require 'etsy/listing'
+require 'etsy/image'
 
 # = Etsy
 #
