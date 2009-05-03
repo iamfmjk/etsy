@@ -37,15 +37,12 @@ class Test::Unit::TestCase
   end
 
   def self.value_for(method_name, options)
-    value = options[:is]
-    value = "'#{value}'" if value.kind_of?(String)
-    
-    class_eval <<-CODE
+    class_eval do
       it "should have a value for :#{method_name}" do
         setup_for_population
-        @object.send(:#{method_name}).should == #{value}
+        @object.send(method_name).should == options[:is]
       end
-    CODE
+    end
   end
   
 end
