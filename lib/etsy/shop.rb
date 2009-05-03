@@ -13,7 +13,7 @@ module Etsy
     attribute :created, :from => :creation_epoch
     attribute :message, :from => :sale_message
 
-    attributes :banner_image_url, :listing_count, :title, :announcement
+    attributes :banner_image_url, :listing_count, :title, :announcement, :user_id
     
     def created_at
       Time.at(created)
@@ -21,6 +21,10 @@ module Etsy
     
     def updated_at
       Time.at(updated)
+    end
+    
+    def listings
+      Listing.find_all_by_user_id(user_id)
     end
     
   end

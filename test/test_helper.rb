@@ -15,7 +15,11 @@ class Test::Unit::TestCase
   
   def mock_request_cycle(options)
     response = Etsy::Response.new(stub())
-    response.stubs(:result).with().returns(read_fixture(options[:data]).first)
+    
+    data = read_fixture(options[:data])
+    data = data.first if data.size == 1
+    
+    response.stubs(:result).with().returns(data)
     
     Etsy::Request.stubs(:get).with(options[:for]).returns(response)
     

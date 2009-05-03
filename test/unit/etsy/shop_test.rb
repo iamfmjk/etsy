@@ -20,6 +20,7 @@ module Etsy
 
       when_populating Shop, :from => 'getShopDetails' do
 
+        value_for :user_id,           :is => 5327518
         value_for :banner_image_url,  :is => 'http://ny-image0.etsy.com/iusb_760x100.6158980.jpg'
         value_for :listing_count,     :is => 13
         value_for :updated,           :is => 1239717723.36
@@ -43,6 +44,17 @@ module Etsy
         shop.stubs(:updated).with().returns(1239717723.36)
         
         shop.updated_at.should == Time.at(1239717723.36)
+      end
+      
+      it "should have a collection of listings" do
+        user_id = 123
+        
+        shop = Shop.new
+        shop.expects(:user_id).with().returns(user_id)
+        
+        Listing.expects(:find_all_by_user_id).with(user_id).returns('listings')
+        
+        shop.listings.should == 'listings'
       end
 
     end

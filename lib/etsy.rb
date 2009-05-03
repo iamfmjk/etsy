@@ -9,6 +9,7 @@ require 'etsy/response'
 require 'etsy/model'
 require 'etsy/user'
 require 'etsy/shop'
+require 'etsy/listing'
 
 # = Etsy
 #
