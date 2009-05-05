@@ -2,7 +2,7 @@
 
 == Description
 
-The Etsy gem provides a simple, ruby-like interface to the Etsy API
+The Etsy gem provides a friendly Ruby interface to the Etsy API
 
 == Installation
 
@@ -13,18 +13,21 @@ Installing the latest stable version is simple:
 If you want to be on the bleeding edge, install from GitHub:
 
     sudo gem install reagent-etsy --source=http://gems.github.com
-    
 
 == Usage
 
-The Etsy API is read-only - all you need to gain access is an API Key (available from http://developer.etsy.com).  Once you have your API key, set it in your script:
+The Etsy API is read-only - all you need to gain access is an API Key (available 
+from http://developer.etsy.com).  Once you have your API key, set it in your script:
 
+    require 'rubygems'
     require 'etsy'
     Etsy.api_key = 'foobar'
-    
+
+From there, you can make any calls to the API that you need.
+
 === Users
 
-You can retrieve details about a user based on username:
+If you're starting with a user, the easiest way is to use the Etsy.user method:
 
     >> user = Etsy.user('littletjane')
     => #<Etsy::User:0x107f82c @result=[{"city"=>"Washington, DC", ... > 
@@ -35,7 +38,66 @@ You can retrieve details about a user based on username:
     >> user.url
     => "http://www.etsy.com/shop.php?user_id=5327518"
 
-There's more to come...
+For more information about what is available for a user, check out the documentation
+for Etsy::User.
+
+== Shops
+
+Each user may optionally have a shop.  If a user is a seller, he / she also has an
+associated shop object:
+
+  >> user.seller?
+  => true
+  >> shop = user.shop
+  => #<Etsy::Shop:0x102578c @result={"is_vacation"=>"", "announcement"=> ... >
+  >> shop.name
+  => "littletjane"
+  >> shop.title
+  => "a cute and crafty mix of handmade goods."
+  
+More information about shops can be found in the documentation for Etsy::Shop.
+  
+== Listings
+
+Shops contain multiple listings:
+
+  >> shop.listings
+  => [#<Etsy::Listing:0x119acac @result={} ...>, ... ]
+  >> listing = shop.listings.first
+  => #<Etsy::Listing:0x19a981c @result={} ... >
+  >> listing.title
+  => "hanging with the bad boys matchbox"
+  >> listing.description
+  => "standard size matchbox, approx. 1.5 x 2 inches ..."
+  >> listing.url
+  => "http://www.etsy.com/view_listing.php?listing_id=24165902"
+  >> listing.view_count
+  => 19
+  >> listing.created_at
+  => Sat Apr 25 11:31:34 -0400 2009
+
+See the documentation for Etsy::Listing for more information.
+
+== Images
+
+Each listing has one or more images available:
+
+  >> listing.images
+  => [#<Etsy::Image:0x18f85e4 @result={} ... >,
+      #<Etsy::Image:0x18f85d0 @result={} ... >]
+  >> listing.images.first.small_square
+  => "http://ny-image2.etsy.com/il_25x25.67765346.jpg"
+  >> listing.images.first.large
+  => "http://ny-image2.etsy.com/il_430xN.67765346.jpg"
+
+Listings also have a primary image:
+
+  >> listing.image
+  => #<Etsy::Image:0x18c3060 @result={} ... >
+  >> listing.image.large
+  => "http://ny-image2.etsy.com/il_430xN.67765346.jpg"
+
+More information is available in the documentation for Etsy::Image.
 
 == License
 

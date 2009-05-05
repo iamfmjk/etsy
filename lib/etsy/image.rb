@@ -1,4 +1,17 @@
 module Etsy
+  
+  # = Image
+  #
+  # Represents an image resource of an Etsy listing and contains multiple sizes. 
+  # Sizes available are:
+  #
+  # [small_square] The smallest square image (25x25 pixels)
+  # [medium_square] The medium square image (50x50 pixels)
+  # [large_square] The largest square image (75x75 pixels)
+  # [small] The small image for this listing (155x125 pixels)
+  # [medium] The medium image for this listing (200x200 pixels)
+  # [large] The largest image available for this listing (430x? pixels)
+  #
   class Image
     
     include Etsy::Model
