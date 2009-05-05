@@ -8,12 +8,8 @@ module Etsy
     
     include Etsy::Model
     
-    # Find a user by username
-    def self.find_by_username(username)
-      response = Request.get("/users/#{username}")
-      User.new(response.result)
-    end
-
+    finder :one, '/users/:username'
+    
     attribute :username, :from => :user_name
     attribute :id, :from => :user_id
     attribute :joined, :from => :join_epoch

@@ -2,12 +2,9 @@ module Etsy
   class Shop
     
     include Etsy::Model
-    
-    def self.find_by_user_id(user_id)
-      response = Request.get("/shops/#{user_id}")
-      new response.result
-    end
 
+    finder :one, '/shops/:user_id'
+    
     attribute :name, :from => :shop_name
     attribute :updated, :from => :last_updated_epoch
     attribute :created, :from => :creation_epoch

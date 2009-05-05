@@ -5,10 +5,7 @@ module Etsy
     
     STATES = %w(active removed sold_out expired alchemy)
     
-    def self.find_all_by_user_id(user_id)
-      response = Request.get("/shops/#{user_id}/listings")
-      response.result.map {|listing| Listing.new(listing) }
-    end
+    finder :all, '/shops/:user_id/listings'
     
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
