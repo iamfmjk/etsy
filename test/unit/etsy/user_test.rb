@@ -55,10 +55,18 @@ module Etsy
         shop = stub()
         
         user.stubs(:id).with().returns(1)
+        user.stubs(:seller?).with().returns(true)
         
         Shop.expects(:find_by_user_id).with(1).returns(shop)
         
         user.shop.should == shop
+      end
+      
+      it "should not have a shop if the user is not a seller" do
+        user = User.new
+        user.expects(:seller?).with().returns(false)
+        
+        user.shop.should be(nil)
       end
       
     end

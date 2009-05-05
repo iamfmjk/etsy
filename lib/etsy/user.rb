@@ -25,11 +25,11 @@ module Etsy
 
     attributes :url, :city, :gender, :bio
     
-    # This user's shop. See Etsy::Shop for more information.
+    # This user's shop, returns nil if user is not a seller. See Etsy::Shop
+    # for more information.
     #
     def shop
-      # TODO: return nil if the user is not a seller
-      Shop.find_by_user_id(id)
+      Shop.find_by_user_id(id) if seller?
     end
     
     # Is this user a seller?
