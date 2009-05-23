@@ -44,7 +44,7 @@ class Test::Unit::TestCase
 
   def self.value_for(method_name, options)
     class_eval do
-      it "should have a value for :#{method_name}" do
+      should "have a value for :#{method_name}" do
         setup_for_population
         @object.send(method_name).should == options[:is]
       end

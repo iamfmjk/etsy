@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../../test_helper'
 module Etsy
   class ShopTest < Test::Unit::TestCase
 
-    describe "The Shop class" do
+    context "The Shop class" do
 
-      it "should be able to find a shop by :user_id" do
+      should "be able to find a shop by :user_id" do
         user_id  = 5327518
         response = mock_request_cycle :for => "/shops/#{user_id}", :data => 'getShopDetails'
 
@@ -16,7 +16,7 @@ module Etsy
 
     end
 
-    describe "An instance of the Shop class" do
+    context "An instance of the Shop class" do
 
       when_populating Shop, :from => 'getShopDetails' do
 
@@ -32,21 +32,21 @@ module Etsy
 
       end
       
-      it "should know the creation date" do
+      should "know the creation date" do
         shop = Shop.new
         shop.stubs(:created).with().returns(1237430331.15)
         
         shop.created_at.should == Time.at(1237430331.15)
       end
       
-      it "should know the update date" do
+      should "know the update date" do
         shop = Shop.new
         shop.stubs(:updated).with().returns(1239717723.36)
         
         shop.updated_at.should == Time.at(1239717723.36)
       end
       
-      it "should have a collection of listings" do
+      should "have a collection of listings" do
         user_id = 123
         
         shop = Shop.new

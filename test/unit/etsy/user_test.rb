@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../../test_helper'
 module Etsy
   class UserTest < Test::Unit::TestCase
 
-    describe "The User class" do
+    context "The User class" do
       
-      it "should be able to find a user by username" do
+      should "be able to find a user by username" do
         response = mock_request_cycle :for => '/users/littletjane', :data => 'getUserDetails'
         
         User.expects(:new).with(response.result).returns('user')
@@ -14,7 +14,7 @@ module Etsy
       
     end
     
-    describe "An instance of the User class" do
+    context "An instance of the User class" do
       
       when_populating User, :from => 'getUserDetails' do
       
@@ -30,27 +30,27 @@ module Etsy
       
       end
 
-      it "should know if it is a seller" do
+      should "know if it is a seller" do
         user = User.new
         user.expects(:seller).with().returns(true)
         user.seller?.should be(true)
       end
       
-      it "should know the join date" do
+      should "know the join date" do
         user = User.new
         user.stubs(:joined).with().returns(1191381757.93)
         
         user.joined_at.should == Time.at(1191381757.93)
       end
       
-      it "should know the last login date" do
+      should "know the last login date" do
         user = User.new
         user.stubs(:last_login).with().returns(1239797927.39)
         
         user.last_login_at.should == Time.at(1239797927.39)
       end
       
-      it "should have a shop" do
+      should "have a shop" do
         user = User.new
         shop = stub()
         
@@ -62,7 +62,7 @@ module Etsy
         user.shop.should == shop
       end
       
-      it "should not have a shop if the user is not a seller" do
+      should "not have a shop if the user is not a seller" do
         user = User.new
         user.expects(:seller?).with().returns(false)
         

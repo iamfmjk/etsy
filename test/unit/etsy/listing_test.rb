@@ -3,9 +3,9 @@ require File.dirname(__FILE__) + '/../../test_helper'
 module Etsy
   class ListingTest < Test::Unit::TestCase
 
-    describe "The Listing class" do
+    context "The Listing class" do
       
-      it "should be able to find all listings by :user_id" do
+      should "be able to find all listings by :user_id" do
         user_id = 122345
         
         response = mock_request_cycle :for => "/shops/#{user_id}/listings", :data => 'getShopListings'
@@ -20,7 +20,7 @@ module Etsy
       
     end
     
-    describe "An instance of the Listing class" do
+    context "An instance of the Listing class" do
 
       when_populating Listing, :from => 'getShopListings' do
 
@@ -41,14 +41,14 @@ module Etsy
       end
       
       %w(active removed sold_out expired alchemy).each do |state|
-        it "should know that the listing is #{state}" do
+        should "know that the listing is #{state}" do
           listing = Listing.new
           listing.expects(:state).with().returns(state.sub('_', ''))
 
           listing.send("#{state}?".to_sym).should be(true)
         end
 
-        it "should know that the listing is not #{state}" do
+        should "know that the listing is not #{state}" do
           listing = Listing.new
           listing.expects(:state).with().returns(state.reverse)
 
@@ -56,21 +56,21 @@ module Etsy
         end        
       end
       
-      it "should know the create date" do
+      should "know the create date" do
         listing = Listing.new
         listing.expects(:created).with().returns(1240673494.49)
         
         listing.created_at.should == Time.at(1240673494.49)
       end
       
-      it "should know the ending date" do
+      should "know the ending date" do
         listing = Listing.new
         listing.expects(:ending).with().returns(1240673494.49)
         
         listing.ending_at.should == Time.at(1240673494.49)
       end
       
-      it "should have associated images" do
+      should "have associated images" do
         data = read_fixture('getShopListings')[0]
         listing = Listing.new(data)
 
@@ -80,7 +80,7 @@ module Etsy
         listing.images.should == ['image_1', 'image_2']
       end
       
-      it "should have a primary image" do
+      should "have a primary image" do
         listing = Listing.new
         listing.expects(:images).with().returns(%w(one two))
         

@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../test_helper'
 module Etsy
   class ImageTest < Test::Unit::TestCase
     
-    describe "An instance of the Image class" do
+    context "An instance of the Image class" do
 
       when_populating Image, :from => lambda { read_fixture('getShopListings')[0]['all_images'].first } do
 
