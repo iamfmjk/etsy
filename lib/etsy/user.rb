@@ -18,6 +18,11 @@ module Etsy
       (identifiers.length == 1) ? users[0] : users
     end
 
+    def self.all(options = {})
+      response = Request.get('/users', options)
+      response.result.map {|data| new(data) }
+    end
+
     attribute :id, :from => :user_id
     attribute :username, :from => :login_name
     attribute :created, :from => :creation_tsz

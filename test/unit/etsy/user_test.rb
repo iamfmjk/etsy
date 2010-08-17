@@ -3,32 +3,41 @@ require File.dirname(__FILE__) + '/../../test_helper'
 module Etsy
   class UserTest < Test::Unit::TestCase
 
+    def mock_request(endpoint, options, resource, file)
+      objects       = []
+      response_data = raw_fixture_data("#{resource.downcase}/#{file}")
+
+      Request.stubs(:new).with(endpoint, options).returns(stub(:get => response_data))
+
+      JSON.parse(response_data)['results'].each_with_index do |result, index|
+        object = "#{resource.downcase}_#{index}"
+        Etsy.const_get(resource).stubs(:new).with(result).returns(object)
+        objects << object
+      end
+
+      objects
+    end
+
     context "The User class" do
 
       should "be able to find a single user" do
-        raw_data = raw_fixture_data('user/getUser.single.json')
-
-        request = stub(:get => raw_data)
-        Request.stubs(:new).with('/users/littletjane', {}).returns(request)
-
-        user_data = JSON.parse(raw_data)['results'][0]
-        User.expects(:new).with(user_data).returns('user')
-
-        User.find('littletjane').should == 'user'
+        users = mock_request('/users/littletjane', {}, 'User', 'getUser.single.json')
+        User.find('littletjane').should == users.first
       end
 
       should "be able to find multiple users" do
-        raw_data = raw_fixture_data('user/getUser.multiple.json')
-        request = stub(:get => raw_data)
-        Request.stubs(:new).with('/users/littletjane,reagent', {}).returns(request)
+        users = mock_request('/users/littletjane,reagent', {}, 'User', 'getUser.multiple.json')
+        User.find('littletjane', 'reagent').should == users
+      end
 
-        user_data_1 = JSON.parse(raw_data)['results'][0]
-        User.expects(:new).with(user_data_1).returns('user_1')
+      should "be able to find all users" do
+        users = mock_request('/users', {}, 'User', 'findAllUser.json')
+        User.all.should == users
+      end
 
-        user_data_2 = JSON.parse(raw_data)['results'][1]
-        User.expects(:new).with(user_data_2).returns('user_2')
-
-        User.find('littletjane', 'reagent').should == ['user_1', 'user_2']
+      should "allow a configurable limit when finding all users" do
+        users = mock_request('/users', {:limit => 100}, 'User', 'findAllUser.json')
+        User.all(:limit => 100).should == users
       end
 
     end
