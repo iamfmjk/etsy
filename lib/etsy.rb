@@ -70,7 +70,7 @@ module Etsy
 
   # Find a user by username.  See Etsy::User for more information.
   def self.user(username)
-    User.find_by_username(username)
+    User.find(username)
   end
 
 end

@@ -4,72 +4,66 @@ module Etsy
   class UserTest < Test::Unit::TestCase
 
     context "The User class" do
-      
-      should "be able to find a user by username" do
-        response = mock_request_cycle :for => '/users/littletjane', :data => 'getUserDetails'
-        
-        User.expects(:new).with(response.result).returns('user')
-        User.find_by_username('littletjane').should == 'user'
-      end
-      
-    end
-    
-    context "An instance of the User class" do
-      
-      when_populating User, :from => 'getUserDetails' do
-      
-        value_for :username,   :is => 'littletjane'
-        value_for :id,         :is => 5327518
-        value_for :url,        :is => 'http://www.etsy.com/shop.php?user_id=5327518'
-        value_for :joined,     :is => 1191381757.93
-        value_for :city,       :is => 'Washington, DC'
-        value_for :gender,     :is => 'female'
-        value_for :seller,     :is => true
-        value_for :last_login, :is => 1239797927.39
-        value_for :bio,        :is => 'hello!'
-      
+
+      should "be able to find a single user" do
+        raw_data = raw_fixture_data('user/getUser.single.json')
+
+        request = stub(:get => raw_data)
+        Request.stubs(:new).with('/users/littletjane', {}).returns(request)
+
+        user_data = JSON.parse(raw_data)['results'][0]
+        User.expects(:new).with(user_data).returns('user')
+
+        User.find('littletjane').should == 'user'
       end
 
-      should "know if it is a seller" do
-        user = User.new
-        user.expects(:seller).with().returns(true)
-        user.seller?.should be(true)
+      should "be able to find multiple users" do
+        raw_data = raw_fixture_data('user/getUser.multiple.json')
+        request = stub(:get => raw_data)
+        Request.stubs(:new).with('/users/littletjane,reagent', {}).returns(request)
+
+        user_data_1 = JSON.parse(raw_data)['results'][0]
+        User.expects(:new).with(user_data_1).returns('user_1')
+
+        user_data_2 = JSON.parse(raw_data)['results'][1]
+        User.expects(:new).with(user_data_2).returns('user_2')
+
+        User.find('littletjane', 'reagent').should == ['user_1', 'user_2']
       end
-      
-      should "know the join date" do
-        user = User.new
-        user.stubs(:joined).with().returns(1191381757.93)
-        
-        user.joined_at.should == Time.at(1191381757.93)
-      end
-      
-      should "know the last login date" do
-        user = User.new
-        user.stubs(:last_login).with().returns(1239797927.39)
-        
-        user.last_login_at.should == Time.at(1239797927.39)
-      end
-      
-      should "have a shop" do
-        user = User.new
-        shop = stub()
-        
-        user.stubs(:id).with().returns(1)
-        user.stubs(:seller?).with().returns(true)
-        
-        Shop.expects(:find_by_user_id).with(1).returns(shop)
-        
-        user.shop.should == shop
-      end
-      
-      should "not have a shop if the user is not a seller" do
-        user = User.new
-        user.expects(:seller?).with().returns(false)
-        
-        user.shop.should be(nil)
-      end
-      
+
     end
-    
+
+    context "An instance of the User class" do
+
+      context "with response data" do
+        setup do
+          raw = raw_fixture_data('user/getUser.single.json')
+          data = JSON.parse(raw)['results'][0]
+
+          @user = User.new(data)
+        end
+
+        should "have an ID" do
+          @user.id.should == 5327518
+        end
+
+        should "have a :username" do
+          @user.username.should == 'littletjane'
+        end
+
+        should "have a value for :created" do
+          @user.created.should == 1191381578
+        end
+      end
+
+      should "know when the user was created" do
+        user = User.new
+        user.stubs(:created).returns(1)
+
+        user.created_at.should == Time.at(1)
+      end
+
+    end
+
   end
 end

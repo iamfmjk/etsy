@@ -1,0 +1,29 @@
+
+{
+    "count":2,
+    "results":
+    [
+        {
+            "user_id":5327518,
+            "login_name":"littletjane",
+            "creation_tsz":1191381578,
+            "referred_by_user_id":null,
+            "feedback_info":
+            {
+                "count":417,
+                "score":100
+            }
+        },
+        {
+            "user_id":53780,
+            "login_name":"reagent",
+            "creation_tsz":1151107200,
+            "referred_by_user_id":null,
+            "feedback_info":
+            {
+                "count":5,
+                "score":100
+            }
+        }
+    ]
+}

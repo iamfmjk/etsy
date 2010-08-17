@@ -13,7 +13,7 @@ class EtsyTest < Test::Unit::TestCase
     should "be able to find a user by username" do
       user = stub()
 
-      Etsy::User.expects(:find_by_username).with('littletjane').returns(user)
+      Etsy::User.expects(:find).with('littletjane').returns(user)
       Etsy.user('littletjane').should == user
     end
 

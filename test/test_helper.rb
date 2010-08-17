@@ -15,6 +15,11 @@ class Test::Unit::TestCase
     JSON.parse(File.read(file))['results']
   end
 
+  def raw_fixture_data(filename)
+    file = File.dirname(__FILE__) + "/fixtures/#{filename}"
+    File.read(file)
+  end
+
   def read_fixture(method_name)
     self.class.read_fixture(method_name)
   end
