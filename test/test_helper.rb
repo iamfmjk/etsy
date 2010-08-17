@@ -2,9 +2,9 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
-require 'shoulda'
-require 'matchy'
-require 'mocha'
+require 'bundler'
+
+Bundler.require(:default, :test)
 
 require File.dirname(__FILE__) + '/../lib/etsy'
 
