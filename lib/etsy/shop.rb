@@ -1,8 +1,8 @@
 module Etsy
-  
+
   # = Shop
   #
-  # Represents a single Etsy shop.  Users may or may not have an associated shop - 
+  # Represents a single Etsy shop.  Users may or may not have an associated shop -
   # check the result of User#seller? to find out.
   #
   # A shop has the following attributes:
@@ -15,36 +15,46 @@ module Etsy
   # [listing_count] The total number of active listings contained in this shop
   #
   class Shop
-    
+
     include Etsy::Model
 
-    finder :one, '/shops/:user_id'
-    
+    def self.find(*identifiers)
+      response = Request.get("/shops/#{identifiers.join(',')}")
+      shops = [response.result].flatten.map {|data| new(data) }
+
+      (identifiers.length == 1) ? shops[0] : shops
+    end
+
+    def self.all(options = {})
+      response = Request.get("/shops", options)
+      response.result.map {|data| new(data) }
+    end
+
     attribute :name, :from => :shop_name
     attribute :updated, :from => :last_updated_epoch
     attribute :created, :from => :creation_epoch
     attribute :message, :from => :sale_message
 
     attributes :banner_image_url, :listing_count, :title, :announcement, :user_id
-   
+
     # Time that this shop was created
     #
     def created_at
       Time.at(created)
     end
-    
+
     # Time that this shop was last updated
     #
     def updated_at
       Time.at(updated)
     end
-    
+
     # A collection of listings in this user's shop. See Etsy::Listing for
     # more information
     #
     def listings
       Listing.find_all_by_user_id(user_id)
     end
-    
+
   end
 end

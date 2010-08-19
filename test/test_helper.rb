@@ -24,6 +24,21 @@ class Test::Unit::TestCase
     self.class.read_fixture(method_name)
   end
 
+  def mock_request(endpoint, options, resource, file)
+    objects       = []
+    response_data = raw_fixture_data("#{resource.downcase}/#{file}")
+
+    Etsy::Request.stubs(:new).with(endpoint, options).returns(stub(:get => response_data))
+
+    JSON.parse(response_data)['results'].each_with_index do |result, index|
+      object = "#{resource.downcase}_#{index}"
+      Etsy.const_get(resource).stubs(:new).with(result).returns(object)
+      objects << object
+    end
+
+    objects
+  end
+
   def mock_request_cycle(options)
     response = Etsy::Response.new(stub())
 

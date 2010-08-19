@@ -5,13 +5,29 @@ module Etsy
 
     context "The Shop class" do
 
-      should "be able to find a shop by :user_id" do
-        user_id  = 5327518
-        response = mock_request_cycle :for => "/shops/#{user_id}", :data => 'getShopDetails'
+      should "be able to find a single shop" do
+        shops = mock_request('/shops/littletjane', {}, 'Shop', 'getShop.single.json')
+        Shop.find('littletjane').should == shops.first
+      end
 
-        Shop.expects(:new).with(response.result).returns('shop')
+      should "be able to find multiple shops" do
+        shops = mock_request('/shops/littletjane,reagent', {}, 'Shop', 'getShop.multiple.json')
+        Shop.find('littletjane', 'reagent').should == shops
+      end
 
-        Shop.find_by_user_id(user_id).should == 'shop'
+      should "be able to find all shops" do
+        shops = mock_request('/shops', {}, 'Shop', 'findAllShop.json')
+        Shop.all.should == shops
+      end
+
+      should "return an array of shops if there is only 1 result returned" do
+        shops = mock_request('/shops', {}, 'Shop', 'findAllShop.single.json')
+        Shop.all.should == shops
+      end
+
+      should "allow a configurable limit when finding all shops" do
+        shops = mock_request('/shops', {:limit => 100}, 'Shop', 'findAllShop.json')
+        Shop.all(:limit => 100).should == shops
       end
 
     end
@@ -31,29 +47,29 @@ module Etsy
         value_for :announcement,      :is => 'announcement text'
 
       end
-      
+
       should "know the creation date" do
         shop = Shop.new
         shop.stubs(:created).with().returns(1237430331.15)
-        
+
         shop.created_at.should == Time.at(1237430331.15)
       end
-      
+
       should "know the update date" do
         shop = Shop.new
         shop.stubs(:updated).with().returns(1239717723.36)
-        
+
         shop.updated_at.should == Time.at(1239717723.36)
       end
-      
+
       should "have a collection of listings" do
         user_id = 123
-        
+
         shop = Shop.new
         shop.expects(:user_id).with().returns(user_id)
-        
+
         Listing.expects(:find_all_by_user_id).with(user_id).returns('listings')
-        
+
         shop.listings.should == 'listings'
       end
 

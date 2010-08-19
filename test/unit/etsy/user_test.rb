@@ -3,21 +3,6 @@ require File.dirname(__FILE__) + '/../../test_helper'
 module Etsy
   class UserTest < Test::Unit::TestCase
 
-    def mock_request(endpoint, options, resource, file)
-      objects       = []
-      response_data = raw_fixture_data("#{resource.downcase}/#{file}")
-
-      Request.stubs(:new).with(endpoint, options).returns(stub(:get => response_data))
-
-      JSON.parse(response_data)['results'].each_with_index do |result, index|
-        object = "#{resource.downcase}_#{index}"
-        Etsy.const_get(resource).stubs(:new).with(result).returns(object)
-        objects << object
-      end
-
-      objects
-    end
-
     context "The User class" do
 
       should "be able to find a single user" do
