@@ -5,14 +5,28 @@ module Etsy
 
     context "The Request class" do
 
-      should "know the base URL for the sandbox environment" do
+      should "know the base URL for the sandbox read-only environment" do
         Etsy.stubs(:environment).returns(:sandbox)
+        Etsy.stubs(:access_mode).returns(:read_only)
         Request.base_url.should == 'http://openapi.etsy.com/v2/sandbox/public'
       end
 
-      should "know the base URL for the production environment" do
+      should "know the base URL for the sandbox read/write environment" do
+        Etsy.stubs(:environment).returns(:sandbox)
+        Etsy.stubs(:access_mode).returns(:read_write)
+        Request.base_url.should == 'http://openapi.etsy.com/v2/sandbox/private'
+      end
+
+      should "know the base URL for the production read-only environment" do
         Etsy.stubs(:environment).returns(:production)
+        Etsy.stubs(:access_mode).returns(:read_only)
         Request.base_url.should == 'http://openapi.etsy.com/v2/public'
+      end
+
+      should "know the base URL for the production read-write environment" do
+        Etsy.stubs(:environment).returns(:production)
+        Etsy.stubs(:environment).returns(:read_write)
+        Request.base_url.should == 'http://openapi.etsy.com/v2/private'
       end
 
       should "be able to retrieve a response" do

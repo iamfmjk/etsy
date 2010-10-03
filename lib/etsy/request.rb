@@ -8,9 +8,9 @@ module Etsy
 
     # The base URL for API requests
     def self.base_url
-      url = "http://openapi.etsy.com/v2"
+      url = Etsy::API_URL.dup + Etsy::API_VERSION.dup
       url << '/sandbox' if Etsy.environment == :sandbox
-      url << '/public'
+      url << (Etsy.access_mode == :read_only ? '/public' : '/private')
       url
     end
 
