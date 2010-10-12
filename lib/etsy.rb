@@ -2,6 +2,7 @@ $:.unshift File.dirname(__FILE__)
 
 require 'net/http'
 require 'json'
+require 'oauth'
 
 require 'etsy/request'
 require 'etsy/response'
