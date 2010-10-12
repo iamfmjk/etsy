@@ -6,7 +6,7 @@ require 'bundler'
 
 Bundler.require(:default, :test)
 
-require File.dirname(__FILE__) + '/../lib/etsy'
+require 'lib/etsy'
 
 class Test::Unit::TestCase
 

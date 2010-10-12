@@ -16,7 +16,9 @@ If you want to be on the bleeding edge, install from GitHub:
 
 == Usage
 
-The Etsy API is read-only - all you need to gain access is an API Key (available 
+=== Read-Only Mode
+The Etsy API has two modes: read-only, and read-write.
+To use the read-only mode, all you need to gain access is an API Key (available 
 from http://developer.etsy.com).  Once you have your API key, set it in your script:
 
     require 'rubygems'
@@ -24,6 +26,10 @@ from http://developer.etsy.com).  Once you have your API key, set it in your scr
     Etsy.api_key = 'foobar'
 
 From there, you can make any calls to the API that you need.
+
+=== Read-Write Mode
+Read-Write access to the Etsy API requires both an API key and an API secret (available
+from http://developer.etsy.com).
 
 === Users
 
