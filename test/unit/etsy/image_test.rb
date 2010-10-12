@@ -1,8 +1,8 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 
 module Etsy
   class ImageTest < Test::Unit::TestCase
-    
+
     context "An instance of the Image class" do
 
       when_populating Image, :from => lambda { read_fixture('getShopListings')[0]['all_images'].first } do
@@ -13,10 +13,10 @@ module Etsy
         value_for :small,         :is => "http://ny-image2.etsy.com/il_155x125.67765346.jpg"
         value_for :medium,        :is => "http://ny-image2.etsy.com/il_200x200.67765346.jpg"
         value_for :large,         :is => "http://ny-image2.etsy.com/il_430xN.67765346.jpg"
-        
+
       end
-      
+
     end
-    
+
   end
 end

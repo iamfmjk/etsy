@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 
 module Etsy
   class AuthorizationTest < Test::Unit::TestCase
@@ -46,7 +46,7 @@ module Etsy
         Etsy.stubs(:environment).returns(:production)
         Authorization.access_token_path.should == '/v2/oauth/access_token'
       end
-      
+
       should "default callback to out of bounds" do
         Authorization.callback.should == "oob"
       end

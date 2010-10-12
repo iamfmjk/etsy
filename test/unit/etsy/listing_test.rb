@@ -1,25 +1,25 @@
-require File.dirname(__FILE__) + '/../../test_helper'
+require File.expand_path('../../../test_helper', __FILE__)
 
 module Etsy
   class ListingTest < Test::Unit::TestCase
 
     context "The Listing class" do
-      
+
       should "be able to find all listings by :user_id" do
         user_id = 122345
-        
+
         response = mock_request_cycle :for => "/shops/#{user_id}/listings", :data => 'getShopListings'
-        
+
         listing_1, listing_2 = response.result
-        
+
         Listing.expects(:new).with(listing_1).returns('listing_1')
         Listing.expects(:new).with(listing_2).returns('listing_2')
-        
+
         Listing.find_all_by_user_id(user_id).should == ['listing_1', 'listing_2']
       end
-      
+
     end
-    
+
     context "An instance of the Listing class" do
 
       when_populating Listing, :from => 'getShopListings' do
@@ -37,9 +37,9 @@ module Etsy
         value_for :ending,      :is => 1251214294.49
         value_for :tags,        :is => %w(accessories matchbox)
         value_for :materials,   :is => %w(standard_matchbox notebook_paper)
-        
+
       end
-      
+
       %w(active removed sold_out expired alchemy).each do |state|
         should "know that the listing is #{state}" do
           listing = Listing.new
@@ -53,40 +53,40 @@ module Etsy
           listing.expects(:state).with().returns(state.reverse)
 
           listing.send("#{state}?".to_sym).should be(false)
-        end        
+        end
       end
-      
+
       should "know the create date" do
         listing = Listing.new
         listing.expects(:created).with().returns(1240673494.49)
-        
+
         listing.created_at.should == Time.at(1240673494.49)
       end
-      
+
       should "know the ending date" do
         listing = Listing.new
         listing.expects(:ending).with().returns(1240673494.49)
-        
+
         listing.ending_at.should == Time.at(1240673494.49)
       end
-      
+
       should "have associated images" do
         data = read_fixture('getShopListings')[0]
         listing = Listing.new(data)
 
         Image.expects(:new).with(data['all_images'][0]).returns('image_1')
         Image.expects(:new).with(data['all_images'][1]).returns('image_2')
-        
+
         listing.images.should == ['image_1', 'image_2']
       end
-      
+
       should "have a primary image" do
         listing = Listing.new
         listing.expects(:images).with().returns(%w(one two))
-        
+
         listing.image.should == 'one'
       end
-      
+
     end
   end
 end

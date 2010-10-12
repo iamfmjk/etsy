@@ -2,11 +2,12 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
-require 'bundler'
+require 'test/unit'
+require 'shoulda'
+require 'matchy'
+require 'mocha'
 
-Bundler.require(:default, :test)
-
-require 'lib/etsy'
+require File.expand_path('../../lib/etsy', __FILE__)
 
 class Test::Unit::TestCase
 
