@@ -1,5 +1,3 @@
-require 'oauth'
-
 module Etsy
   # = OAuth
   #
@@ -45,7 +43,7 @@ module Etsy
         :access_token_path => Etsy::Authorization.access_token_path,
         :authorize_url => Etsy::Authorization::AUTHORIZE_URL
       }
-      OAuth::Consumer.new(Etsy.api_key, Etsy.api_secret, options) 
+      OAuth::Consumer.new(Etsy.api_key, Etsy.api_secret, options)
     end
 
   end

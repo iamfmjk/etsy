@@ -17,9 +17,9 @@ spec = Gem::Specification.new do |s|
   s.email            = 'reaganpr@gmail.com'
   s.homepage         = 'http://sneaq.net'
   s.files            = %w(README.rdoc Rakefile) + Dir.glob("{lib,test}/**/*")
-  # s.executables    = ['etsy']
 
-  s.add_dependency('json', '~> 1.1.0')
+  s.add_dependency('json', '~> 1.4.0')
+  s.add_dependency('oauth', '~> 0.4.0')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
@@ -32,7 +32,7 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-desc 'Generate the gemspec to serve this Gem from Github'
+desc 'Generate the gemspec for this Gem'
 task :gemspec do
   file = File.dirname(__FILE__) + "/#{spec.name}.gemspec"
   File.open(file, 'w') {|f| f << spec.to_ruby }

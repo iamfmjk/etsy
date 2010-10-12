@@ -1,8 +1,6 @@
-source 'http://rubygems.org'
+source :rubygems
 
-gem 'json', '>= 1.4.6'
-gem 'rake'
-gem 'oauth'
+gemspec
 
 group :test do
   gem 'jnunemaker-matchy', '0.4.0', :require => 'matchy'
