@@ -30,12 +30,14 @@ module Etsy
       response.result.map {|data| new(data) }
     end
 
-    attribute :name, :from => :shop_name
-    attribute :updated, :from => :last_updated_epoch
-    attribute :created, :from => :creation_epoch
-    attribute :message, :from => :sale_message
+    attributes :title, :announcement, :user_id
 
-    attributes :banner_image_url, :listing_count, :title, :announcement, :user_id
+    attribute :image_url, :from => 'image_url_760x100'
+    attribute :active_listings_count, :from => 'listing_active_count'
+    attribute :updated, :from => :last_updated_tsz
+    attribute :created, :from => :creation_tsz
+    attribute :name, :from => :shop_name
+    attribute :message, :from => :sale_message
 
     # Time that this shop was created
     #

@@ -34,32 +34,50 @@ module Etsy
 
     context "An instance of the Shop class" do
 
-      when_populating Shop, :from => 'getShopDetails' do
+      context "with response data" do
+        setup do
+          raw = raw_fixture_data('shop/getShop.single.json')
+          data = JSON.parse(raw)['results'][0]
 
-        value_for :user_id,           :is => 5327518
-        value_for :banner_image_url,  :is => 'http://ny-image0.etsy.com/iusb_760x100.6158980.jpg'
-        value_for :listing_count,     :is => 13
-        value_for :updated,           :is => 1239717723.36
-        value_for :created,           :is => 1237430331.15
-        value_for :name,              :is => 'littletjane'
-        value_for :title,             :is => 'title text'
-        value_for :message,           :is => 'message text'
-        value_for :announcement,      :is => 'announcement text'
+          @shop = Shop.new(data)
+        end
 
-      end
+        should "have a value for :user_id" do
+          @shop.user_id.should == 5327518
+        end
 
-      should "know the creation date" do
-        shop = Shop.new
-        shop.stubs(:created).with().returns(1237430331.15)
+        should "have a value for :image_url" do
+          @shop.image_url.should == "http://ny-image2.etsy.com/iusb_760x100.7358402.jpg"
+        end
 
-        shop.created_at.should == Time.at(1237430331.15)
-      end
+        should "have a value for :active_listings_count" do
+          @shop.active_listings_count.should == 0
+        end
 
-      should "know the update date" do
-        shop = Shop.new
-        shop.stubs(:updated).with().returns(1239717723.36)
+        should "have a value for :updated_at" do
+          @shop.updated_at.should == Time.at(1274923984)
+        end
 
-        shop.updated_at.should == Time.at(1239717723.36)
+        should "have a value for :created_at" do
+          @shop.created_at.should == Time.at(1237430331)
+        end
+
+        should "have a value for :name" do
+          @shop.name.should == "littletjane"
+        end
+
+        should "have a value for :title" do
+          @shop.title.should == "a cute and crafty mix of handmade goods."
+        end
+
+        should "have a value for :message" do
+          @shop.message.should == "thanks!"
+        end
+
+        should "have a value for :announcement" do
+          @shop.announcement.should == "announcement"
+        end
+
       end
 
       should "have a collection of listings" do
