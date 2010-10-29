@@ -10,6 +10,7 @@ require 'etsy/response'
 require 'etsy/authorization'
 require 'etsy/secure_connection'
 require 'etsy/secure_client'
+require 'etsy/verification_request'
 
 require 'etsy/model'
 require 'etsy/user'
@@ -108,9 +109,8 @@ module Etsy
     Etsy::Authorization.consumer.get_request_token
   end
 
-  # Qualified URL to redirect user to in order to request access
-  def self.verify_url(request_token)
-    request_token.authorize_url + '&oauth_consumer_key=' + request_token.secret
+  def self.verification_url
+    VerificationRequest.new.url
   end
 
   # Get back the final access token and secret

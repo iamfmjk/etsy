@@ -74,9 +74,11 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.request_token == request_token
     end
 
-    should "provide a verify url given a request token" do
-      request_token = stub(:authorize_url => 'url', :secret => 'secret')
-      Etsy.verify_url(request_token).should == "url&oauth_consumer_key=secret"
+    should "provide a verification URL" do
+      request = stub(:url => 'url')
+      Etsy::VerificationRequest.stubs(:new).returns(request)
+
+      Etsy.verification_url.should == 'url'
     end
 
     should "provide an access token given a request token+secret and a verifier" do
