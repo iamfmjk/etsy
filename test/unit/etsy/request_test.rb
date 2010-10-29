@@ -25,7 +25,7 @@ module Etsy
 
       should "know the base URL for the production read-write environment" do
         Etsy.stubs(:environment).returns(:production)
-        Etsy.stubs(:environment).returns(:read_write)
+        Etsy.stubs(:access_mode).returns(:read_write)
         Request.base_url.should == 'http://openapi.etsy.com/v2/private'
       end
 
