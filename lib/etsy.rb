@@ -9,6 +9,7 @@ require 'etsy/response'
 
 require 'etsy/authorization'
 require 'etsy/secure_connection'
+require 'etsy/secure_client'
 
 require 'etsy/model'
 require 'etsy/user'

@@ -1,0 +1,95 @@
+require File.expand_path('../../../test_helper', __FILE__)
+
+module Etsy
+  class SecureClientTest < Test::Unit::TestCase
+
+    context "An instance of the SecureClient class" do
+
+      should "be able to generate an OAuth consumer" do
+        Etsy.stubs(:api_key).returns('key')
+        Etsy.stubs(:api_secret).returns('secret')
+
+        OAuth::Consumer.stubs(:new).with('key', 'secret', {
+          :site               => 'http://openapi.etsy.com',
+          :request_token_path => '/v2/sandbox/oauth/request_token',
+          :access_token_path  => '/v2/sandbox/oauth/access_token',
+          :authorize_url      => 'https://www.etsy.com/oauth/signin'
+        }).returns('consumer')
+
+        client = SecureClient.new
+
+        client.consumer.should == 'consumer'
+      end
+
+      should "be able to generate a request token" do
+        client = SecureClient.new
+        client.stubs(:consumer).returns(stub(:get_request_token => 'toke'))
+
+        client.request_token.should == 'toke'
+      end
+
+      context "with request data" do
+        setup do
+          @client = SecureClient.new(:request_token => 'toke', :request_secret => 'secret', :verifier => 'verify')
+          @client.stubs(:consumer).returns('consumer')
+        end
+
+        should "be able to generate an oauth client" do
+          request_token = stub()
+          request_token.stubs(:get_access_token).with(:oauth_verifier => 'verify').returns('client')
+
+          OAuth::RequestToken.stubs(:new).with('consumer', 'toke', 'secret').returns(request_token)
+
+          @client.client_from_request_data.should == 'client'
+        end
+
+        should "know to generate a client from request data" do
+          @client.stubs(:client_from_request_data).returns('client')
+          @client.client.should == 'client'
+        end
+      end
+
+      context "with access data" do
+        setup do
+          @client = SecureClient.new(:access_token => 'toke', :access_secret => 'secret')
+          @client.stubs(:consumer).returns('consumer')
+        end
+
+        should "know the :access_token" do
+          @client.access_token.should == 'toke'
+        end
+
+        should "know the access secret" do
+          @client.access_secret.should == 'secret'
+        end
+
+        should "be able to generate an oauth client" do
+          OAuth::AccessToken.stubs(:new).with('consumer', 'toke', 'secret').returns('client')
+          @client.client_from_access_data.should == 'client'
+        end
+
+        should "be able to generate a client" do
+          @client.stubs(:client_from_access_data).returns('client')
+          @client.client.should == 'client'
+        end
+      end
+
+      context "with a client" do
+        setup do
+          @client = SecureClient.new
+          @client.stubs(:client).returns(stub(:token => 'toke', :secret => 'secret'))
+        end
+
+        should "know the access token" do
+          @client.access_token.should == 'toke'
+        end
+
+        should "know the access_secret" do
+          @client.access_secret.should == 'secret'
+        end
+      end
+
+    end
+
+  end
+end
