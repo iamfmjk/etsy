@@ -29,7 +29,7 @@ class Test::Unit::TestCase
     objects       = []
     response_data = raw_fixture_data("#{resource.downcase}/#{file}")
 
-    Etsy::Request.stubs(:new).with(endpoint, options).returns(stub(:get => response_data))
+    Etsy::Request.stubs(:new).with(endpoint, options).returns(stub(:get => stub(:body => response_data)))
 
     JSON.parse(response_data)['results'].each_with_index do |result, index|
       object = "#{resource.downcase}_#{index}"

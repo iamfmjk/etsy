@@ -10,10 +10,6 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.instance_variable_set(:@api_secret, nil)
     end
 
-    should "know the api url" do
-      Etsy::API_URL.should == 'http://openapi.etsy.com'
-    end
-
     should "be able to set and retrieve the API key" do
       Etsy.api_key = 'key'
       Etsy.api_key.should == 'key'
@@ -64,14 +60,24 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.instance_variable_set(:@access_mode, :read_write)
       Etsy.instance_variable_set(:@api_key, 'key')
       Etsy.instance_variable_set(:@api_secret, 'secret')
+      Etsy.instance_variable_set(:@verification_request, nil)
     end
 
     should "provide a request token" do
-      consumer = stub()
-      request_token = stub()
-      Etsy::Authorization.stubs(:consumer).with().returns(consumer)
-      consumer.expects(:get_request_token).with().returns(request_token)
-      Etsy.request_token == request_token
+      request = stub(:request_token => 'token')
+      Etsy::VerificationRequest.stubs(:new).returns(request)
+
+      Etsy.request_token.should == 'token'
+    end
+
+    should "be able to generate an access token" do
+      Etsy::SecureClient.stubs(:new).with({
+        :request_token  => 'toke',
+        :request_secret => 'secret',
+        :verifier       => 'verifier'
+      }).returns(stub(:client => 'token'))
+
+      Etsy.access_token('toke', 'secret', 'verifier').should == 'token'
     end
 
     should "provide a verification URL" do
@@ -79,25 +85,6 @@ class EtsyTest < Test::Unit::TestCase
       Etsy::VerificationRequest.stubs(:new).returns(request)
 
       Etsy.verification_url.should == 'url'
-    end
-
-    should "provide an access token given a request token+secret and a verifier" do
-      consumer = stub()
-      request_token = stub()
-      access_token = stub()
-      Etsy::Authorization.stubs(:consumer).with().returns(consumer)
-      OAuth::RequestToken.expects(:new).with(consumer, 'token', 'secret').returns(request_token)
-      request_token.expects(:get_access_token).with(:oauth_verifier => 'verifier').returns(access_token)
-      Etsy.access_token('token', 'secret', 'verifier').should == access_token
-    end
-
-    should "provide a secure connection using access token and secret" do
-      consumer = stub()
-      access_token = stub()
-      Etsy::Authorization.stubs(:consumer).with().returns(consumer)
-      OAuth::AccessToken.expects(:new).with(consumer, 'token', 'secret').returns(access_token)
-      @etsy = Etsy.secure_connection('token', 'secret')
-      @etsy.connection.should == access_token
     end
 
   end

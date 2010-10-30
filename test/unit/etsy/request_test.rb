@@ -5,28 +5,32 @@ module Etsy
 
     context "The Request class" do
 
-      should "know the base URL for the sandbox read-only environment" do
+      should "know the host" do
+        Request.host.should == 'openapi.etsy.com'
+      end
+
+      should "know the base path for the sandbox read-only environment" do
         Etsy.stubs(:environment).returns(:sandbox)
         Etsy.stubs(:access_mode).returns(:read_only)
-        Request.base_url.should == 'http://openapi.etsy.com/v2/sandbox/public'
+        Request.base_path.should == '/v2/sandbox/public'
       end
 
-      should "know the base URL for the sandbox read/write environment" do
+      should "know the base path for the sandbox read/write environment" do
         Etsy.stubs(:environment).returns(:sandbox)
         Etsy.stubs(:access_mode).returns(:read_write)
-        Request.base_url.should == 'http://openapi.etsy.com/v2/sandbox/private'
+        Request.base_path.should == '/v2/sandbox/private'
       end
 
-      should "know the base URL for the production read-only environment" do
+      should "know the base path for the production read-only environment" do
         Etsy.stubs(:environment).returns(:production)
         Etsy.stubs(:access_mode).returns(:read_only)
-        Request.base_url.should == 'http://openapi.etsy.com/v2/public'
+        Request.base_path.should == '/v2/public'
       end
 
-      should "know the base URL for the production read-write environment" do
+      should "know the base path for the production read-write environment" do
         Etsy.stubs(:environment).returns(:production)
         Etsy.stubs(:access_mode).returns(:read_write)
-        Request.base_url.should == 'http://openapi.etsy.com/v2/private'
+        Request.base_path.should == '/v2/private'
       end
 
       should "be able to retrieve a response" do
@@ -66,25 +70,64 @@ module Etsy
         r.query.split('&').sort.should == %w(limit=1 other=yes)
       end
 
-      should "be able to determine the endpoint URI" do
-        Request.stubs(:base_url).with().returns('http://example.com')
+      should "be able to determine the endpoint URI when in read-only mode" do
+        Request.stubs(:base_path).with().returns('/base')
 
         r = Request.new('/user')
         r.stubs(:query).with().returns('a=b')
 
-        r.endpoint_uri.to_s.should == 'http://example.com/user?a=b'
+        r.endpoint_url.should == '/base/user?a=b'
+      end
+
+      should "be able to determine the endpoint URI when in read-write mode" do
+        Etsy.stubs(:access_mode).returns(:read_write)
+        Request.stubs(:base_path).with().returns('/base')
+
+        r = Request.new('/user', :access_token => 'toke', :access_secret => 'secret')
+        r.stubs(:query).with().returns('a=b')
+
+        r.endpoint_url.should == '/base/user?a=b'
+      end
+
+      should "know the client for read-only mode" do
+        Etsy.stubs(:access_mode).returns(:read_only)
+        Request.stubs(:host).returns('example.com')
+
+        BasicClient.stubs(:new).with('example.com').returns('client')
+
+        r = Request.new('')
+
+        r.client.should == 'client'
+      end
+
+      should "know the client for read-write mode when there is no access token information" do
+        Etsy.stubs(:access_mode).returns(:read_write)
+        Request.stubs(:host).returns('example.com')
+
+        BasicClient.stubs(:new).with('example.com').returns('client')
+
+        r = Request.new('')
+
+        r.client.should == 'client'
+      end
+
+      should "know the client for read-write mode when there is access token information" do
+        Etsy.stubs(:access_mode).returns(:read_write)
+        SecureClient.stubs(:new).with(:access_token => 'toke', :access_secret => 'secret').returns('client')
+
+        r = Request.new('', :access_token => 'toke', :access_secret => 'secret')
+        r.client.should == 'client'
       end
 
       should "be able to make a successful request" do
-        uri = URI.parse('http://example.com')
-        response = stub()
+        client = stub()
+        client.stubs(:get).with('endpoint_url').returns('response')
 
         r = Request.new('/user')
-        r.expects(:endpoint_uri).with().returns(uri)
+        r.stubs(:endpoint_url).with().returns('endpoint_url')
+        r.stubs(:client).returns(client)
 
-        Net::HTTP.expects(:get).with(uri).returns(response)
-
-        r.get.should == response
+        r.get.should == 'response'
       end
 
     end

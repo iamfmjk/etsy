@@ -39,6 +39,10 @@ module Etsy
       @client ||= has_access_data? ? client_from_access_data : client_from_request_data
     end
 
+    def get(endpoint)
+      client.get(endpoint)
+    end
+
     private
 
     def has_access_data?

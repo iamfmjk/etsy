@@ -6,12 +6,15 @@ module Etsy
   #
   class Request
 
+    def self.host
+      'openapi.etsy.com'
+    end
+
     # The base URL for API requests
-    def self.base_url
-      url = Etsy::API_URL.dup + Etsy::API_VERSION.dup
-      url << '/sandbox' if Etsy.environment == :sandbox
-      url << (Etsy.access_mode == :read_only ? '/public' : '/private')
-      url
+    def self.base_path
+      path = '/v2'
+      path << '/sandbox' if Etsy.environment == :sandbox
+      path << (Etsy.access_mode == :read_only ? '/public' : '/private')
     end
 
     # Perform a GET request for the resource with optional parameters - returns
@@ -30,7 +33,11 @@ module Etsy
     # Perform a GET request against the API endpoint and return the raw
     # response data
     def get
-      Net::HTTP.get(endpoint_uri)
+      client.get(endpoint_url)
+    end
+
+    def client
+      @client ||= secure? ? secure_client : basic_client
     end
 
     def parameters # :nodoc:
@@ -41,10 +48,22 @@ module Etsy
       parameters.map {|k,v| "#{k}=#{v}"}.join('&')
     end
 
-    def endpoint_uri # :nodoc:
-      uri = URI.parse("#{self.class.base_url}#{@resource_path}")
-      uri.query = query
-      uri
+    def endpoint_url # :nodoc:
+      "#{self.class.base_path}#{@resource_path}?#{query}"
+    end
+
+    private
+
+    def secure_client
+      SecureClient.new(:access_token => @parameters[:access_token], :access_secret => @parameters[:access_secret])
+    end
+
+    def basic_client
+      BasicClient.new(self.class.host)
+    end
+
+    def secure?
+      Etsy.access_mode == :read_write && !@parameters[:access_token].nil? && !@parameters[:access_secret].nil?
     end
 
   end

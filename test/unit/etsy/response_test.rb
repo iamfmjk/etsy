@@ -8,14 +8,14 @@ module Etsy
       should "be able to decode the JSON data to a hash" do
         data = '{ "foo":"bar" }'
 
-        r = Response.new(data)
+        r = Response.new(stub(:body => data))
         r.to_hash.should == {'foo' => 'bar'}
       end
 
       should "only decode the JSON data once" do
         JSON.expects(:parse).once.returns({})
 
-        r = Response.new('{ "foo":"bar" }')
+        r = Response.new(stub(:body => '{ "foo":"bar" }'))
         2.times { r.to_hash }
       end
 

@@ -89,6 +89,18 @@ module Etsy
         end
       end
 
+      should "delegate :get to :client" do
+        url = 'http://etsy.com/'
+
+        oauth_client = stub()
+        oauth_client.stubs(:get).with(url).returns('something')
+
+        client = SecureClient.new
+        client.stubs(:client).returns(oauth_client)
+
+        client.get(url).should == 'something'
+      end
+
     end
 
   end
