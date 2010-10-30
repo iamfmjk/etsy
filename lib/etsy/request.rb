@@ -10,13 +10,6 @@ module Etsy
       'openapi.etsy.com'
     end
 
-    # The base URL for API requests
-    def self.base_path
-      path = '/v2'
-      path << '/sandbox' if Etsy.environment == :sandbox
-      path << (Etsy.access_mode == :read_only ? '/public' : '/private')
-    end
-
     # Perform a GET request for the resource with optional parameters - returns
     # A Response object with the payload data
     def self.get(resource_path, parameters = {})
@@ -28,6 +21,14 @@ module Etsy
     def initialize(resource_path, parameters = {})
       @resource_path = resource_path
       @parameters    = parameters
+    end
+
+    def base_path
+      parts = ['v2']
+      parts << 'sandbox' if Etsy.environment == :sandbox
+      parts << (secure? ? 'private' : 'public')
+
+      "/#{parts.join('/')}"
     end
 
     # Perform a GET request against the API endpoint and return the raw
@@ -49,7 +50,7 @@ module Etsy
     end
 
     def endpoint_url # :nodoc:
-      "#{self.class.base_path}#{@resource_path}?#{query}"
+      "#{base_path}#{@resource_path}?#{query}"
     end
 
     private
