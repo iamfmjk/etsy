@@ -15,16 +15,6 @@ module Etsy
         User.find('littletjane', 'reagent').should == users
       end
 
-      should "be able to find all users" do
-        users = mock_request('/users', {}, 'User', 'findAllUser.json')
-        User.all.should == users
-      end
-
-      should "allow a configurable limit when finding all users" do
-        users = mock_request('/users', {:limit => 100}, 'User', 'findAllUser.json')
-        User.all(:limit => 100).should == users
-      end
-
     end
 
     context "An instance of the User class" do
