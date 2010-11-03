@@ -92,6 +92,10 @@ module Etsy
     User.find(username)
   end
 
+  def self.myself(token, secret)
+    User.myself(token, secret)
+  end
+
   def self.request_token
     verification_request.request_token
   end

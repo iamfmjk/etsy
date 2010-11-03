@@ -15,6 +15,11 @@ module Etsy
         User.find('littletjane', 'reagent').should == users
       end
 
+      should "be able to find the current logged in user" do
+        oauth_keys = {:access_token => 'token', :access_secret => 'secret'}
+        users = mock_request('/users/__SELF__', oauth_keys, 'User', 'getUser.single.json')
+        User.myself('token', 'secret').should == users.first
+      end
     end
 
     context "An instance of the User class" do
