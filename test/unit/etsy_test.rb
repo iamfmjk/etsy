@@ -6,6 +6,7 @@ class EtsyTest < Test::Unit::TestCase
     setup do
       Etsy.instance_variable_set(:@environment, nil)
       Etsy.instance_variable_set(:@access_mode, nil)
+      Etsy.instance_variable_set(:@callback_url, nil)
       Etsy.instance_variable_set(:@api_key, nil)
       Etsy.instance_variable_set(:@api_secret, nil)
     end
@@ -51,6 +52,15 @@ class EtsyTest < Test::Unit::TestCase
 
     should "raise an exception when attempting to set an invalid access mode" do
       lambda { Etsy.access_mode = :invalid }.should raise_error(ArgumentError)
+    end
+
+    should "be able to set the callback url" do
+      Etsy.callback_url = 'http://localhost'
+      Etsy.callback_url.should == 'http://localhost'
+    end
+
+    should "default callback to out-of-band" do
+      Etsy.callback_url.should == 'oob'
     end
   end
 
