@@ -12,14 +12,16 @@ module Etsy
     include Etsy::Model
 
     def self.find(*identifiers)
-      response = Request.get("/users/#{identifiers.join(',')}")
-      users = [response.result].flatten.map {|data| new(data) }
+      self.get("/users/#{identifiers.join(',')}")
+    end
 
-      (identifiers.length == 1) ? users[0] : users
+    def self.myself(token, secret)
+      self.get("/users/__SELF__", :access_token => token, :access_secret => secret)
     end
 
     attribute :id, :from => :user_id
     attribute :username, :from => :login_name
+    attribute :email, :from => :primary_email
     attribute :created, :from => :creation_tsz
 
     # Time that this user was created
@@ -28,5 +30,12 @@ module Etsy
       Time.at(created)
     end
 
+    private
+    def self.get(query, options={})
+      response = Request.get(query, options)
+      users = [response.result].flatten.map {|data| new(data) }
+
+      (users.length == 1) ? users[0] : users
+    end
   end
 end
