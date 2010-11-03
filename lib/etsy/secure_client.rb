@@ -15,7 +15,7 @@ module Etsy
     end
 
     def request_token
-      consumer.get_request_token
+      consumer.get_request_token(:oauth_callback => Etsy.callback_url)
     end
 
     def access_token

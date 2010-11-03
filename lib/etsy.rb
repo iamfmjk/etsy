@@ -79,6 +79,14 @@ module Etsy
     @access_mode || :read_only
   end
 
+  def self.callback_url=(url)
+    @callback_url = url
+  end
+
+  def self.callback_url
+    @callback_url || 'oob'
+  end
+
   # Find a user by username.  See Etsy::User for more information.
   def self.user(username)
     User.find(username)
