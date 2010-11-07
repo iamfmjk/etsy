@@ -68,7 +68,15 @@ module Etsy
 
         user.created_at.should == Time.at(1)
       end
+    end
 
+    should "know the shop for a user" do
+      user = User.new
+      user.stubs(:username).with().returns('username')
+
+      Shop.stubs(:find).with('username').returns('shop')
+
+      user.shop.should == 'shop'
     end
 
   end

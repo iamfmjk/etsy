@@ -11,6 +11,11 @@ module Etsy
 
     include Etsy::Model
 
+    attribute :id, :from => :user_id
+    attribute :username, :from => :login_name
+    attribute :email, :from => :primary_email
+    attribute :created, :from => :creation_tsz
+
     def self.find(*identifiers)
       self.get("/users/#{identifiers.join(',')}")
     end
@@ -19,10 +24,9 @@ module Etsy
       self.get("/users/__SELF__", :access_token => token, :access_secret => secret)
     end
 
-    attribute :id, :from => :user_id
-    attribute :username, :from => :login_name
-    attribute :email, :from => :primary_email
-    attribute :created, :from => :creation_tsz
+    def shop
+      @shop ||= Shop.find(username)
+    end
 
     # Time that this user was created
     #
