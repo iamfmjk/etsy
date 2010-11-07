@@ -55,6 +55,7 @@ module Etsy
 
   class << self
     attr_accessor :api_key, :api_secret
+    attr_writer :callback_url
   end
 
   def self.environment=(environment)
@@ -77,10 +78,6 @@ module Etsy
 
   def self.access_mode
     @access_mode || :read_only
-  end
-
-  def self.callback_url=(url)
-    @callback_url = url
   end
 
   def self.callback_url
