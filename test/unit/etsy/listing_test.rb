@@ -5,39 +5,74 @@ module Etsy
 
     context "The Listing class" do
 
-      should "be able to find all listings by :user_id" do
-        user_id = 122345
-
-        response = mock_request_cycle :for => "/shops/#{user_id}/listings", :data => 'getShopListings'
-
-        listing_1, listing_2 = response.result
-
-        Listing.expects(:new).with(listing_1).returns('listing_1')
-        Listing.expects(:new).with(listing_2).returns('listing_2')
-
-        Listing.find_all_by_user_id(user_id).should == ['listing_1', 'listing_2']
+      should "be able to find all listings for a shop" do
+        listings = mock_request('/shops/1/listings/active', {}, 'Listing', 'findAllShopListingsActive.json')
+        Listing.find_all_by_shop_id(1).should == listings
       end
 
     end
 
     context "An instance of the Listing class" do
 
-      when_populating Listing, :from => 'getShopListings' do
+      context "with response data" do
+        setup do
+          raw = raw_fixture_data('listing/findAllShopListingsActive.json')
+          data = JSON.parse(raw)['results'][0]
 
-        value_for :id,          :is => 24165902
-        value_for :state,       :is => 'active'
-        value_for :title,       :is => 'hanging with the bad boys matchbox'
-        value_for :description, :is => 'standard size matchbox ...'
-        value_for :url,         :is => 'http://www.etsy.com/view_listing.php?listing_id=24165902'
-        value_for :view_count,  :is => 18
-        value_for :created,     :is => 1240673494.49
-        value_for :price,       :is => 3
-        value_for :quantity,    :is => 1
-        value_for :currency,    :is => 'USD'
-        value_for :ending,      :is => 1251214294.49
-        value_for :tags,        :is => %w(accessories matchbox)
-        value_for :materials,   :is => %w(standard_matchbox notebook_paper)
+          @listing = Listing.new(data)
+        end
 
+        should "have a value for :id" do
+          @listing.id.should == 59495892
+        end
+
+        should "have a value for :state" do
+          @listing.state.should == 'active'
+        end
+
+        should "have a value for :title" do
+          @listing.title.should == "initials carved into tree love stamp"
+        end
+
+        should "have a value for :description" do
+          @listing.description.should == "there! our initials are now carved deeply into this rough tree bark of memory"
+        end
+
+        should "have a value for :url" do
+          @listing.url.should == "http://www.etsy.com/listing/59495892/initials-carved-into-tree-love-stamp"
+        end
+
+        should "have a value for :view_count" do
+          @listing.view_count.should == 37
+        end
+
+        should "have a value for :created_at" do
+          @listing.created_at.should == Time.at(1287602289)
+        end
+
+        should "have a value for :price" do
+          @listing.price.should == "15.00"
+        end
+
+        should "have a value for :quantity" do
+          @listing.quantity.should == 1
+        end
+
+        should "have a value for :currency" do
+          @listing.currency.should == "USD"
+        end
+
+        should "have a value for :ending_at" do
+          @listing.ending_at.should == Time.at(1298178000)
+        end
+
+        should "have a value for :tags" do
+          @listing.tags.should == %w(tag_1 tag_2)
+        end
+
+        should "have a value for :materials" do
+          @listing.materials.should == %w(material_1 material_2)
+        end
       end
 
       %w(active removed sold_out expired alchemy).each do |state|
@@ -54,37 +89,6 @@ module Etsy
 
           listing.send("#{state}?".to_sym).should be(false)
         end
-      end
-
-      should "know the create date" do
-        listing = Listing.new
-        listing.expects(:created).with().returns(1240673494.49)
-
-        listing.created_at.should == Time.at(1240673494.49)
-      end
-
-      should "know the ending date" do
-        listing = Listing.new
-        listing.expects(:ending).with().returns(1240673494.49)
-
-        listing.ending_at.should == Time.at(1240673494.49)
-      end
-
-      should "have associated images" do
-        data = read_fixture('getShopListings')[0]
-        listing = Listing.new(data)
-
-        Image.expects(:new).with(data['all_images'][0]).returns('image_1')
-        Image.expects(:new).with(data['all_images'][1]).returns('image_2')
-
-        listing.images.should == ['image_1', 'image_2']
-      end
-
-      should "have a primary image" do
-        listing = Listing.new
-        listing.expects(:images).with().returns(%w(one two))
-
-        listing.image.should == 'one'
       end
 
     end

@@ -1,5 +1,5 @@
 module Etsy
-  
+
   # = Listing
   #
   # Represents a single Etsy listing.  Has the following attributes:
@@ -24,53 +24,42 @@ module Etsy
   # [alchemy?] Is this listing an Alchemy item? (i.e. requested by an Etsy user)
   #
   class Listing
-    
+
     include Etsy::Model
-    
+
     STATES = %w(active removed sold_out expired alchemy)
-    
-    finder :all, '/shops/:user_id/listings'
-    
+
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
-    attribute :created, :from => :creation_epoch
+    attribute :created, :from => :creation_tsz
     attribute :currency, :from => :currency_code
-    attribute :ending, :from => :ending_epoch
-    
-    attributes :title, :description, :state, :url, :price, :quantity, 
+    attribute :ending, :from => :ending_tsz
+
+    attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials
+
+    def self.find_all_by_shop_id(shop_id)
+      response = Request.get("/shops/#{shop_id}/listings/active")
+      [response.result].flatten.map {|data| new(data) }
+    end
 
     STATES.each do |state|
       define_method "#{state}?" do
         self.state == state.sub('_', '')
       end
     end
-   
+
     # Time that this listing was created
     #
     def created_at
       Time.at(created)
     end
-    
+
     # Time that this listing is ending (will be removed from store)
     #
     def ending_at
       Time.at(ending)
     end
-    
-    # The list of images associated with this listing.  See Etsy::Image
-    # for more information
-    #
-    def images
-      @result['all_images'].map {|image_data| Image.new(image_data) }
-    end
-    
-    # The primary image for this listing.  See Etsy::Image for more
-    # information
-    #
-    def image
-      images.first
-    end
-    
+
   end
 end
