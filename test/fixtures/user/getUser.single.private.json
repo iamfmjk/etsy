@@ -1,0 +1,18 @@
+{
+    "count": 1,
+    "results": [{
+        "user_id": 53780,
+        "login_name": "reagent",
+        "primary_email": "reaganpr@gmail.com",
+        "creation_tsz": 1151107200,
+        "referred_by_user_id": null,
+        "feedback_info": {
+            "count": 5,
+            "score": 100
+        }
+    }],
+    "params": {
+        "user_id": "__SELF__"
+    },
+    "type": "User"
+}

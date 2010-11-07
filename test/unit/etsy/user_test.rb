@@ -24,7 +24,7 @@ module Etsy
 
     context "An instance of the User class" do
 
-      context "with response data" do
+      context "with public response data" do
         setup do
           raw = raw_fixture_data('user/getUser.single.json')
           data = JSON.parse(raw)['results'][0]
@@ -42,6 +42,23 @@ module Etsy
 
         should "have a value for :created" do
           @user.created.should == 1191381578
+        end
+
+        should "not have an email address" do
+          @user.email.should be_nil
+        end
+      end
+
+      context "with private response data" do
+        setup do
+          raw = raw_fixture_data('user/getUser.single.private.json')
+          data = JSON.parse(raw)['results'][0]
+
+          @user = User.new(data)
+        end
+
+        should "have an email address" do
+          @user.email.should == 'reaganpr@gmail.com'
         end
       end
 
