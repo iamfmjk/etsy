@@ -22,8 +22,11 @@ module Etsy
       end
 
       should "be able to generate a request token" do
+        Etsy.stubs(:callback_url).with().returns('callback_url')
+        consumer = stub() {|c| c.stubs(:get_request_token).with(:oauth_callback => 'callback_url').returns('toke') }
+
         client = SecureClient.new
-        client.stubs(:consumer).returns(stub(:get_request_token => 'toke'))
+        client.stubs(:consumer).returns(consumer)
 
         client.request_token.should == 'toke'
       end
