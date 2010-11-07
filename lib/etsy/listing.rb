@@ -43,6 +43,14 @@ module Etsy
       [response.result].flatten.map {|data| new(data) }
     end
 
+    def images
+      @images ||= Image.find_all_by_listing_id(id)
+    end
+
+    def image
+      images.first
+    end
+
     STATES.each do |state|
       define_method "#{state}?" do
         self.state == state.sub('_', '')

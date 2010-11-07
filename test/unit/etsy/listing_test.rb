@@ -91,6 +91,22 @@ module Etsy
         end
       end
 
+      should "have a collection of images" do
+        listing = Listing.new
+        listing.stubs(:id).with().returns(1)
+
+        Image.stubs(:find_all_by_listing_id).with(1).returns('images')
+
+        listing.images.should == 'images'
+      end
+
+      should "have a default image" do
+        listing = Listing.new
+        listing.stubs(:images).with().returns(%w(image_1 image_2))
+
+        listing.image.should == 'image_1'
+      end
+
     end
   end
 end
