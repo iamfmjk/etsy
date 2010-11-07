@@ -32,6 +32,7 @@ module Etsy
 
     attributes :title, :announcement, :user_id
 
+    attribute :id, :from => :shop_id
     attribute :image_url, :from => 'image_url_760x100'
     attribute :active_listings_count, :from => 'listing_active_count'
     attribute :updated, :from => :last_updated_tsz
@@ -51,11 +52,8 @@ module Etsy
       Time.at(updated)
     end
 
-    # A collection of listings in this user's shop. See Etsy::Listing for
-    # more information
-    #
     def listings
-      Listing.find_all_by_user_id(user_id)
+      @listings ||= Listing.find_all_by_shop_id(id)
     end
 
   end

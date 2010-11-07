@@ -42,6 +42,10 @@ module Etsy
           @shop = Shop.new(data)
         end
 
+        should "have a value for :id" do
+          @shop.id.should == 5500349
+        end
+
         should "have a value for :user_id" do
           @shop.user_id.should == 5327518
         end
@@ -81,12 +85,10 @@ module Etsy
       end
 
       should "have a collection of listings" do
-        user_id = 123
-
         shop = Shop.new
-        shop.expects(:user_id).with().returns(user_id)
+        shop.stubs(:id).with().returns(1)
 
-        Listing.expects(:find_all_by_user_id).with(user_id).returns('listings')
+        Listing.stubs(:find_all_by_shop_id).with(1).returns('listings')
 
         shop.listings.should == 'listings'
       end
