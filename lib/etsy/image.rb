@@ -1,8 +1,8 @@
 module Etsy
-  
+
   # = Image
   #
-  # Represents an image resource of an Etsy listing and contains multiple sizes. 
+  # Represents an image resource of an Etsy listing and contains multiple sizes.
   # Sizes available are:
   #
   # [small_square] The smallest square image (25x25 pixels)
@@ -13,15 +13,18 @@ module Etsy
   # [large] The largest image available for this listing (430x? pixels)
   #
   class Image
-    
+
     include Etsy::Model
-  
-    attribute :small_square, :from => :image_url_25x25
-    attribute :medium_square, :from => :image_url_50x50
-    attribute :large_square, :from => :image_url_75x75 
-    attribute :small, :from => :image_url_155x125
-    attribute :medium, :from => :image_url_200x200
-    attribute :large, :from => :image_url_430xN
+
+    def self.find_all_by_listing_id(listing_id)
+      response = Request.get("/listings/#{listing_id}/images")
+      [response.result].flatten.map {|data| new(data) }
+    end
+
+    attribute :square, :from => :url_75x75
+    attribute :small, :from => :url_170x135
+    attribute :thumbnail, :from => :url_570xN
+    attribute :full, :from => :url_fullxfull
 
   end
 end

@@ -3,17 +3,40 @@ require File.expand_path('../../../test_helper', __FILE__)
 module Etsy
   class ImageTest < Test::Unit::TestCase
 
+    context "The Image class" do
+
+      should "be able to find all images for a listing" do
+        images = mock_request('/listings/1/images', {}, 'Image', 'findAllListingImages.json')
+        Image.find_all_by_listing_id(1).should == images
+      end
+
+    end
+
     context "An instance of the Image class" do
 
-      when_populating Image, :from => lambda { read_fixture('getShopListings')[0]['all_images'].first } do
+      context "with response data" do
+        setup do
+          raw = raw_fixture_data('image/findAllListingImages.json')
+          data = JSON.parse(raw)['results'][0]
 
-        value_for :small_square,  :is => "http://ny-image2.etsy.com/il_25x25.67765346.jpg"
-        value_for :medium_square, :is => "http://ny-image2.etsy.com/il_50x50.67765346.jpg"
-        value_for :large_square,  :is => "http://ny-image2.etsy.com/il_75x75.67765346.jpg"
-        value_for :small,         :is => "http://ny-image2.etsy.com/il_155x125.67765346.jpg"
-        value_for :medium,        :is => "http://ny-image2.etsy.com/il_200x200.67765346.jpg"
-        value_for :large,         :is => "http://ny-image2.etsy.com/il_430xN.67765346.jpg"
+          @image = Image.new(data)
+        end
 
+        should "have a value for :square" do
+          @image.square.should == "http://ny-image0.etsy.com/il_75x75.185073072.jpg"
+        end
+
+        should "have a value for :small" do
+          @image.small.should == "http://ny-image0.etsy.com/il_170x135.185073072.jpg"
+        end
+
+        should "have a value for :thumbnail" do
+          @image.thumbnail.should == "http://ny-image0.etsy.com/il_570xN.185073072.jpg"
+        end
+
+        should "have a value for :full" do
+          @image.full.should == "http://ny-image0.etsy.com/il_fullxfull.185073072.jpg"
+        end
       end
 
     end
