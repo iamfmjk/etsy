@@ -4,13 +4,9 @@ module Etsy
     module ClassMethods
 
       def attribute(name, options = {})
-        from = options.fetch(:from, name)
-
-        class_eval <<-CODE
-          def #{name}
-            @result['#{from}']
-          end
-        CODE
+        define_method name do
+          @result[options.fetch(:from, name).to_s]
+        end
       end
 
       def attributes(*names)
