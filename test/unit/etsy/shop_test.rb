@@ -36,10 +36,8 @@ module Etsy
 
       context "with response data" do
         setup do
-          raw = raw_fixture_data('shop/getShop.single.json')
-          data = JSON.parse(raw)['results'][0]
-
-          @shop = Shop.new(data)
+          data = read_fixture('shop/getShop.single.json')
+          @shop = Shop.new(data.first)
         end
 
         should "have a value for :id" do

@@ -26,10 +26,8 @@ module Etsy
 
       context "with public response data" do
         setup do
-          raw = raw_fixture_data('user/getUser.single.json')
-          data = JSON.parse(raw)['results'][0]
-
-          @user = User.new(data)
+          data = read_fixture('user/getUser.single.json')
+          @user = User.new(data.first)
         end
 
         should "have an ID" do
@@ -51,10 +49,8 @@ module Etsy
 
       context "with private response data" do
         setup do
-          raw = raw_fixture_data('user/getUser.single.private.json')
-          data = JSON.parse(raw)['results'][0]
-
-          @user = User.new(data)
+          data = read_fixture('user/getUser.single.private.json')
+          @user = User.new(data.first)
         end
 
         should "have an email address" do

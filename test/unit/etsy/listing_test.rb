@@ -16,10 +16,8 @@ module Etsy
 
       context "with response data" do
         setup do
-          raw = raw_fixture_data('listing/findAllShopListingsActive.json')
-          data = JSON.parse(raw)['results'][0]
-
-          @listing = Listing.new(data)
+          data = read_fixture('listing/findAllShopListingsActive.json')
+          @listing = Listing.new(data.first)
         end
 
         should "have a value for :id" do

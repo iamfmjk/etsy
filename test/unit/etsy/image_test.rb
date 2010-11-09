@@ -16,10 +16,8 @@ module Etsy
 
       context "with response data" do
         setup do
-          raw = raw_fixture_data('image/findAllListingImages.json')
-          data = JSON.parse(raw)['results'][0]
-
-          @image = Image.new(data)
+          data = read_fixture('image/findAllListingImages.json')
+          @image = Image.new(data.first)
         end
 
         should "have a value for :square" do
