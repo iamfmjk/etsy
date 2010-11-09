@@ -15,19 +15,13 @@ module Etsy
 
     end
 
-    module InstanceMethods
-
-      def initialize(result = nil)
-        @result = result
-      end
-
+    def initialize(result = nil)
+      @result = result
     end
 
     def self.included(other)
-      other.send(:extend, Etsy::Model::ClassMethods)
-      other.send(:include, Etsy::Model::InstanceMethods)
+      other.extend ClassMethods
     end
-
 
   end
 end
