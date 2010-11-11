@@ -17,6 +17,16 @@ module Etsy
 
     include Etsy::Model
 
+    attributes :title, :announcement, :user_id
+
+    attribute :id, :from => :shop_id
+    attribute :image_url, :from => 'image_url_760x100'
+    attribute :active_listings_count, :from => 'listing_active_count'
+    attribute :updated, :from => :last_updated_tsz
+    attribute :created, :from => :creation_tsz
+    attribute :name, :from => :shop_name
+    attribute :message, :from => :sale_message
+
     # Retrieve one or more shops by name or ID:
     #
     #   Etsy::Shop.find('reagent')
@@ -41,16 +51,6 @@ module Etsy
       response = Request.get("/shops", options)
       response.result.map {|data| new(data) }
     end
-
-    attributes :title, :announcement, :user_id
-
-    attribute :id, :from => :shop_id
-    attribute :image_url, :from => 'image_url_760x100'
-    attribute :active_listings_count, :from => 'listing_active_count'
-    attribute :updated, :from => :last_updated_tsz
-    attribute :created, :from => :creation_tsz
-    attribute :name, :from => :shop_name
-    attribute :message, :from => :sale_message
 
     # Time that this shop was created
     #
