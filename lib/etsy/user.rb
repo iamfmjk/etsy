@@ -6,6 +6,7 @@ module Etsy
   #
   # [id] The unique identifier for this user
   # [username] This user's username
+  # [email] This user's email address (authenticated calls only)
   #
   class User
 
@@ -16,14 +17,26 @@ module Etsy
     attribute :email, :from => :primary_email
     attribute :created, :from => :creation_tsz
 
+    # Retrieve one or more users by name or ID:
+    #
+    #   Etsy::User.find('reagent')
+    #
+    # You can find multiple users by passing an array of identifiers:
+    #
+    #   Etsy::User.find(['reagent', 'littletjane'])
+    #
     def self.find(*identifiers)
       self.get("/users/#{identifiers.join(',')}")
     end
 
+    # Retrieve the currently authenticated user.
+    #
     def self.myself(token, secret)
       self.get("/users/__SELF__", :access_token => token, :access_secret => secret)
     end
 
+    # The shop associated with this user.
+    #
     def shop
       @shop ||= Shop.find(username)
     end
@@ -35,6 +48,7 @@ module Etsy
     end
 
     private
+
     def self.get(query, options={})
       response = Request.get(query, options)
       users = [response.result].flatten.map {|data| new(data) }

@@ -6,7 +6,7 @@ module Etsy
   #
   class Request
 
-    def self.host
+    def self.host # :nodoc:
       'openapi.etsy.com'
     end
 
@@ -23,7 +23,7 @@ module Etsy
       @parameters    = parameters
     end
 
-    def base_path
+    def base_path # :nodoc:
       parts = ['v2']
       parts << 'sandbox' if Etsy.environment == :sandbox
       parts << (secure? ? 'private' : 'public')
@@ -37,7 +37,7 @@ module Etsy
       client.get(endpoint_url)
     end
 
-    def client
+    def client # :nodoc:
       @client ||= secure? ? secure_client : basic_client
     end
 

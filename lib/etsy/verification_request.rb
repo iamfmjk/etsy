@@ -1,5 +1,5 @@
 module Etsy
-  class VerificationRequest
+  class VerificationRequest # :nodoc:all
 
     def client
       @client ||= SecureClient.new

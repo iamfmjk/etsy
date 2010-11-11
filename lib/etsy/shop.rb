@@ -2,8 +2,7 @@ module Etsy
 
   # = Shop
   #
-  # Represents a single Etsy shop.  Users may or may not have an associated shop -
-  # check the result of User#seller? to find out.
+  # Represents a single Etsy shop.  Users may or may not have an associated shop.
   #
   # A shop has the following attributes:
   #
@@ -11,13 +10,21 @@ module Etsy
   # [title] A brief heading for the shop's main page
   # [announcement] An announcement to buyers (displays on the shop's home page)
   # [message] The message sent to users who buy from this shop
-  # [banner_image_url] The full URL to the shops's banner image
-  # [listing_count] The total number of active listings contained in this shop
+  # [image_url] The full URL to the shops's banner image
+  # [active_listings_count] The number of active listings present in this shop
   #
   class Shop
 
     include Etsy::Model
 
+    # Retrieve one or more shops by name or ID:
+    #
+    #   Etsy::Shop.find('reagent')
+    #
+    # You can find multiple shops by passing an array of identifiers:
+    #
+    #   Etsy::Shop.find(['reagent', 'littletjane'])
+    #
     def self.find(*identifiers)
       response = Request.get("/shops/#{identifiers.join(',')}")
       shops = [response.result].flatten.map {|data| new(data) }
@@ -25,6 +32,11 @@ module Etsy
       (identifiers.length == 1) ? shops[0] : shops
     end
 
+    # Retrieve a list of all shops.  By default it fetches 25 at a time, but that can
+    # be configured by passing the :limit and :offset parameters:
+    #
+    #   Etsy::Shop.all(:limit => 100, :offset => 100)
+    #
     def self.all(options = {})
       response = Request.get("/shops", options)
       response.result.map {|data| new(data) }
@@ -52,6 +64,8 @@ module Etsy
       Time.at(updated)
     end
 
+    # The collection of active listings associated with this shop
+    #
     def listings
       @listings ||= Listing.find_all_by_shop_id(id)
     end

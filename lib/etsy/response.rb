@@ -6,7 +6,7 @@ module Etsy
   #
   class Response
 
-    # Create a new response based on the raw JSON
+    # Create a new response based on the raw HTTP response
     def initialize(raw_response)
       @raw_response = raw_response
     end
