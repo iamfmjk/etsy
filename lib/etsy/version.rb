@@ -2,7 +2,7 @@ module Etsy
   module Version
 
     MAJOR = 0
-    MINOR = 1
+    MINOR = 2
     TINY  = 0
 
     def self.to_s # :nodoc:
