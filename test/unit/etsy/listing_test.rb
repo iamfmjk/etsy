@@ -43,6 +43,11 @@ module Etsy
           Listing.find_all_by_shop_id(1, options).should == listings
         end
 
+        should "raise an exception when calling with an invalid state" do
+          options = {:state => :awesome}
+          lambda { Listing.find_all_by_shop_id(1, options) }.should raise_error(ArgumentError)
+        end
+
       end
 
     end

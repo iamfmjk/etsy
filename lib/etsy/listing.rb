@@ -28,6 +28,7 @@ module Etsy
     include Etsy::Model
 
     STATES = %w(active removed sold_out expired alchemy)
+    VALID_STATES = [:active, :expired, :inactive, :featured]
 
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
@@ -68,6 +69,10 @@ module Etsy
     #
     def self.find_all_by_shop_id(shop_id, options = {})
       state = options.delete(:state) || :active
+      unless VALID_STATES.include?(state)
+        msg = "The state '#{state}' is invalid. Must be one of #{VALID_STATES.join(', ')}"
+        raise(ArgumentError, msg)
+      end
       self.get_all("/shops/#{shop_id}/listings/#{state}", options)
     end
 
