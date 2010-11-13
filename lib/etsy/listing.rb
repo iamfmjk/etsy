@@ -28,7 +28,7 @@ module Etsy
     include Etsy::Model
 
     STATES = %w(active removed sold_out expired alchemy)
-    VALID_STATES = [:active, :expired, :inactive, :featured]
+    VALID_STATES = [:active, :expired, :inactive, :sold_out, :featured]
 
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
@@ -55,7 +55,7 @@ module Etsy
     # By default, pulls back the first 25 active listings.
     # Defaults can be overridden using :limit, :offset, and :state
     #
-    # Available states are :active, :expired, :inactive, and :featured
+    # Available states are :active, :expired, :inactive, :sold_out, and :featured
     # where :featured is a subset of the others.
     #
     # options = {
@@ -73,7 +73,8 @@ module Etsy
         msg = "The state '#{state}' is invalid. Must be one of #{VALID_STATES.join(', ')}"
         raise(ArgumentError, msg)
       end
-      self.get_all("/shops/#{shop_id}/listings/#{state}", options)
+      return self.sold_listings(shop_id, options) if state == :sold_out
+      return self.get_all("/shops/#{shop_id}/listings/#{state}", options)
     end
 
     # The collection of images associated with this listing.
@@ -104,6 +105,15 @@ module Etsy
     #
     def ending_at
       Time.at(ending)
+    end
+
+    private
+
+    def self.sold_listings(shop_id, options = {})
+      options[:fields] = 'listing_id'
+      response = Request.get("/shops/#{shop_id}/transactions", options)
+      idx = [response.result].flatten.collect {|data| data['listing_id']}
+      return self.find idx
     end
 
   end
