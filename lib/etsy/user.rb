@@ -38,7 +38,8 @@ module Etsy
     # The shop associated with this user.
     #
     def shop
-      @shop ||= Shop.find(username)
+      options = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
+      @shop ||= Shop.find(username, options)
     end
 
     # Time that this user was created

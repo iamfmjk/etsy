@@ -86,7 +86,7 @@ module Etsy
         shop = Shop.new
         shop.stubs(:id).with().returns(1)
 
-        Listing.stubs(:find_all_by_shop_id).with(1).returns('listings')
+        Listing.stubs(:find_all_by_shop_id).with(1, {}).returns('listings')
 
         shop.listings.should == 'listings'
       end

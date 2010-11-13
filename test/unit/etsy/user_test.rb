@@ -15,20 +15,35 @@ module Etsy
         User.find('littletjane', 'reagent').should == users
       end
 
-      should "be able to find the current logged in user" do
-        oauth_keys = {:access_token => 'token', :access_secret => 'secret'}
-        users = mock_request('/users/__SELF__', oauth_keys, 'User', 'getUser.single.json')
-        User.myself('token', 'secret').should == users.first
-      end
-
       should "be able to pass options when finding a user" do
-        options = {:access_token => 'token', :access_secret => 'secret'}
-        users = mock_request('/users/__SELF__', options, 'User', 'getUser.single.json')
-        User.find('__SELF__', options).should == users.first
+        options = {:limit => 90, :offset => 90}
+        users = mock_request('/users/littletjane', options, 'User', 'getUser.single.json')
+        User.find('littletjane', options).should == users.first
       end
     end
 
     context "An instance of the User class" do
+
+      context "requested with oauth access token" do
+        setup do
+          options = {:access_token => 'token', :access_secret => 'secret'}
+
+          data = read_fixture('user/getUser.single.json')
+          response = 'response'
+          response.stubs(:result).with().returns [data]
+          Request.stubs(:get).with('/users/__SELF__', options).returns response
+
+          @user = User.find('__SELF__', options)
+        end
+
+        should "persist the token" do
+          @user.token.should == 'token'
+        end
+
+        should "persist the secret" do
+          @user.secret.should == 'secret'
+        end
+      end
 
       context "with public response data" do
         setup do
@@ -54,14 +69,31 @@ module Etsy
       end
 
       context "with private response data" do
+
         setup do
           data = read_fixture('user/getUser.single.private.json')
-          @user = User.new(data.first)
+          @user = User.new(data.first, 'token', 'secret')
         end
 
         should "have an email address" do
           @user.email.should == 'reaganpr@gmail.com'
         end
+
+      end
+
+      context "instantiated with oauth token" do
+        setup do
+          @user = User.new(nil, 'token', 'secret')
+        end
+
+        should "have the token" do
+          @user.token.should == 'token'
+        end
+
+        should "have the secret" do
+          @user.secret.should == 'secret'
+        end
+
       end
 
       should "know when the user was created" do
@@ -76,7 +108,7 @@ module Etsy
       user = User.new
       user.stubs(:username).with().returns('username')
 
-      Shop.stubs(:find).with('username').returns('shop')
+      Shop.stubs(:find).with('username', {}).returns('shop')
 
       user.shop.should == 'shop'
     end
