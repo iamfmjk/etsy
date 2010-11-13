@@ -63,10 +63,14 @@ module Etsy
     # The collection of listings associated with this shop
     #
     def listings(state = nil, options = {})
-      oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
       state = state ? {:state => state} : {}
-      state.merge(options).merge(oauth)
       Listing.find_all_by_shop_id(id, state.merge(options).merge(oauth))
+    end
+
+    private
+
+    def oauth
+      oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
     end
 
   end

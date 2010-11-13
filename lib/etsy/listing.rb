@@ -69,10 +69,9 @@ module Etsy
     #
     def self.find_all_by_shop_id(shop_id, options = {})
       state = options.delete(:state) || :active
-      unless VALID_STATES.include?(state)
-        msg = "The state '#{state}' is invalid. Must be one of #{VALID_STATES.join(', ')}"
-        raise(ArgumentError, msg)
-      end
+
+      raise(ArgumentError, self.invalid_state_message(state)) unless self.valid? state
+
       return self.sold_listings(shop_id, options) if state == :sold_out
       return self.get_all("/shops/#{shop_id}/listings/#{state}", options)
     end
@@ -109,11 +108,20 @@ module Etsy
 
     private
 
+    def self.valid?(state)
+      VALID_STATES.include?(state)
+    end
+
+    def self.invalid_state_message(state)
+      "The state '#{state}' is invalid. Must be one of #{VALID_STATES.join(', ')}"
+    end
+
     def self.sold_listings(shop_id, options = {})
-      options[:fields] = 'listing_id'
-      response = Request.get("/shops/#{shop_id}/transactions", options)
+      response = Request.get("/shops/#{shop_id}/transactions", options.merge(:fields => 'listing_id'))
+
       idx = [response.result].flatten.collect {|data| data['listing_id']}
-      return self.find idx
+
+      (idx.size > 0) ? self.find(idx) : []
     end
 
   end
