@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rake/gempackagetask'
 require 'rake/testtask'
 
-require 'lib/etsy/version'
+require File.dirname(__FILE__) + "/lib/etsy/version"
 
 task :default => :test
 
