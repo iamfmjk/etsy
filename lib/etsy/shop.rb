@@ -63,11 +63,39 @@ module Etsy
     # The collection of listings associated with this shop
     #
     def listings(state = nil, options = {})
+      if state == :all
+        return all_listings_all_states options.merge(oauth)
+      end
       state = state ? {:state => state} : {}
       Listing.find_all_by_shop_id(id, state.merge(options).merge(oauth))
     end
 
     private
+
+    def all_listings_all_states(options)
+      listings = []
+      options[:limit] = 100
+      [:active, :inactive, :expired, :sold_out].each do |state|
+        listings += all_listings_for(state, options)
+      end
+      listings
+    end
+
+    def all_listings_for(state, options)
+      listings = []
+      more = true
+      options[:offset] = 0
+      while more
+        set = Listing.find_all_by_shop_id(id, options.merge(:state => state))
+        if set.size == 0
+          more = false
+        else
+          listings += set
+          options[:offset] += options[:limit]
+        end
+      end
+      listings
+    end
 
     def oauth
       oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
