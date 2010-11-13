@@ -38,6 +38,18 @@ module Etsy
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials
 
+    # Retrieve one or more listings by ID:
+    #
+    #   Etsy::Listing.find(123)
+    #
+    # You can find multiple listings by passing an array of identifiers:
+    #
+    #   Etsy::Listing.find([123, 456])
+    #
+    def self.find(*identifiers)
+      self.get("/listings/#{identifiers.join(',')}")
+    end
+
     # Retrieve all active listings for a given shop. Pulls back the first 25 listings.
     #
     def self.find_all_by_shop_id(shop_id)

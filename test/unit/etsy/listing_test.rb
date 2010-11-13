@@ -10,6 +10,15 @@ module Etsy
         Listing.find_all_by_shop_id(1).should == listings
       end
 
+      should "be able to find a single listing" do
+        listings = mock_request('/listings/123', {}, 'Listing', 'getListing.single.json')
+        Listing.find(123).should == listings.first
+      end
+
+      should "be able to find multiple listings" do
+        listings = mock_request('/listings/123,456', {}, 'Listing', 'getListing.multiple.json')
+        Listing.find('123', '456').should == listings
+      end
     end
 
     context "An instance of the Listing class" do
