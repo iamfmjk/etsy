@@ -25,14 +25,14 @@ module Etsy
     #
     #   Etsy::User.find(['reagent', 'littletjane'])
     #
-    def self.find(*identifiers)
-      self.get("/users/#{identifiers.join(',')}")
+    def self.find(*identifiers_and_options)
+      return self.find_one_or_more('users', identifiers_and_options)
     end
 
     # Retrieve the currently authenticated user.
     #
     def self.myself(token, secret)
-      self.get("/users/__SELF__", :access_token => token, :access_secret => secret)
+      self.find('__SELF__', :access_token => token, :access_secret => secret)
     end
 
     # The shop associated with this user.

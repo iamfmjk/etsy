@@ -20,6 +20,12 @@ module Etsy
         users = mock_request('/users/__SELF__', oauth_keys, 'User', 'getUser.single.json')
         User.myself('token', 'secret').should == users.first
       end
+
+      should "be able to pass options when finding a user" do
+        options = {:access_token => 'token', :access_secret => 'secret'}
+        users = mock_request('/users/__SELF__', options, 'User', 'getUser.single.json')
+        User.find('__SELF__', options).should == users.first
+      end
     end
 
     context "An instance of the User class" do

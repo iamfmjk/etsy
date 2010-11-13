@@ -23,6 +23,16 @@ module Etsy
         [response.result].flatten.map { |data| new(data) }
       end
 
+      def find_one_or_more(endpoint, identifiers_and_options)
+        options = options_from(identifiers_and_options)
+        identifiers = identifiers_and_options
+        get("/#{endpoint}/#{identifiers.join(',')}", options)
+      end
+
+      def options_from(argument)
+        (argument.last.class == Hash) ? argument.pop : {}
+      end
+
     end
 
     def initialize(result = nil)

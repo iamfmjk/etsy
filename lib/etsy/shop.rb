@@ -35,8 +35,8 @@ module Etsy
     #
     #   Etsy::Shop.find(['reagent', 'littletjane'])
     #
-    def self.find(*identifiers)
-      self.get("/shops/#{identifiers.join(',')}")
+    def self.find(*identifiers_and_options)
+      self.find_one_or_more('shops', identifiers_and_options)
     end
 
     # Retrieve a list of all shops.  By default it fetches 25 at a time, but that can

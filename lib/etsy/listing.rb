@@ -46,8 +46,8 @@ module Etsy
     #
     #   Etsy::Listing.find([123, 456])
     #
-    def self.find(*identifiers)
-      self.get("/listings/#{identifiers.join(',')}")
+    def self.find(*identifiers_and_options)
+      self.find_one_or_more('listings', identifiers_and_options)
     end
 
     # Retrieve all active listings for a given shop. Pulls back the first 25 listings.
