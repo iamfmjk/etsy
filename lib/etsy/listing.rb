@@ -50,10 +50,25 @@ module Etsy
       self.find_one_or_more('listings', identifiers_and_options)
     end
 
-    # Retrieve all active listings for a given shop. Pulls back the first 25 listings.
+    # Retrieve listings for a given shop.
+    # By default, pulls back the first 25 active listings.
+    # Defaults can be overridden using :limit, :offset, and :state
     #
-    def self.find_all_by_shop_id(shop_id)
-      self.get_all("/shops/#{shop_id}/listings/active")
+    # Available states are :active, :expired, :inactive, and :featured
+    # where :featured is a subset of the others.
+    #
+    # options = {
+    #   :state => :expired,
+    #   :limit => 100,
+    #   :offset => 100,
+    #   :token => 'toke',
+    #   :secret => 'secret'
+    # }
+    # Etsy::Listing.find_all_by_shop_id(123, options)
+    #
+    def self.find_all_by_shop_id(shop_id, options = {})
+      state = options.delete(:state) || :active
+      self.get_all("/shops/#{shop_id}/listings/#{state}", options)
     end
 
     # The collection of images associated with this listing.

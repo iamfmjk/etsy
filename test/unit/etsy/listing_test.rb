@@ -5,11 +5,6 @@ module Etsy
 
     context "The Listing class" do
 
-      should "be able to find all listings for a shop" do
-        listings = mock_request('/shops/1/listings/active', {}, 'Listing', 'findAllShopListingsActive.json')
-        Listing.find_all_by_shop_id(1).should == listings
-      end
-
       should "be able to find a single listing" do
         listings = mock_request('/listings/123', {}, 'Listing', 'getListing.single.json')
         Listing.find(123).should == listings.first
@@ -19,13 +14,44 @@ module Etsy
         listings = mock_request('/listings/123,456', {}, 'Listing', 'getListing.multiple.json')
         Listing.find('123', '456').should == listings
       end
+
+      context "within the scope of a shop" do
+
+        should "be able to find the first 25 active listings" do
+          listings = mock_request('/shops/1/listings/active', {}, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1).should == listings
+        end
+
+        should "be able to find expired listings" do
+          listings = mock_request('/shops/1/listings/expired', {}, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1, :state => :expired).should == listings
+        end
+
+        should "be able to find inactive listings" do
+          listings = mock_request('/shops/1/listings/inactive', {}, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1, :state => :inactive).should == listings
+        end
+
+        should "be able to find featured listings" do
+          listings = mock_request('/shops/1/listings/featured', {}, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1, :state => :featured).should == listings
+        end
+
+        should "be able to override limit and offset" do
+          options = {:limit => 100, :offset => 100}
+          listings = mock_request('/shops/1/listings/active', options, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1, options).should == listings
+        end
+
+      end
+
     end
 
     context "An instance of the Listing class" do
 
       context "with response data" do
         setup do
-          data = read_fixture('listing/findAllShopListingsActive.json')
+          data = read_fixture('listing/findAllShopListings.json')
           @listing = Listing.new(data.first)
         end
 
