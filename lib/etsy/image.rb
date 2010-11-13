@@ -22,8 +22,7 @@ module Etsy
     # Fetch all images for a given listing.
     #
     def self.find_all_by_listing_id(listing_id)
-      response = Request.get("/listings/#{listing_id}/images")
-      [response.result].flatten.map {|data| new(data) }
+      self.get_all("/listings/#{listing_id}/images")
     end
 
   end

@@ -36,10 +36,7 @@ module Etsy
     #   Etsy::Shop.find(['reagent', 'littletjane'])
     #
     def self.find(*identifiers)
-      response = Request.get("/shops/#{identifiers.join(',')}")
-      shops = [response.result].flatten.map {|data| new(data) }
-
-      (identifiers.length == 1) ? shops[0] : shops
+      self.get("/shops/#{identifiers.join(',')}")
     end
 
     # Retrieve a list of all shops.  By default it fetches 25 at a time, but that can
@@ -48,8 +45,7 @@ module Etsy
     #   Etsy::Shop.all(:limit => 100, :offset => 100)
     #
     def self.all(options = {})
-      response = Request.get("/shops", options)
-      response.result.map {|data| new(data) }
+      self.get_all("/shops", options)
     end
 
     # Time that this shop was created

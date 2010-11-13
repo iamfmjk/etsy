@@ -47,13 +47,5 @@ module Etsy
       Time.at(created)
     end
 
-    private
-
-    def self.get(query, options={})
-      response = Request.get(query, options)
-      users = [response.result].flatten.map {|data| new(data) }
-
-      (users.length == 1) ? users[0] : users
-    end
   end
 end

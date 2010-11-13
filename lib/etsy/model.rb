@@ -13,6 +13,16 @@ module Etsy
         names.each {|name| attribute(name) }
       end
 
+      def get(endpoint, options = {})
+        objects = get_all(endpoint, options)
+        (objects.length == 1) ? objects[0] : objects
+      end
+
+      def get_all(endpoint, options={})
+        response = Request.get(endpoint, options)
+        [response.result].flatten.map { |data| new(data) }
+      end
+
     end
 
     def initialize(result = nil)

@@ -41,8 +41,7 @@ module Etsy
     # Retrieve all active listings for a given shop. Pulls back the first 25 listings.
     #
     def self.find_all_by_shop_id(shop_id)
-      response = Request.get("/shops/#{shop_id}/listings/active")
-      [response.result].flatten.map {|data| new(data) }
+      self.get_all("/shops/#{shop_id}/listings/active")
     end
 
     # The collection of images associated with this listing.
