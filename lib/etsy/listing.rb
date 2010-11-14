@@ -14,6 +14,11 @@ module Etsy
   # [quantity] The number of items available for sale
   # [tags] An array of tags that the seller has used for this listing
   # [materials] Any array of materials that was used in the production of this item
+  # [state] The current state of the item
+  # [hue] The hue of the listing's primary image (HSV color).
+  # [saturation] The saturation of the listing's primary image (HSV color).
+  # [brightness] The value of the listing's primary image (HSV color).
+  # [black_and_white?] True if the listing's primary image is in black & white.
   #
   # Additionally, the following queries on this item are available:
   #
@@ -33,11 +38,12 @@ module Etsy
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
     attribute :created, :from => :creation_tsz
+    attribute :modified, :from => :last_modified_tsz
     attribute :currency, :from => :currency_code
     attribute :ending, :from => :ending_tsz
 
     attributes :title, :description, :state, :url, :price, :quantity,
-               :tags, :materials
+               :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white
 
     # Retrieve one or more listings by ID:
     #
@@ -88,6 +94,10 @@ module Etsy
       images.first
     end
 
+    def black_and_white?
+      is_black_and_white
+    end
+
     STATES.each do |state|
       define_method "#{state}?" do
         self.state == state.sub('_', '')
@@ -98,6 +108,12 @@ module Etsy
     #
     def created_at
       Time.at(created)
+    end
+
+    # Time that this listing was last modified
+    #
+    def modified_at
+      Time.at(modified)
     end
 
     # Time that this listing is ending (will be removed from store)

@@ -88,6 +88,10 @@ module Etsy
           @listing.created_at.should == Time.at(1287602289)
         end
 
+        should "have a value for :modified_at" do
+          @listing.modified_at.should == Time.at(1287602289)
+        end
+
         should "have a value for :price" do
           @listing.price.should == "15.00"
         end
@@ -110,6 +114,22 @@ module Etsy
 
         should "have a value for :materials" do
           @listing.materials.should == %w(material_1 material_2)
+        end
+
+        should "have a value for :hue" do
+          @listing.hue.should == 0
+        end
+
+        should "have a value for :saturation" do
+          @listing.saturation.should == 0
+        end
+
+        should "have a value for :brightness" do
+          @listing.brightness.should == 100
+        end
+
+        should "have a value for :black_and_white?" do
+          @listing.black_and_white?.should == false
         end
       end
 
