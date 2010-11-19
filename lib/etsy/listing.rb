@@ -33,7 +33,7 @@ module Etsy
     include Etsy::Model
 
     STATES = %w(active removed sold_out expired alchemy)
-    VALID_STATES = [:active, :expired, :inactive, :sold_out, :featured]
+    VALID_STATES = [:active, :expired, :inactive, :sold, :featured]
 
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
@@ -61,7 +61,7 @@ module Etsy
     # By default, pulls back the first 25 active listings.
     # Defaults can be overridden using :limit, :offset, and :state
     #
-    # Available states are :active, :expired, :inactive, :sold_out, and :featured
+    # Available states are :active, :expired, :inactive, :sold, and :featured
     # where :featured is a subset of the others.
     #
     # options = {
@@ -78,8 +78,11 @@ module Etsy
 
       raise(ArgumentError, self.invalid_state_message(state)) unless self.valid? state
 
-      return self.sold_listings(shop_id, options) if state == :sold_out
-      return self.get_all("/shops/#{shop_id}/listings/#{state}", options)
+      if state == :sold
+        sold_listings(shop_id, options)
+      else
+        get_all("/shops/#{shop_id}/listings/#{state}", options)
+      end
     end
 
     # The collection of images associated with this listing.
@@ -133,11 +136,10 @@ module Etsy
     end
 
     def self.sold_listings(shop_id, options = {})
-      response = Request.get("/shops/#{shop_id}/transactions", options.merge(:fields => 'listing_id'))
+      transactions = Transaction.find_all_by_shop_id(shop_id, options)
+      listing_ids  = transactions.map {|t| t.listing_id }.uniq
 
-      idx = [response.result].flatten.collect {|data| data['listing_id']}
-
-      (idx.size > 0) ? self.find(idx) : []
+      Array(find(listing_ids))
     end
 
   end

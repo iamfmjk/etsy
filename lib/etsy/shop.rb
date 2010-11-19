@@ -75,7 +75,7 @@ module Etsy
     def all_listings_all_states(options)
       listings = []
       options[:limit] = 100
-      [:active, :inactive, :expired, :sold_out].each do |state|
+      [:active, :inactive, :expired, :sold].each do |state|
         listings += all_listings_for(state, options)
       end
       listings

@@ -37,6 +37,19 @@ module Etsy
           Listing.find_all_by_shop_id(1, :state => :featured).should == listings
         end
 
+        should "be able to find sold listings" do
+          transaction_1 = stub(:listing_id => 1)
+          transaction_2 = stub(:listing_id => 2)
+          transaction_3 = stub(:listing_id => 1)
+
+          transactions = [transaction_1, transaction_2, transaction_3]
+
+          Transaction.stubs(:find_all_by_shop_id).with(1, {}).returns(transactions)
+          Listing.stubs(:find).with([1, 2]).returns(['listings'])
+
+          Listing.find_all_by_shop_id(1, :state => :sold).should == ['listings']
+        end
+
         should "be able to override limit and offset" do
           options = {:limit => 100, :offset => 100}
           listings = mock_request('/shops/1/listings/active', options, 'Listing', 'findAllShopListings.json')
