@@ -22,7 +22,7 @@ module Etsy
     # Fetch all images for a given listing.
     #
     def self.find_all_by_listing_id(listing_id)
-      self.get_all("/listings/#{listing_id}/images")
+      get_all("/listings/#{listing_id}/images")
     end
 
   end

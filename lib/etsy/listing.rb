@@ -54,7 +54,7 @@ module Etsy
     #   Etsy::Listing.find([123, 456])
     #
     def self.find(*identifiers_and_options)
-      self.find_one_or_more('listings', identifiers_and_options)
+      find_one_or_more('listings', identifiers_and_options)
     end
 
     # Retrieve listings for a given shop.
@@ -76,7 +76,7 @@ module Etsy
     def self.find_all_by_shop_id(shop_id, options = {})
       state = options.delete(:state) || :active
 
-      raise(ArgumentError, self.invalid_state_message(state)) unless self.valid? state
+      raise(ArgumentError, self.invalid_state_message(state)) unless valid?(state)
 
       if state == :sold
         sold_listings(shop_id, options)
@@ -101,9 +101,9 @@ module Etsy
       is_black_and_white
     end
 
-    STATES.each do |state|
-      define_method "#{state}?" do
-        self.state == state.sub('_', '')
+    STATES.each do |method_name|
+      define_method "#{method_name}?" do
+        state == method_name.sub('_', '')
       end
     end
 
