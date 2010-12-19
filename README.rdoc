@@ -165,6 +165,26 @@ Listings also have a primary image:
 
 More information is available in the documentation for Etsy::Image.
 
+== Custom Requests to the Etsy API
+
+It is possible to use the Etsy::Request class to make custom calls to the API.
+To do so, find out which endpoint you wish to connect to and the parameters you wish to pass in.
+
+e.g. to fetch a resource that hasn't yet been implemented directly in the gem:
+
+  >> access = {:access_token => 'token', :access_secret => 'secret'}
+  >> Etsy::Request.get('/taxonomy/tags', access.merge(:limit => 5))
+
+or to fetch an associated resource
+
+  >> access = {:access_token => 'token', :access_secret => 'secret'}
+  >> Etsy::Request.get('/users/_SELF_', access.merge(:includes => 'Profile')
+
+or to limit the fields returned
+
+  >> access = {:access_token => 'token', :access_secret => 'secret'}
+  >> Etsy::Request.get('/shops/:shop_id', access.merge(:fields => 'is_vacation,is_refusing_alchemy')
+
 == Contributing
 
 I have a "commit bit" policy for contributions to this repository. Once I accept
