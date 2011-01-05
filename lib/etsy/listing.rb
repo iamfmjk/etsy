@@ -139,7 +139,7 @@ module Etsy
       transactions = Transaction.find_all_by_shop_id(shop_id, options)
       listing_ids  = transactions.map {|t| t.listing_id }.uniq
 
-      Array(find(listing_ids))
+      (listing_ids.size > 0) ? Array(find(listing_ids)) : []
     end
 
   end
