@@ -113,6 +113,7 @@ module Etsy
   # Generate a request token for authorization.
   #
   def self.request_token
+    clear_for_new_authorization
     verification_request.request_token
   end
 
@@ -140,5 +141,9 @@ module Etsy
 
   def self.verification_request
     @verification_request ||= VerificationRequest.new
+  end
+
+  def self.clear_for_new_authorization
+    @verification_request = nil
   end
 end
