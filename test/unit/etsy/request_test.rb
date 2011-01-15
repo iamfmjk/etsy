@@ -90,6 +90,49 @@ module Etsy
         r.query.split('&').sort.should == %w(limit=1 other=yes)
       end
 
+      should "be able make simplified association requests" do
+        r = Request.new('/foo', {:includes => 'Thunder,Lightning'})
+        r.stubs(:parameters).with().returns({:a => :b})
+        r.query.should == 'a=b&includes=Thunder,Lightning'
+      end
+
+      should "be able to generate detailed association queries" do
+        r = Request.new('/foo')
+        r.association(:resource => 'lightning').should == 'Lightning'
+      end
+
+      should "be able to specify fields in association query" do
+        r = Request.new('/foo')
+        params = {:resource => 'lightning', :fields => ['one', 'two']}
+        r.association(params).should == 'Lightning(one,two)'
+      end
+
+      should "be able to specify limit in association query" do
+        r = Request.new('/foo')
+        params = {:resource => 'lightning', :limit => 3}
+        r.association(params).should == 'Lightning:3:0'
+      end
+
+      should "be able to specify offset in association query" do
+        r = Request.new('/foo')
+        params = {:resource => 'lightning', :offset => 7}
+        r.association(params).should == 'Lightning:25:7'
+      end
+
+      should "be able to join multiple resources in association query" do
+        params = {
+          :a => 'b',
+          :includes => [
+            {:resource => 'lightning'},
+            {:resource => 'thunder'}
+          ]
+        }
+        r = Request.new('/foo', params)
+        r.stubs(:base_path).with().returns('/base')
+        r.stubs(:parameters).with().returns(:a => 'b')
+        r.endpoint_url.should == '/base/foo?a=b&includes=Lightning,Thunder'
+      end
+
       should "be able to determine the endpoint URI when in read-only mode" do
         r = Request.new('/user')
         r.stubs(:base_path).with().returns('/base')

@@ -165,6 +165,24 @@ Listings also have a primary image:
 
 More information is available in the documentation for Etsy::Image.
 
+== Associations
+
+Associations on resources can be specified with the 'includes' key.
+
+A single resource can be specified with the name of the resource as a string:
+
+  >> Listing.find(1, {:includes => 'Images'}
+
+Multiple resources can be specified with the name of the resources as a comma-delimited string:
+
+  >> User.find(1, {:includes => 'FeedbackAsBuyer,FeedbackAsSeller'}
+
+If you want a more fine-grained response, you can specify the associations as an array of hashes, each of which must contain the name of the resource, and can also include the fields you wish returned, as well as the limit and offset.
+
+  >> association = {:resource => 'Images', :fields => ('red','green','blue'), :limit => 1, :offset => 0}
+  >> Listing.find(1, {:includes => [association]}
+
+
 == Custom Requests to the Etsy API
 
 It is possible to use the Etsy::Request class to make custom calls to the API.

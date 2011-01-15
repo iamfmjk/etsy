@@ -20,6 +20,10 @@ module Etsy
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
       @resource_path = resource_path
+      @resources     = parameters.delete(:includes)
+      if @resources.class == String
+        @resources = @resources.split(',').map {|r| {:resource => r}}
+      end
       @parameters    = parameters
     end
 
@@ -45,8 +49,25 @@ module Etsy
       @parameters.merge(:api_key => Etsy.api_key, :detail_level => 'high')
     end
 
+    def resources # :nodoc:
+      @resources
+    end
+
     def query # :nodoc:
-      parameters.map {|k,v| "#{k}=#{v}"}.join('&')
+      q = parameters.map {|k,v| "#{k}=#{v}"}.join('&')
+      q << "&includes=#{resources.map {|r| association(r)}.join(',')}" if resources
+      q
+    end
+
+    def association(options={}) # :nodoc:
+      s = options[:resource].capitalize
+      s << "(#{options[:fields].join(',')})" if options[:fields]
+      if options[:limit] || options[:offset]
+        options[:limit] ||= 25
+        options[:offset] ||= 0
+        s << ":#{options[:limit]}:#{options[:offset]}"
+      end
+      s
     end
 
     def endpoint_url # :nodoc:
