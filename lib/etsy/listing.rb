@@ -45,6 +45,8 @@ module Etsy
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white
 
+    association :image, :from => 'Images'
+
     # Retrieve one or more listings by ID:
     #
     #   Etsy::Listing.find(123)

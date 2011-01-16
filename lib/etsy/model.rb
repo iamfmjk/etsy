@@ -13,6 +13,13 @@ module Etsy
         names.each {|name| attribute(name) }
       end
 
+      # FIXME: not quite sure where I'm going with this yet. KO.
+      def association(name, options = {})
+        define_method "associated_#{name}" do
+          @result[options.fetch(:from, name).to_s]
+        end
+      end
+
       def get(endpoint, options = {})
         objects = get_all(endpoint, options)
         (objects.length == 1) ? objects[0] : objects
