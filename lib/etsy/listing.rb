@@ -138,10 +138,13 @@ module Etsy
     end
 
     def self.sold_listings(shop_id, options = {})
+      includes = options.delete(:includes)
+
       transactions = Transaction.find_all_by_shop_id(shop_id, options)
       listing_ids  = transactions.map {|t| t.listing_id }.uniq
 
-      (listing_ids.size > 0) ? Array(find(listing_ids)) : []
+      options = includes ? {:includes => includes} : {}
+      (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
     end
 
   end
