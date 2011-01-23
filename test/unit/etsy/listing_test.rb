@@ -60,6 +60,16 @@ module Etsy
           Listing.find_all_by_shop_id(1, :state => :sold, :includes => :an_association).should == ['listings']
         end
 
+        should "pass options through to the listing call" do
+          transaction_1 = stub(:listing_id => 1)
+          transaction_2 = stub(:listing_id => 2)
+
+          Transaction.stubs(:find_all_by_shop_id).with(1, {:other => :params}).returns [transaction_1, transaction_2]
+          Listing.stubs(:find).with([1, 2], {:other => :params}).returns(['listings'])
+
+          Listing.find_all_by_shop_id(1, :state => :sold, :other => :params).should == ['listings']
+
+        end
 
         should "not ask the API for listings if there are no transactions" do
           Transaction.stubs(:find_all_by_shop_id).with(1, {}).returns([])
