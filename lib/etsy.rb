@@ -145,5 +145,6 @@ module Etsy
 
   def self.clear_for_new_authorization
     @verification_request = nil
+    @access_token = nil
   end
 end
