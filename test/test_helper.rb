@@ -29,7 +29,11 @@ class Test::Unit::TestCase
 
     JSON.parse(response_data)['results'].each_with_index do |result, index|
       object = "#{resource.downcase}_#{index}"
-      Etsy.const_get(resource).stubs(:new).with(result).returns(object)
+      if options[:access_token] && options[:access_secret]
+        Etsy.const_get(resource).stubs(:new).with(result, options[:access_token], options[:access_secret]).returns(object)
+      else
+        Etsy.const_get(resource).stubs(:new).with(result).returns(object)
+      end
       objects << object
     end
 

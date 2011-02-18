@@ -106,8 +106,8 @@ module Etsy
   # Convenience method for accessing the authenticated user's own user information. Requires
   # authentication.
   #
-  def self.myself(token, secret)
-    User.myself(token, secret)
+  def self.myself(token, secret, options = {})
+    User.myself(token, secret, options)
   end
 
   # Generate a request token for authorization.
