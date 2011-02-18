@@ -87,6 +87,45 @@ module Etsy
 
       end
 
+      context "requested with an associated profile" do
+        setup do
+          data = read_fixture('user/getUser.single.withProfile.json')
+          @user = User.new(data.first)
+        end
+
+        should "have a profile" do
+          @user.profile.class.should == Profile
+        end
+      end
+
+      context "requested without an associated profile" do
+        setup do
+          @data_without_profile = read_fixture('user/getUser.single.json')
+          @data_with_profile = read_fixture('user/getUser.single.withProfile.json')
+          @options = {:fields => 'user_id', :includes => 'Profile'}
+
+          @user_without_profile = User.new(@data_without_profile.first)
+          @user_with_profile = User.new(@data_with_profile.first)
+        end
+
+        should "make a call to the API to retrieve it if requested" do
+          User.expects(:find).with('littletjane', @options).returns @user_with_profile
+          @user_without_profile.profile
+        end
+
+        should "return a populated profile instance" do
+          User.stubs(:find).with('littletjane', @options).returns @user_with_profile
+          @user_without_profile.profile.bio.should == 'I make stuff'
+        end
+
+        should "make the call with authentication if oauth is used" do
+          user = User.new(@data_without_profile.first, 'token', 'secret')
+          oauth = {:access_token => 'token', :access_secret => 'secret'}
+          User.expects(:find).with('littletjane', @options.merge(oauth)).returns @user_with_profile
+          user.profile
+        end
+      end
+
       context "instantiated with oauth token" do
         setup do
           @user = User.new(nil, 'token', 'secret')

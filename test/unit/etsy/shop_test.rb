@@ -90,7 +90,6 @@ module Etsy
 
         shop.listings.should == 'listings'
       end
-
     end
 
   end

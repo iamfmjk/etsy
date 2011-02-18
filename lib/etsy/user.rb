@@ -44,6 +44,19 @@ module Etsy
       @shop ||= Shop.find(username, options)
     end
 
+    # The profile associated with this user.
+    #
+    def profile
+      if associated_profile
+        Profile.new(associated_profile)
+      else
+        options = {:fields => 'user_id', :includes => 'Profile'}
+        options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+        tmp = User.find(username, options)
+        Profile.new(tmp.associated_profile)
+      end
+    end
+
     # Time that this user was created
     #
     def created_at
