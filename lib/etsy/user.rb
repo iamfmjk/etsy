@@ -17,6 +17,8 @@ module Etsy
     attribute :email, :from => :primary_email
     attribute :created, :from => :creation_tsz
 
+    association :profile, :from => 'Profile'
+
     # Retrieve one or more users by name or ID:
     #
     #   Etsy::User.find('reagent')

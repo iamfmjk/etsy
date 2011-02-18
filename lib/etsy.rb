@@ -13,6 +13,7 @@ require 'etsy/verification_request'
 
 require 'etsy/model'
 require 'etsy/user'
+require 'etsy/profile'
 require 'etsy/shop'
 require 'etsy/listing'
 require 'etsy/image'
