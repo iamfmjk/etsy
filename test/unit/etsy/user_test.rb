@@ -113,6 +113,12 @@ module Etsy
           @user_without_profile.profile
         end
 
+        should "not call the api twice" do
+          User.expects(:find).once.with('littletjane', @options).returns @user_with_profile
+          @user_without_profile.profile
+          @user_without_profile.profile
+        end
+
         should "return a populated profile instance" do
           User.stubs(:find).with('littletjane', @options).returns @user_with_profile
           @user_without_profile.profile.bio.should == 'I make stuff'
