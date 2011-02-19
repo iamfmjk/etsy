@@ -179,7 +179,7 @@ Multiple resources can be specified with the name of the resources as a comma-de
 
 If you want a more fine-grained response, you can specify the associations as an array of hashes, each of which must contain the name of the resource, and can also include the fields you wish returned, as well as the limit and offset.
 
-  >> association = {:resource => 'Images', :fields => ('red','green','blue'), :limit => 1, :offset => 0}
+  >> association = {:resource => 'Images', :fields => ['red','green','blue'], :limit => 1, :offset => 0}
   >> Listing.find(1, {:includes => [association]}
 
 
