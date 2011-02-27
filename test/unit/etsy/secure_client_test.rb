@@ -21,6 +21,25 @@ module Etsy
         client.consumer.should == 'consumer'
       end
 
+      should "be able to generate an OAuth consumer in production" do
+        Etsy.stubs(:environment).returns :production
+        Etsy.stubs(:api_key).returns('key')
+        Etsy.stubs(:api_secret).returns('secret')
+
+        OAuth::Consumer.stubs(:new).with('key', 'secret', {
+          :site               => 'http://openapi.etsy.com',
+          :request_token_path => '/v2/oauth/request_token',
+          :access_token_path  => '/v2/oauth/access_token',
+          :authorize_url      => 'https://www.etsy.com/oauth/signin'
+        }).returns('consumer')
+
+        client = SecureClient.new
+
+        client.consumer.should == 'consumer'
+      end
+
+
+
       should "be able to generate a request token" do
         Etsy.stubs(:callback_url).with().returns('callback_url')
         consumer = stub() {|c| c.stubs(:get_request_token).with(:oauth_callback => 'callback_url').returns('toke') }
