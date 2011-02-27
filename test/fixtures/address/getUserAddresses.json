@@ -1,0 +1,12 @@
+{
+  "count":2,
+  "results":[
+    {"user_address_id":123,"user_id":9876,"name":"Tinker Bell","first_line":"123 Fake St.","second_line":null,"city":"BigCity","state":"XX","zip":"12345","country_id":209,"country_name":"United States"},
+    {"user_address_id":234,"user_id":9876,"name":"LittleCorp, Inc.","first_line":"123 Fake St.","second_line":null,"city":"BigCity","state":"XX","zip":"12345","country_id":209,"country_name":"United States"}
+  ],
+  "params": {
+    "user_id":"PaisleyAnnHome","limit":25,"offset":0
+  },
+  "type":"UserAddress"
+}
+

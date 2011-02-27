@@ -18,6 +18,7 @@ require 'etsy/shop'
 require 'etsy/listing'
 require 'etsy/image'
 require 'etsy/transaction'
+require 'etsy/address'
 
 # = Etsy: A friendly Ruby interface to the Etsy API
 #

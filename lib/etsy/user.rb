@@ -44,6 +44,13 @@ module Etsy
       @shop ||= Shop.find(username, options)
     end
 
+    # The addresses associated with this user.
+    #
+    def addresses
+      options = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
+      @addresses ||= Address.find(username, options)
+    end
+
     # The profile associated with this user.
     #
     def profile

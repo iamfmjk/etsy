@@ -38,8 +38,10 @@ module Etsy
 
       def find_one_or_more(endpoint, identifiers_and_options)
         options = options_from(identifiers_and_options)
+        append = options.delete(:append_to_endpoint)
+        append = append.nil? ? "" : "/#{append}"
         identifiers = identifiers_and_options
-        get("/#{endpoint}/#{identifiers.join(',')}", options)
+        get("/#{endpoint}/#{identifiers.join(',')}#{append}", options)
       end
 
       def options_from(argument)

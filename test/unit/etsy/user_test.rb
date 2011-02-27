@@ -164,5 +164,14 @@ module Etsy
       user.shop.should == 'shop'
     end
 
+    should "know the addresses for a user" do
+      user = User.new
+      user.stubs(:username).with().returns('username')
+
+      Address.stubs(:find).with('username', {}).returns('addresses')
+
+      user.addresses.should == 'addresses'
+    end
+
   end
 end
