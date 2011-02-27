@@ -23,6 +23,14 @@ module Etsy
       @resources     = parameters.delete(:includes)
       if @resources.class == String
         @resources = @resources.split(',').map {|r| {:resource => r}}
+      elsif @resources.class == Array
+        @resources = @resources.map do |r|
+          if r.class == String
+            {:resource => r}
+          else
+            r
+          end
+        end
       end
       @parameters    = parameters
     end

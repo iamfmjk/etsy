@@ -175,7 +175,7 @@ A single resource can be specified with the name of the resource as a string:
 
 Multiple resources can be specified with the name of the resources as a comma-delimited string:
 
-  >> User.find(1, {:includes => 'FeedbackAsBuyer,FeedbackAsSeller'}
+  >> User.find(1, {:includes => ['FeedbackAsBuyer', 'FeedbackAsSeller']}
 
 If you want a more fine-grained response, you can specify the associations as an array of hashes, each of which must contain the name of the resource, and can also include the fields you wish returned, as well as the limit and offset.
 

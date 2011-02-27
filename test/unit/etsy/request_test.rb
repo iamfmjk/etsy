@@ -90,8 +90,14 @@ module Etsy
         r.query.split('&').sort.should == %w(limit=1 other=yes)
       end
 
+      should "be able to request a single association" do
+        r = Request.new('/foo', {:includes => 'Thunder'})
+        r.stubs(:parameters).with().returns({:a => :b})
+        r.query.should == 'a=b&includes=Thunder'
+      end
+
       should "be able make simplified association requests" do
-        r = Request.new('/foo', {:includes => 'Thunder,Lightning'})
+        r = Request.new('/foo', {:includes => ['Thunder', 'Lightning']})
         r.stubs(:parameters).with().returns({:a => :b})
         r.query.should == 'a=b&includes=Thunder,Lightning'
       end
