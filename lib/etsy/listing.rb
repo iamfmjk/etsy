@@ -87,6 +87,23 @@ module Etsy
       end
     end
 
+    # Retrieve active listings for a given category.
+    # By default, pulls back the first 25 active listings.
+    # Defaults can be overridden using :limit, :offset, and :state
+    #
+    # options = {
+    #   :limit => 25,
+    #   :offset => 100,
+    #   :token => 'toke',
+    #   :secret => 'secret'
+    # }
+    # Etsy::Listing.find_all_active_by_category("accessories", options)
+    #
+    def self.find_all_active_by_category(category, options = {})
+      options[:category] = category
+      get_all("/listings/active", options)
+    end
+
     # The collection of images associated with this listing.
     #
     def images

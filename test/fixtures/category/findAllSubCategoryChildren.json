@@ -1,0 +1,78 @@
+{
+    "count":6,
+    "results":
+    [
+        {
+            "meta_title":null,
+            "meta_keywords":null,
+            "meta_description":null,
+            "page_description":null,
+            "page_title":null,
+            "category_name":"accessories/apron/applique",
+            "short_name":"Applique",
+            "long_name":"Accessories > Apron > Applique",
+            "num_children":0
+        },
+        {
+            "meta_title":null,
+            "meta_keywords":null,
+            "meta_description":null,
+            "page_description":null,
+            "page_title":null,
+            "category_name":"accessories/apron/children",
+            "short_name":"Children",
+            "long_name":"Accessories > Apron > Children",
+            "num_children":0
+        },
+        {
+            "meta_title":null,
+            "meta_keywords":null,
+            "meta_description":null,
+            "page_description":null,
+            "page_title":null,
+            "category_name":"accessories/apron/full",
+            "short_name":"Full",
+            "long_name":"Accessories > Apron > Full",
+            "num_children":0
+        },
+        {
+            "meta_title":null,
+            "meta_keywords":null,
+            "meta_description":null,
+            "page_description":null,
+            "page_title":null,
+            "category_name":"accessories/apron/half",
+            "short_name":"Half",
+            "long_name":"Accessories > Apron > Half",
+            "num_children":0
+        },
+        {
+            "meta_title":null,
+            "meta_keywords":null,
+            "meta_description":null,
+            "page_description":null,
+            "page_title":null,
+            "category_name":"accessories/apron/men",
+            "short_name":"Men",
+            "long_name":"Accessories > Apron > Men",
+            "num_children":0
+        },
+        {
+            "meta_title":null,
+            "meta_keywords":null,
+            "meta_description":null,
+            "page_description":null,
+            "page_title":null,
+            "category_name":"accessories/apron/women",
+            "short_name":"Women",
+            "long_name":"Accessories > Apron > Women",
+            "num_children":0
+        }
+    ],
+    "params":
+    {
+        "tag":"accessories",
+        "subtag":"apron"
+    },
+    "type":"Category"
+}
