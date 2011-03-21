@@ -196,7 +196,7 @@ e.g. to fetch a resource that hasn't yet been implemented directly in the gem:
 or to fetch an associated resource
 
   >> access = {:access_token => 'token', :access_secret => 'secret'}
-  >> Etsy::Request.get('/users/_SELF_', access.merge(:includes => 'Profile'))
+  >> Etsy::Request.get('/users/__SELF__', access.merge(:includes => 'Profile'))
 
 or to limit the fields returned
 
