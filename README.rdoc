@@ -200,8 +200,9 @@ or to fetch an associated resource
 
 or to limit the fields returned
 
+  >> shop_id = 'littletjane'
   >> access = {:access_token => 'token', :access_secret => 'secret'}
-  >> Etsy::Request.get('/shops/:shop_id', access.merge(:fields => 'is_vacation,is_refusing_alchemy'))
+  >> Etsy::Request.get('/shops/#{shop_id}', access.merge(:fields => 'is_vacation,is_refusing_alchemy'))
 
 == Contributing
 
