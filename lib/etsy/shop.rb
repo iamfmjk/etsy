@@ -12,7 +12,9 @@ module Etsy
   # [message] The message sent to users who buy from this shop
   # [image_url] The full URL to the shops's banner image
   # [active_listings_count] The number of active listings present in this shop
-  #
+  # [url] The full URL to the shop on Etsy
+  # [favorers_count] Number of favorers
+
   class Shop
 
     include Etsy::Model
@@ -26,6 +28,8 @@ module Etsy
     attribute :created, :from => :creation_tsz
     attribute :name, :from => :shop_name
     attribute :message, :from => :sale_message
+    attribute :url, :from => :url
+    attribute :favorers_count, :from => :num_favorers
 
     # Retrieve one or more shops by name or ID:
     #

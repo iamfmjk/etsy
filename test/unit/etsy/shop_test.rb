@@ -49,7 +49,15 @@ module Etsy
         end
 
         should "have a value for :image_url" do
-          @shop.image_url.should == "http://ny-image2.etsy.com/iusb_760x100.7358402.jpg"
+          @shop.image_url.should == "http://ny-image3.etsy.com/iusb_760x100.8484779.jpg"
+        end
+
+        should "have a value for :url" do
+          @shop.url.should == "http://www.etsy.com/shop/littletjane"
+        end
+
+        should "have a value for :favorers_count" do
+          @shop.favorers_count.should == 684
         end
 
         should "have a value for :active_listings_count" do
