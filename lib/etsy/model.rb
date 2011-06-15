@@ -64,6 +64,10 @@ module Etsy
       @secret
     end
 
+    def result
+      @result
+    end
+
     def self.included(other)
       other.extend ClassMethods
     end
