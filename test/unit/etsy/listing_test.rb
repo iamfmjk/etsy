@@ -90,6 +90,13 @@ module Etsy
 
       end
 
+      context "within the scope of a category" do
+        should "be able to find active listings" do
+          active_listings = mock_request('/listings/active', {:category => 'accessories'}, 'Listing', 'findAllListingActive.category.json')
+          Listing.find_all_active_by_category('accessories').should == active_listings
+        end
+      end
+
     end
 
     context "An instance of the Listing class" do
