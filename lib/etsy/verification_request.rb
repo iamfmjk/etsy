@@ -6,7 +6,7 @@ module Etsy
     end
 
     def url
-      "#{request_token.authorize_url}&oauth_consumer_key=#{request_token.secret}"
+      request_token.params[:login_url]
     end
 
     def request_token

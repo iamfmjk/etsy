@@ -13,7 +13,6 @@ module Etsy
           :site               => 'http://openapi.etsy.com',
           :request_token_path => '/v2/sandbox/oauth/request_token',
           :access_token_path  => '/v2/sandbox/oauth/access_token',
-          :authorize_url      => 'https://www.etsy.com/oauth/signin'
         }).returns('consumer')
 
         client = SecureClient.new
@@ -30,7 +29,6 @@ module Etsy
           :site               => 'http://openapi.etsy.com',
           :request_token_path => '/v2/oauth/request_token',
           :access_token_path  => '/v2/oauth/access_token',
-          :authorize_url      => 'https://www.etsy.com/oauth/signin'
         }).returns('consumer')
 
         client = SecureClient.new

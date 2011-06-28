@@ -13,11 +13,11 @@ module Etsy
 
       should "know the url" do
         client = stub()
-        client.stubs(:request_token).returns(stub(:authorize_url => 'http://www.etsy.com?foo=bar', :secret => 'secret'))
+        client.stubs(:request_token).returns(stub(:params => {:login_url => 'http://www.etsy.com?foo=bar&baz=true'}, :secret => 'secret'))
 
         @request.stubs(:client).returns(client)
 
-        @request.url.should == 'http://www.etsy.com?foo=bar&oauth_consumer_key=secret'
+        @request.url.should == 'http://www.etsy.com?foo=bar&baz=true'
       end
 
     end
