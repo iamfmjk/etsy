@@ -19,6 +19,8 @@ module Etsy
 
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
+      @token = parameters.delete(:access_token)
+      @secret = parameters.delete(:access_secret)
       @resource_path = resource_path
       @resources     = parameters.delete(:includes)
       if @resources.class == String
@@ -32,7 +34,9 @@ module Etsy
           end
         end
       end
+      parameters = parameters.merge(:api_key => Etsy.api_key) unless secure?
       @parameters    = parameters
+      @parameters[:fields] = fields_from(@parameters[:fields]) if @parameters[:fields]
     end
 
     def base_path # :nodoc:
@@ -54,7 +58,7 @@ module Etsy
     end
 
     def parameters # :nodoc:
-      @parameters.merge(:api_key => Etsy.api_key, :detail_level => 'high')
+      @parameters
     end
 
     def resources # :nodoc:
@@ -69,13 +73,17 @@ module Etsy
 
     def association(options={}) # :nodoc:
       s = options[:resource].capitalize
-      s << "(#{options[:fields].join(',')})" if options[:fields]
+      s << "(#{fields_from(options[:fields])})" if options[:fields]
       if options[:limit] || options[:offset]
         options[:limit] ||= 25
         options[:offset] ||= 0
         s << ":#{options[:limit]}:#{options[:offset]}"
       end
       s
+    end
+
+    def fields_from(fields)
+      fields.is_a?(Array) ? fields.join(',') : fields
     end
 
     def endpoint_url # :nodoc:
@@ -85,7 +93,7 @@ module Etsy
     private
 
     def secure_client
-      SecureClient.new(:access_token => @parameters[:access_token], :access_secret => @parameters[:access_secret])
+      SecureClient.new(:access_token => @token, :access_secret => @secret)
     end
 
     def basic_client
@@ -93,7 +101,7 @@ module Etsy
     end
 
     def secure?
-      Etsy.access_mode == :read_write && !@parameters[:access_token].nil? && !@parameters[:access_secret].nil?
+      Etsy.access_mode == :read_write && !@token.nil? && !@secret.nil?
     end
 
   end

@@ -68,12 +68,21 @@ module Etsy
         Request.new('').base_path.should == '/v2/public'
       end
 
-      should "append the api_key and detail_level to the parameters" do
+      should "append the api_key to the parameters in basic mode" do
         Etsy.expects(:api_key).with().returns('key')
+        Request.stubs(:secure?).returns(false)
 
         r = Request.new('/user', :limit => '1')
-        r.parameters.should == {:limit => '1', :api_key => 'key', :detail_level => 'high'}
+        r.parameters.should == {:limit => '1', :api_key => 'key'}
       end
+
+      should "not append the api_key to the parameters in secure mode" do
+        Etsy.stubs(:access_mode).returns(:read_write)
+
+        r = Request.new('/user', :limit => '1', :access_token => 'token', :access_secret => 'secret')
+        r.parameters.should == {:limit => '1'}
+      end
+
 
       should "be able to generate query parameters" do
         r = Request.new('/user')
