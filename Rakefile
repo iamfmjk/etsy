@@ -18,8 +18,8 @@ spec = Gem::Specification.new do |s|
   s.homepage         = 'http://sneaq.net'
   s.files            = %w(README.rdoc Rakefile) + Dir.glob("{lib,test}/**/*")
 
-  s.add_dependency('json', '~> 1.4.0')
-  s.add_dependency('oauth', '~> 0.4.0')
+  s.add_dependency('json-jruby', '~> 1.4.3')
+  s.add_dependency('oauth', '~> 0.3.5')
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
