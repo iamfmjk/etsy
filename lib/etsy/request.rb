@@ -101,7 +101,7 @@ module Etsy
     end
 
     def secure?
-      Etsy.access_mode == :read_write && !@token.nil? && !@secret.nil?
+      Etsy.access_mode == :authenticated && !@token.nil? && !@secret.nil?
     end
 
   end

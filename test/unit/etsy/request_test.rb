@@ -24,16 +24,16 @@ module Etsy
 
     context "An instance of the Request class" do
 
-      should "know the base path for the sandbox read-only environment" do
+      should "know the base path for the sandbox public environment" do
         Etsy.stubs(:environment).returns(:sandbox)
-        Etsy.stubs(:access_mode).returns(:read_only)
+        Etsy.stubs(:access_mode).returns(:public)
 
         Request.new('').base_path.should == '/v2/sandbox/public'
       end
 
-      should "know the base path for the sandbox read/write environment when the access information is present" do
+      should "know the base path for the sandbox authenticated environment when the access information is present" do
         Etsy.stubs(:environment).returns(:sandbox)
-        Etsy.stubs(:access_mode).returns(:read_write)
+        Etsy.stubs(:access_mode).returns(:authenticated)
 
         r = Request.new('', :access_token => 'toke', :access_secret => 'secret')
         r.base_path.should == '/v2/sandbox/private'
@@ -41,7 +41,7 @@ module Etsy
 
       should "know the base path for the sandbox read/write environment when the access information is not present" do
         Etsy.stubs(:environment).returns(:sandbox)
-        Etsy.stubs(:access_mode).returns(:read_write)
+        Etsy.stubs(:access_mode).returns(:authenticated)
 
         Request.new('').base_path.should == '/v2/sandbox/public'
       end
@@ -53,17 +53,17 @@ module Etsy
         Request.new('').base_path.should == '/v2/public'
       end
 
-      should "know the base path for the production read-write environment when access information is present" do
+      should "know the base path for the production authenticated environment when access information is present" do
         Etsy.stubs(:environment).returns(:production)
-        Etsy.stubs(:access_mode).returns(:read_write)
+        Etsy.stubs(:access_mode).returns(:authenticated)
 
         r = Request.new('', :access_token => 'toke', :access_secret => 'secret')
         r.base_path.should == '/v2/private'
       end
 
-      should "know the base path for the production read-write environment when access information is not present" do
+      should "know the base path for the production authenticated environment when access information is not present" do
         Etsy.stubs(:environment).returns(:production)
-        Etsy.stubs(:access_mode).returns(:read_write)
+        Etsy.stubs(:access_mode).returns(:authenticated)
 
         Request.new('').base_path.should == '/v2/public'
       end
@@ -77,7 +77,7 @@ module Etsy
       end
 
       should "not append the api_key to the parameters in secure mode" do
-        Etsy.stubs(:access_mode).returns(:read_write)
+        Etsy.stubs(:access_mode).returns(:authenticated)
 
         r = Request.new('/user', :limit => '1', :access_token => 'token', :access_secret => 'secret')
         r.parameters.should == {:limit => '1'}
@@ -156,8 +156,8 @@ module Etsy
         r.endpoint_url.should == '/base/user?a=b'
       end
 
-      should "be able to determine the endpoint URI when in read-write mode" do
-        Etsy.stubs(:access_mode).returns(:read_write)
+      should "be able to determine the endpoint URI when in authenticated mode" do
+        Etsy.stubs(:access_mode).returns(:authenticated)
 
         r = Request.new('/user', :access_token => 'toke', :access_secret => 'secret')
         r.stubs(:base_path).with().returns('/base')
@@ -177,8 +177,8 @@ module Etsy
         r.client.should == 'client'
       end
 
-      should "know the client for read-write mode when there is no access token information" do
-        Etsy.stubs(:access_mode).returns(:read_write)
+      should "know the client for authenticated mode when there is no access token information" do
+        Etsy.stubs(:access_mode).returns(:authenticated)
         Request.stubs(:host).returns('example.com')
 
         BasicClient.stubs(:new).with('example.com').returns('client')
@@ -188,8 +188,8 @@ module Etsy
         r.client.should == 'client'
       end
 
-      should "know the client for read-write mode when there is access token information" do
-        Etsy.stubs(:access_mode).returns(:read_write)
+      should "know the client for authenticated mode when there is access token information" do
+        Etsy.stubs(:access_mode).returns(:authenticated)
         SecureClient.stubs(:new).with(:access_token => 'toke', :access_secret => 'secret').returns('client')
 
         r = Request.new('', :access_token => 'toke', :access_secret => 'secret')

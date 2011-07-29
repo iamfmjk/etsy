@@ -41,13 +41,30 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.api_secret.should == 'secret'
     end
 
-    should "be in read-mode by default" do
-      Etsy.access_mode.should == :read_only
+    should "be in public mode by default" do
+      Etsy.access_mode.should == :public
     end
 
-    should "be able to set the access mode to a read-write" do
+    should "be able to set the access mode to authenticated" do
+      Etsy.access_mode = :authenticated
+      Etsy.access_mode.should == :authenticated
+    end
+
+    should "be able to set the access mode to public" do
+      Etsy.access_mode = :public
+      Etsy.access_mode.should == :public
+    end
+
+    should "be backwards compatible with :read_only mode" do
+      Etsy.stubs(:deprecate)
+      Etsy.access_mode = :read_only
+      Etsy.access_mode.should == :public
+    end
+
+    should "be backwards compatible with :read_write mode" do
+      Etsy.stubs(:deprecate)
       Etsy.access_mode = :read_write
-      Etsy.access_mode.should == :read_write
+      Etsy.access_mode.should == :authenticated
     end
 
     should "raise an exception when attempting to set an invalid access mode" do
