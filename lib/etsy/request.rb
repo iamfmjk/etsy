@@ -6,10 +6,6 @@ module Etsy
   #
   class Request
 
-    def self.host # :nodoc:
-      'openapi.etsy.com'
-    end
-
     # Perform a GET request for the resource with optional parameters - returns
     # A Response object with the payload data
     def self.get(resource_path, parameters = {})
@@ -40,11 +36,7 @@ module Etsy
     end
 
     def base_path # :nodoc:
-      parts = ['v2']
-      parts << 'sandbox' if Etsy.environment == :sandbox
-      parts << (secure? ? 'private' : 'public')
-
-      "/#{parts.join('/')}"
+      "/v2"
     end
 
     # Perform a GET request against the API endpoint and return the raw

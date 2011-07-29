@@ -61,6 +61,9 @@ module Etsy
     attr_writer :callback_url
   end
 
+  SANDBOX_HOST = 'sandbox.openapi.etsy.com'
+  PRODUCTION_HOST = 'openapi.etsy.com'
+
   # Set the environment, accepts either :sandbox or :production. Defaults to :sandbox
   # and will raise an exception when set to an unrecognized environment.
   #
@@ -69,12 +72,17 @@ module Etsy
       raise(ArgumentError, "environment must be set to either :sandbox or :production")
     end
     @environment = environment
+    @host = (environment == :sandbox) ? SANDBOX_HOST : PRODUCTION_HOST
   end
 
   # The currently configured environment.
   #
   def self.environment
     @environment || :sandbox
+  end
+
+  def self.host # :nodoc:
+    @host || SANDBOX_HOST
   end
 
   # Set the access mode, can either be :public or :authenticated.  Defaults to :public.

@@ -7,6 +7,7 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.instance_variable_set(:@environment, nil)
       Etsy.instance_variable_set(:@access_mode, nil)
       Etsy.instance_variable_set(:@callback_url, nil)
+      Etsy.instance_variable_set(:@host, nil)
       Etsy.instance_variable_set(:@api_key, nil)
       Etsy.instance_variable_set(:@api_secret, nil)
     end
@@ -69,6 +70,20 @@ class EtsyTest < Test::Unit::TestCase
 
     should "raise an exception when attempting to set an invalid access mode" do
       lambda { Etsy.access_mode = :invalid }.should raise_error(ArgumentError)
+    end
+
+    should "know the host for the sandbox environment" do
+      Etsy.environment = :sandbox
+      Etsy.host.should == 'sandbox.openapi.etsy.com'
+    end
+
+    should "know the host for the production environment" do
+      Etsy.environment = :production
+      Etsy.host.should == 'openapi.etsy.com'
+    end
+
+    should "default to sandbox host" do
+      Etsy.host.should == 'sandbox.openapi.etsy.com'
     end
 
     should "be able to set the callback url" do

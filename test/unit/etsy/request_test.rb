@@ -5,10 +5,6 @@ module Etsy
 
     context "The Request class" do
 
-      should "know the host" do
-        Request.host.should == 'openapi.etsy.com'
-      end
-
       should "be able to retrieve a response" do
         http_response = stub()
         response      = stub()
@@ -24,48 +20,8 @@ module Etsy
 
     context "An instance of the Request class" do
 
-      should "know the base path for the sandbox public environment" do
-        Etsy.stubs(:environment).returns(:sandbox)
-        Etsy.stubs(:access_mode).returns(:public)
-
-        Request.new('').base_path.should == '/v2/sandbox/public'
-      end
-
-      should "know the base path for the sandbox authenticated environment when the access information is present" do
-        Etsy.stubs(:environment).returns(:sandbox)
-        Etsy.stubs(:access_mode).returns(:authenticated)
-
-        r = Request.new('', :access_token => 'toke', :access_secret => 'secret')
-        r.base_path.should == '/v2/sandbox/private'
-      end
-
-      should "know the base path for the sandbox read/write environment when the access information is not present" do
-        Etsy.stubs(:environment).returns(:sandbox)
-        Etsy.stubs(:access_mode).returns(:authenticated)
-
-        Request.new('').base_path.should == '/v2/sandbox/public'
-      end
-
-      should "know the base path for the production read-only environment" do
-        Etsy.stubs(:environment).returns(:production)
-        Etsy.stubs(:access_mode).returns(:read_only)
-
-        Request.new('').base_path.should == '/v2/public'
-      end
-
-      should "know the base path for the production authenticated environment when access information is present" do
-        Etsy.stubs(:environment).returns(:production)
-        Etsy.stubs(:access_mode).returns(:authenticated)
-
-        r = Request.new('', :access_token => 'toke', :access_secret => 'secret')
-        r.base_path.should == '/v2/private'
-      end
-
-      should "know the base path for the production authenticated environment when access information is not present" do
-        Etsy.stubs(:environment).returns(:production)
-        Etsy.stubs(:access_mode).returns(:authenticated)
-
-        Request.new('').base_path.should == '/v2/public'
+      should "know the base path" do
+        Request.new('').base_path.should == '/v2'
       end
 
       should "append the api_key to the parameters in basic mode" do
