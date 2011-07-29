@@ -18,9 +18,9 @@ If you want to be on the bleeding edge, install from GitHub:
 
 == Usage
 
-=== Read-Only Mode
+=== Public Mode
 
-The Etsy API has two modes: read-only, and read-write. Read-only mode only requires an
+The Etsy API has two modes: public, and authenticated. Public mode only requires an
 API key (available from http://developer.etsy.com):
 
     require 'rubygems'
@@ -45,7 +45,7 @@ For simple authentication from the console, configure the necessary parameters:
 
   Etsy.api_key = 'key'
   Etsy.api_secret = 'secret'
-  Etsy.access_mode = :read_write
+  Etsy.access_mode = :authenticated
 
 From there, you will need to paste the verification URL into a browser:
 
@@ -71,7 +71,7 @@ configuration of a callback URL:
 
   Etsy.api_key = 'key'
   Etsy.api_secret = 'secret'
-  Etsy.access_mode = :read_write
+  Etsy.access_mode = :authenticated
   Etsy.callback_url = 'http://localhost:4567/authorize'
 
 In this mode, you'll need to store the request token and secret before redirecting
