@@ -95,6 +95,16 @@ to the verification URL.  A simple example using Sinatra:
     # access_token.token and access_token.secret can now be saved for future API calls
   end
 
+=== Environment
+
+The Etsy API has both a sandbox environment and a production environment.
+If nothing is set, the default is :sandbox.
+
+You can set this using:
+
+    Etsy.environment = :production
+
+
 === Users
 
 If you're starting with a user, the easiest way is to use the Etsy.user method:
