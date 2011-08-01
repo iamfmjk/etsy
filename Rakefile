@@ -18,7 +18,7 @@ spec = Gem::Specification.new do |s|
   s.homepage         = 'http://sneaq.net'
   s.files            = %w(README.rdoc Rakefile) + Dir.glob("{lib,test}/**/*")
 
-  s.add_dependency('json-jruby')
+  s.add_dependency('json-pure')
   s.add_dependency('oauth', '~> 0.3.5')
 end
 
