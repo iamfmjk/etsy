@@ -23,7 +23,7 @@ module Etsy
 
     # Results of the API request
     def result
-      count == 1 ? to_hash['results'].first : to_hash['results']
+      to_hash['results']
     end
 
     private
