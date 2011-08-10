@@ -34,14 +34,6 @@ module Etsy
         r.result.should == %w(one two)
       end
 
-      should "return a single value for results if there is only 1 result" do
-        r = Response.new('')
-        r.expects(:count).with().returns(1)
-        r.expects(:to_hash).with().returns('results' => ['foo'])
-
-        r.result.should == 'foo'
-      end
-
     end
 
 
