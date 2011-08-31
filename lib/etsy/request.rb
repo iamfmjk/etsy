@@ -19,10 +19,11 @@ module Etsy
 
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
-      @token = parameters.delete(:access_token)
-      @secret = parameters.delete(:access_secret)
+      params_dup = parameters.dup
+      @token = params_dup.delete(:access_token)
+      @secret = params_dup.delete(:access_secret)
       @resource_path = resource_path
-      @resources     = parameters.delete(:includes)
+      @resources     = params_dup.delete(:includes)
       if @resources.class == String
         @resources = @resources.split(',').map {|r| {:resource => r}}
       elsif @resources.class == Array
@@ -34,8 +35,8 @@ module Etsy
           end
         end
       end
-      parameters = parameters.merge(:api_key => Etsy.api_key) unless secure?
-      @parameters    = parameters
+      params_dup = params_dup.merge(:api_key => Etsy.api_key) unless secure?
+      @parameters    = params_dup
       @parameters[:fields] = fields_from(@parameters[:fields]) if @parameters[:fields]
     end
 
