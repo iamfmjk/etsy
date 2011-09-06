@@ -28,7 +28,6 @@ module Etsy
 
       should "return an array if there are multiple results entries" do
         r = Response.new('')
-        r.expects(:count).with().returns(2)
         r.expects(:to_hash).with().returns('results' => %w(one two))
 
         r.result.should == %w(one two)
