@@ -53,11 +53,12 @@ require 'etsy/category'
 # the Etsy::User class. Information about making authenticated calls is available
 # in the README.
 #
+
 module Etsy
   class Error < RuntimeError; end
 
   class << self
-    attr_accessor :api_key, :api_secret
+    attr_accessor :api_key, :api_secret, :scope #scope is an array that will be joined with '+' on the OAuth consumer request
     attr_writer :callback_url
   end
 

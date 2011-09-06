@@ -8,10 +8,11 @@ module Etsy
       should "be able to generate an OAuth consumer" do
         Etsy.stubs(:api_key).returns('key')
         Etsy.stubs(:api_secret).returns('secret')
+        Etsy.stubs(:scope).returns(['scope_attr_1', 'scope_attr_2'])
 
         OAuth::Consumer.stubs(:new).with('key', 'secret', {
           :site               => 'http://openapi.etsy.com',
-          :request_token_path => '/v2/sandbox/oauth/request_token',
+          :request_token_path => '/v2/sandbox/oauth/request_token?scope=scope_attr_1+scope_attr_2',
           :access_token_path  => '/v2/sandbox/oauth/access_token',
         }).returns('consumer')
 
@@ -24,10 +25,11 @@ module Etsy
         Etsy.stubs(:environment).returns :production
         Etsy.stubs(:api_key).returns('key')
         Etsy.stubs(:api_secret).returns('secret')
+        Etsy.stubs(:scope).returns(['scope_attr_1', 'scope_attr_2'])
 
         OAuth::Consumer.stubs(:new).with('key', 'secret', {
           :site               => 'http://openapi.etsy.com',
-          :request_token_path => '/v2/oauth/request_token',
+          :request_token_path => '/v2/oauth/request_token?scope=scope_attr_1+scope_attr_2',
           :access_token_path  => '/v2/oauth/access_token',
         }).returns('consumer')
 
