@@ -59,6 +59,7 @@ module Etsy
   class << self
     attr_accessor :api_key, :api_secret
     attr_writer :callback_url
+    attr_writer :permission_scopes
   end
 
   SANDBOX_HOST = 'sandbox.openapi.etsy.com'
@@ -114,6 +115,12 @@ module Etsy
   #
   def self.callback_url
     @callback_url || 'oob'
+  end
+
+  # OAuth permission scopes. Defines which private fields we can have access to.
+  #
+  def self.permission_scopes
+    @permission_scopes || []
   end
 
   # Find a user by username.  See Etsy::User for more information.

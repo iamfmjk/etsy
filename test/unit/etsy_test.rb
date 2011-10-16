@@ -10,6 +10,7 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.instance_variable_set(:@host, nil)
       Etsy.instance_variable_set(:@api_key, nil)
       Etsy.instance_variable_set(:@api_secret, nil)
+      Etsy.instance_variable_set(:@permission_scopes, nil)
     end
 
     should "be able to set and retrieve the API key" do
@@ -93,6 +94,15 @@ class EtsyTest < Test::Unit::TestCase
 
     should "default callback to out-of-band" do
       Etsy.callback_url.should == 'oob'
+    end
+
+    should "default permission scopes to an empty array" do
+      Etsy.permission_scopes.should == []
+    end
+
+    should "be able to set the scopes" do
+      Etsy.permission_scopes = %w(a_scope another_scope)
+      Etsy.permission_scopes.should == ['a_scope', 'another_scope']
     end
   end
 
