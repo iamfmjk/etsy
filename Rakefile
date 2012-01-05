@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'rake/gempackagetask'
+require 'rubygems/package_task'
 require 'rake/testtask'
 
 require File.dirname(__FILE__) + "/lib/etsy/version"
@@ -22,7 +22,7 @@ spec = Gem::Specification.new do |s|
   s.add_dependency('oauth', '~> 0.4.0')
 end
 
-Rake::GemPackageTask.new(spec) do |pkg|
+Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
