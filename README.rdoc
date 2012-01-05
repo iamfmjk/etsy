@@ -80,8 +80,9 @@ to the verification URL.  A simple example using Sinatra:
   enable :sessions
 
   get '/' do
-    session[:request_token]  = Etsy.request_token.token
-    session[:request_secret] = Etsy.request_token.secret
+    request_token = Etsy.request_token
+    session[:request_token]  = request_token.token
+    session[:request_secret] = request_token.secret
     redirect Etsy.verification_url
   end
 
