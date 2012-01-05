@@ -80,8 +80,9 @@ to the verification URL.  A simple example using Sinatra:
   enable :sessions
 
   get '/' do
-    session[:request_token]  = Etsy.request_token.token
-    session[:request_secret] = Etsy.request_token.secret
+    request_token = Etsy.request_token
+    session[:request_token]  = request_token.token
+    session[:request_secret] = request_token.secret
     redirect Etsy.verification_url
   end
 
@@ -181,16 +182,16 @@ Associations on resources can be specified with the 'includes' key.
 
 A single resource can be specified with the name of the resource as a string:
 
-  >> Listing.find(1, {:includes => 'Images'}
+  >> Listing.find(1, {:includes => 'Images'})
 
 Multiple resources can be specified with the name of the resources as a comma-delimited string:
 
-  >> User.find(1, {:includes => ['FeedbackAsBuyer', 'FeedbackAsSeller']}
+  >> User.find(1, {:includes => ['FeedbackAsBuyer', 'FeedbackAsSeller']})
 
 If you want a more fine-grained response, you can specify the associations as an array of hashes, each of which must contain the name of the resource, and can also include the fields you wish returned, as well as the limit and offset.
 
   >> association = {:resource => 'Images', :fields => ['red','green','blue'], :limit => 1, :offset => 0}
-  >> Listing.find(1, {:includes => [association]}
+  >> Listing.find(1, {:includes => [association]})
 
 
 == Custom Requests to the Etsy API
