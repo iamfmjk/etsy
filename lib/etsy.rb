@@ -86,30 +86,6 @@ module Etsy
     @host || SANDBOX_HOST
   end
 
-  # Set the access mode, can either be :public or :authenticated.  Defaults to :public.
-  # and will raise an exception when set to an invalid value.
-  #
-  def self.access_mode=(mode)
-    unless [:authenticated, :public, :read_only, :read_write].include?(mode)
-      raise(ArgumentError, "access mode must be set to either :authenticated or :public")
-    end
-    if mode == :read_only
-      deprecate "Please set Etsy.access_mode to :public. Mode :read_only is no longer in use."
-      mode = :public
-    end
-    if mode == :read_write
-      deprecate "Please set Etsy.access_mode to :authenticated. Mode :read_write is no longer in use."
-      mode = :authenticated
-    end
-    @access_mode = mode
-  end
-
-  # The currently configured access mode
-  #
-  def self.access_mode
-    @access_mode || :public
-  end
-
   # The configured callback URL or 'oob' if no callback URL is configured. This controls
   # whether or not we need to pass the OAuth verifier by hand.
   #
