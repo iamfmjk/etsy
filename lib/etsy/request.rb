@@ -58,8 +58,8 @@ module Etsy
     end
 
     def query # :nodoc:
-      q = parameters.map {|k,v| "#{k}=#{v}"}.join('&')
-      q << "&includes=#{resources.map {|r| association(r)}.join(',')}" if resources
+      q = parameters.map {|k,v| "#{URI.escape(k.to_s)}=#{URI.escape(v.to_s)}"}.join('&')
+      q << "&includes=#{URI.escape(resources.map {|r| association(r)}.join(','))}" if resources
       q
     end
 
