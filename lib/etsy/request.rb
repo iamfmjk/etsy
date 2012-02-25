@@ -13,10 +13,16 @@ module Etsy
       Response.new(request.get)
     end
 
+    def self.post(resource_path, parameters = {})
+      request = Request.new(resource_path, parameters)
+      Response.new(request.post)
+    end
+
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
       @token = parameters.delete(:access_token)
       @secret = parameters.delete(:access_secret)
+      raise("Secure connection required. Please provide your OAuth credentials via :access_token and :access_secret in the parameters") if parameters.delete(:require_secure) && !secure?
       @resource_path = resource_path
       @resources     = parameters.delete(:includes)
       if @resources.class == String
@@ -43,6 +49,10 @@ module Etsy
     # response data
     def get
       client.get(endpoint_url)
+    end
+
+    def post
+      client.post(endpoint_url)
     end
 
     def client # :nodoc:

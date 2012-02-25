@@ -42,6 +42,49 @@ module Etsy
         r.result.should == 'foo'
       end
 
+      should "provide the complete raw body" do
+        raw_response = mock
+        raw_response.expects(:body => "I am not JSON")
+        r = Response.new(raw_response)
+
+        r.body.should == 'I am not JSON'
+      end
+
+      should "provide the code" do
+        raw_response = mock
+        raw_response.expects(:code => "400")
+        r = Response.new(raw_response)
+
+        r.code.should == '400'
+      end
+
+      should "consider a code of 2xx successful" do
+        raw_response = mock
+
+        raw_response.expects(:code => "200")
+        r = Response.new(raw_response)
+        r.should be_success
+
+        raw_response.expects(:code => "201")
+        r = Response.new(raw_response)
+        r.should be_success
+      end
+
+      should "consider a code of 4xx unsuccessful" do
+        raw_response = mock
+
+        raw_response.expects(:code => "404")
+        r = Response.new(raw_response)
+        r.should_not be_success
+      end
+
+      should "consider a code of 5xx unsuccessful" do
+        raw_response = mock
+
+        raw_response.expects(:code => "500")
+        r = Response.new(raw_response)
+        r.should_not be_success
+      end
     end
 
 

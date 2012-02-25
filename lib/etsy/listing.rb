@@ -47,6 +47,11 @@ module Etsy
 
     association :image, :from => 'Images'
 
+    def self.create(options = {})
+      options.merge!(:require_secure => true)
+      post("/listings", options)
+    end
+
     # Retrieve one or more listings by ID:
     #
     #   Etsy::Listing.find(123)

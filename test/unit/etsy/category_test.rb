@@ -53,6 +53,10 @@ module Etsy
           @category = Category.new(data.first)
         end
 
+        should "have a value for :id" do
+          @category.id.should == 69150467
+        end
+
         should "have a value for :page_description" do
           @category.page_description.should == "Shop for unique, handmade accessories from our artisan community"
         end

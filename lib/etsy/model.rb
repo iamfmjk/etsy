@@ -43,6 +43,10 @@ module Etsy
         end
       end
 
+      def post(endpoint, options={})
+        Request.post(endpoint, options)
+      end
+
       def find_one_or_more(endpoint, identifiers_and_options)
         options = options_from(identifiers_and_options)
         append = options.delete(:append_to_endpoint)
