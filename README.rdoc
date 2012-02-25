@@ -46,14 +46,17 @@ For simple authentication from the console, configure the necessary parameters:
   Etsy.api_key = 'key'
   Etsy.api_secret = 'secret'
 
-From there, you will need to paste the verification URL into a browser:
+First, generate a request token:
+
+  request = Etsy.request_token
+
+From there, you will need to paste a verification URL into a browser:
 
   Etsy.verification_url
 
-Once you have allowed access, you can now generate an access token by supplying
+Once you have allowed access, you can generate an access token by supplying
 the verifier displayed on the Etsy site:
 
-  request = Etsy.request_token
   access  = Etsy.access_token(request.token, request.secret, 'abc123')
 
 Authenticated calls can now be made by passing an access token and secret:
@@ -228,7 +231,13 @@ I ask that you not submit patches that include changes to the version or gemspec
 
 These people have helped make the Etsy gem what it is today:
 
-* {Katrina Owen}[http://github.com/kowen]
+* {Patrick Reagan}[https://github.com/reagent]
+* {Katrina Owen}[http://github.com/kytrinyx]
+* {Mak Nazečić-Andrlon}[https://github.com/Muon]
+* {Patrick Schless}[https://github.com/plainlystated]
+* {Matt Fields}[https://github.com/mfields106]
+* {Jake Boxer}[https://github.com/jakeboxer]
+
 
 == License
 
