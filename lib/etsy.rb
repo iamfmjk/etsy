@@ -21,6 +21,9 @@ require 'etsy/image'
 require 'etsy/transaction'
 require 'etsy/address'
 require 'etsy/category'
+require 'etsy/payment_template'
+require 'etsy/country'
+require 'etsy/shipping_template'
 
 # = Etsy: A friendly Ruby interface to the Etsy API
 #
@@ -138,6 +141,18 @@ module Etsy
   #
   def self.verification_url
     verification_request.url
+  end
+
+  def self.single_user(access_token, access_secret)
+    @credentials = {
+      :access_token => access_token,
+      :access_secret => access_secret
+    }
+    nil
+  end
+
+  def self.credentials
+    @credentials || {}
   end
 
   private
