@@ -20,8 +20,8 @@ module Etsy
 
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
-      @token = parameters.delete(:access_token)
-      @secret = parameters.delete(:access_secret)
+      @token = parameters.delete(:access_token) || Etsy.credentials[:access_token]
+      @secret = parameters.delete(:access_secret) || Etsy.credentials[:access_secret]
       raise("Secure connection required. Please provide your OAuth credentials via :access_token and :access_secret in the parameters") if parameters.delete(:require_secure) && !secure?
       @resource_path = resource_path
       @resources     = parameters.delete(:includes)

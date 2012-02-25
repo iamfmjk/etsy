@@ -143,6 +143,18 @@ module Etsy
     verification_request.url
   end
 
+  def self.single_user(access_token, access_secret)
+    @credentials = {
+      :access_token => access_token,
+      :access_secret => access_secret
+    }
+    nil
+  end
+
+  def self.credentials
+    @credentials || {}
+  end
+
   private
 
   def self.verification_request
