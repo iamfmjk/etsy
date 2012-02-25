@@ -23,7 +23,8 @@ class Test::Unit::TestCase
 
   def mock_request(endpoint, options, resource, file)
     objects       = []
-    response_data = raw_fixture_data("#{resource.downcase}/#{file}")
+    underscored_fixture_filename = "#{resource.gsub(/([^^])([A-Z])/, '\1_\2').downcase}/#{file}"
+    response_data = raw_fixture_data(underscored_fixture_filename)
 
     Etsy::Request.stubs(:new).with(endpoint, options).returns(stub(:get => stub(:body => response_data)))
 

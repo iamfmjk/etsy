@@ -16,6 +16,12 @@ module Etsy
 
         Request.get('/user', :one => 'two').should == response
       end
+
+      should "require OAuth credentials if :require_secure is set" do
+        lambda do
+          Request.new('/path', :require_secure => true)
+        end.should raise_error(/Secure connection required/)
+      end
     end
 
     context "An instance of the Request class" do

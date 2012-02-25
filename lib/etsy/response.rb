@@ -16,6 +16,14 @@ module Etsy
       @hash ||= JSON.parse(data)
     end
 
+    def body
+      @raw_response.body
+    end
+
+    def code
+      @raw_response.code
+    end
+
     # Number of records in the response results
     def count
       to_hash['count']
@@ -24,6 +32,10 @@ module Etsy
     # Results of the API request
     def result
       count == 1 ? to_hash['results'].first : to_hash['results']
+    end
+
+    def success?
+      !!(code =~ /2\d\d/)
     end
 
     private

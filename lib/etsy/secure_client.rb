@@ -69,6 +69,10 @@ module Etsy
       client.get(endpoint)
     end
 
+    def post(endpoint)
+      client.post(endpoint)
+    end
+
     private
 
     def has_access_data?

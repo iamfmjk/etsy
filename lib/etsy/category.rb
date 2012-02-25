@@ -17,6 +17,7 @@ module Etsy
 
     include Etsy::Model
 
+    attribute :id, :from => :category_id
     attribute :children_count, :from => :num_children
     attributes :page_description, :page_title, :category_name, :short_name,
                :long_name
@@ -48,6 +49,10 @@ module Etsy
     #
     def self.find_all_subcategories(category, options = {})
       valid?(category) ? self.get_all("/taxonomy/categories/#{category}", options) : nil
+    end
+
+    def self.find(tag)
+      get("/categories/#{tag}")
     end
 
     # Retrieve a list of all top-level categories.
