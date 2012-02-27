@@ -61,7 +61,7 @@ the verifier displayed on the Etsy site:
 
 Authenticated calls can now be made by passing an access token and secret:
 
-Etsy.myself(access.token, access.secret)
+  Etsy.myself(access.token, access.secret)
 
 === Web Application
 
