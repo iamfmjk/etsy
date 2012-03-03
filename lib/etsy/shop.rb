@@ -71,6 +71,10 @@ module Etsy
       Listing.find_all_by_shop_id(id, state.merge(options).merge(oauth))
     end
 
+    def sections
+      Section.find_by_shop(self)
+    end
+
     private
     def oauth
       oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
