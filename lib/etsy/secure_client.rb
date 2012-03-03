@@ -95,7 +95,7 @@ module Etsy
         body << "--#{boundary}#{crlf}"
         if value.respond_to?(:read)
           body << "Content-Disposition: form-data; name=\"#{esc_key}\"; filename=\"#{File.basename(value.path)}\"#{crlf}"
-          body << "Content-Type: text/xml#{crlf*2}"
+          body << "Content-Type: image/jpeg#{crlf*2}"
           body << value.read
         else
           body << "Content-Disposition: form-data; name=\"#{esc_key}\"#{crlf*2}#{value}"

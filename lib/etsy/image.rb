@@ -25,8 +25,10 @@ module Etsy
       get_all("/listings/#{listing_id}/images")
     end
 
-    def self.create(listing, image_path)
-      post("/listings/#{listing.id}/images", :image => File.new(image_path), :multipart => true)
+    def self.create(listing, image_path, options = {})
+      options[:image] = File.new(image_path)
+      options[:multipart] = true
+      post("/listings/#{listing.id}/images", options)
     end
   end
 end
