@@ -32,8 +32,33 @@ module Etsy
       end
 
       def get_all(endpoint, options={})
-        response = Request.get(endpoint, options)
-        result = response.result || [] # result may be null
+        limit = options[:limit]
+
+        if limit
+          initial_offset = options.fetch(:offset, 0)
+          batch_size = options.fetch(:batch_size, 100)
+
+          result = []
+          num_batches = limit / batch_size
+
+          num_batches.times do |batch|
+            total_offset = initial_offset + batch * batch_size
+            response = Request.get(endpoint, options.merge(:limit => batch_size, :offset => total_offset))
+            result << response.result
+          end
+
+          remainder = limit % batch_size
+
+          if remainder > 0
+            total_offset = initial_offset + num_batches * batch_size
+            response = Request.get(endpoint, options.merge(:limit => remainder, :offset => total_offset))
+            result << response.result
+          end
+        else
+          response = Request.get(endpoint, options)
+          result = response.result
+        end
+
         [result].flatten.map do |data|
           if options[:access_token] && options[:access_secret]
             new(data, options[:access_token], options[:access_secret])
@@ -82,6 +107,5 @@ module Etsy
     def self.included(other)
       other.extend ClassMethods
     end
-
   end
 end
