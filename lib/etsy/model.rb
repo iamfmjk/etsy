@@ -39,6 +39,14 @@ module Etsy
           batch_size = options.fetch(:batch_size, 100)
 
           result = []
+
+          if limit == :all
+            response = Request.get(endpoint, options.merge(:limit => batch_size, :offset => initial_offset))
+            result << response.result
+            limit = [response.count - batch_size - initial_offset, 0].max
+            initial_offset += batch_size
+          end
+
           num_batches = limit / batch_size
 
           num_batches.times do |batch|
