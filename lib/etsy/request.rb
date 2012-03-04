@@ -18,6 +18,11 @@ module Etsy
       Response.new(request.post)
     end
 
+    def self.put(resource_path, parameters = {})
+      request = Request.new(resource_path, parameters)
+      Response.new(request.put)
+    end
+
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
       @token = parameters.delete(:access_token) || Etsy.credentials[:access_token]
@@ -58,6 +63,10 @@ module Etsy
       else
         client.post(endpoint_url)
       end
+    end
+
+    def put
+      client.put(endpoint_url)
     end
 
     def client # :nodoc:

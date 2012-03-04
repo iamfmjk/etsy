@@ -52,6 +52,11 @@ module Etsy
       post("/listings", options)
     end
 
+    def self.update(listing, options = {})
+      options.merge!(:require_secure => true)
+      put("/listings/#{listing.id}", options)
+    end
+
     # Retrieve one or more listings by ID:
     #
     #   Etsy::Listing.find(123)

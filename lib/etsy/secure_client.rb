@@ -73,6 +73,10 @@ module Etsy
       client.post(endpoint)
     end
 
+    def put(endpoint)
+      client.put(endpoint)
+    end
+
     def post_multipart(endpoint, params = {})
       Net::HTTP.new(Etsy.host).start do |http|
         req = Net::HTTP::Post.new(endpoint)
