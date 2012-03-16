@@ -28,6 +28,7 @@ module Etsy
 
       should "return an array if there are multiple results entries" do
         r = Response.new('')
+        r.expects(:code).with().returns('200')
         r.expects(:count).with().returns(2)
         r.expects(:to_hash).with().returns('results' => %w(one two))
 
@@ -36,6 +37,7 @@ module Etsy
 
       should "return a single value for results if there is only 1 result" do
         r = Response.new('')
+        r.expects(:code).with().returns('200')
         r.expects(:count).with().returns(1)
         r.expects(:to_hash).with().returns('results' => ['foo'])
 
