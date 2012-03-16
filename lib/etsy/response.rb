@@ -31,8 +31,12 @@ module Etsy
 
     # Results of the API request
     def result
-      results = to_hash['results'] || []
-      count == 1 ? results.first : results
+      if success?
+        results = to_hash['results'] || []
+        count == 1 ? results.first : results
+      else
+        []
+      end
     end
 
     def success?
