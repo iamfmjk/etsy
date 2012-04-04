@@ -1,5 +1,11 @@
 module Etsy
 
+  class OAuthTokenRevoked < StandardError; end
+  class MissingShopID < StandardError; end
+  class EtsyJSONInvalid < StandardError; end
+  class TemporaryIssue < StandardError; end
+  class InvalidUserID < StandardError; end
+
   # = Response
   #
   # Basic wrapper around the Etsy JSON response data
@@ -13,6 +19,7 @@ module Etsy
 
     # Convert the raw JSON data to a hash
     def to_hash
+      check_data!
       @hash ||= JSON.parse(data)
     end
 
@@ -30,6 +37,22 @@ module Etsy
 
     def data
       @raw_response.body
+    end
+
+    def check_data!
+      raise OAuthTokenRevoked if data == "oauth_problem=token_revoked"
+      raise MissingShopID if data =~ /Shop with PK shop_id/
+      raise InvalidUserID if data =~ /is not a valid user_id/
+      raise TemporaryIssue if data =~ /Temporary Etsy issue | Resource temporarily unavailable/
+      raise EtsyJSONInvalid.new(data) unless valid_json?(data)
+      true
+    end
+
+    def valid_json? json_
+      JSON.parse(json_)
+      return true
+    rescue Exception => e
+      return false
     end
 
   end
