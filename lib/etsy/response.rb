@@ -43,7 +43,7 @@ module Etsy
       raise OAuthTokenRevoked if data == "oauth_problem=token_revoked"
       raise MissingShopID if data =~ /Shop with PK shop_id/
       raise InvalidUserID if data =~ /is not a valid user_id/
-      raise TemporaryIssue if data =~ /Temporary Etsy issue | Resource temporarily unavailable/
+      raise TemporaryIssue if data =~ /Temporary Etsy issue|Resource temporarily unavailable|You have exceeded/
       raise EtsyJSONInvalid.new(data) unless valid_json?(data)
       true
     end
