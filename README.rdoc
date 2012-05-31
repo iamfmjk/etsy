@@ -18,9 +18,9 @@ If you want to be on the bleeding edge, install from GitHub:
 
 == Usage
 
-=== Read-Only Mode
+=== Public Mode
 
-The Etsy API has two modes: read-only, and read-write. Read-only mode only requires an
+The Etsy API has two modes: public, and authenticated. Public mode only requires an
 API key (available from http://developer.etsy.com):
 
     require 'rubygems'
@@ -45,21 +45,23 @@ For simple authentication from the console, configure the necessary parameters:
 
   Etsy.api_key = 'key'
   Etsy.api_secret = 'secret'
-  Etsy.access_mode = :read_write
 
-From there, you will need to paste the verification URL into a browser:
+First, generate a request token:
+
+  request = Etsy.request_token
+
+From there, you will need to paste a verification URL into a browser:
 
   Etsy.verification_url
 
-Once you have allowed access, you can now generate an access token by supplying
+Once you have allowed access, you can generate an access token by supplying
 the verifier displayed on the Etsy site:
 
-  request = Etsy.request_token
   access  = Etsy.access_token(request.token, request.secret, 'abc123')
 
 Authenticated calls can now be made by passing an access token and secret:
 
-Etsy.myself(access.token, access.secret)
+  Etsy.myself(access.token, access.secret)
 
 === Web Application
 
@@ -71,7 +73,6 @@ configuration of a callback URL:
 
   Etsy.api_key = 'key'
   Etsy.api_secret = 'secret'
-  Etsy.access_mode = :read_write
   Etsy.callback_url = 'http://localhost:4567/authorize'
 
 In this mode, you'll need to store the request token and secret before redirecting
@@ -80,8 +81,9 @@ to the verification URL.  A simple example using Sinatra:
   enable :sessions
 
   get '/' do
-    session[:request_token]  = Etsy.request_token.token
-    session[:request_secret] = Etsy.request_token.secret
+    request_token = Etsy.request_token
+    session[:request_token]  = request_token.token
+    session[:request_secret] = request_token.secret
     redirect Etsy.verification_url
   end
 
@@ -94,6 +96,16 @@ to the verification URL.  A simple example using Sinatra:
 
     # access_token.token and access_token.secret can now be saved for future API calls
   end
+
+=== Environment
+
+The Etsy API has both a sandbox environment and a production environment.
+If nothing is set, the default is :sandbox.
+
+You can set this using:
+
+    Etsy.environment = :production
+
 
 === Users
 
@@ -171,16 +183,16 @@ Associations on resources can be specified with the 'includes' key.
 
 A single resource can be specified with the name of the resource as a string:
 
-  >> Listing.find(1, {:includes => 'Images'}
+  >> Listing.find(1, {:includes => 'Images'})
 
 Multiple resources can be specified with the name of the resources as a comma-delimited string:
 
-  >> User.find(1, {:includes => ['FeedbackAsBuyer', 'FeedbackAsSeller']}
+  >> User.find(1, {:includes => ['FeedbackAsBuyer', 'FeedbackAsSeller']})
 
 If you want a more fine-grained response, you can specify the associations as an array of hashes, each of which must contain the name of the resource, and can also include the fields you wish returned, as well as the limit and offset.
 
   >> association = {:resource => 'Images', :fields => ['red','green','blue'], :limit => 1, :offset => 0}
-  >> Listing.find(1, {:includes => [association]}
+  >> Listing.find(1, {:includes => [association]})
 
 
 == Custom Requests to the Etsy API
@@ -219,7 +231,13 @@ I ask that you not submit patches that include changes to the version or gemspec
 
 These people have helped make the Etsy gem what it is today:
 
-* {Katrina Owen}[http://github.com/kowen]
+* {Patrick Reagan}[https://github.com/reagent]
+* {Katrina Owen}[http://github.com/kytrinyx]
+* {Mak Nazečić-Andrlon}[https://github.com/Muon]
+* {Patrick Schless}[https://github.com/plainlystated]
+* {Matt Fields}[https://github.com/mfields106]
+* {Jake Boxer}[https://github.com/jakeboxer]
+
 
 == License
 

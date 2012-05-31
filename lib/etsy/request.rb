@@ -6,10 +6,6 @@ module Etsy
   #
   class Request
 
-    def self.host # :nodoc:
-      'openapi.etsy.com'
-    end
-
     # Perform a GET request for the resource with optional parameters - returns
     # A Response object with the payload data
     def self.get(resource_path, parameters = {})
@@ -17,13 +13,18 @@ module Etsy
       Response.new(request.get)
     end
 
+    def self.post(resource_path, parameters = {})
+      request = Request.new(resource_path, parameters)
+      Response.new(request.post)
+    end
+
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
-      params_dup = parameters.dup
-      @token = params_dup.delete(:access_token)
-      @secret = params_dup.delete(:access_secret)
+      @token = parameters.delete(:access_token) || Etsy.credentials[:access_token]
+      @secret = parameters.delete(:access_secret) || Etsy.credentials[:access_secret]
+      raise("Secure connection required. Please provide your OAuth credentials via :access_token and :access_secret in the parameters") if parameters.delete(:require_secure) && !secure?
       @resource_path = resource_path
-      @resources     = params_dup.delete(:includes)
+      @resources     = parameters.delete(:includes)
       if @resources.class == String
         @resources = @resources.split(',').map {|r| {:resource => r}}
       elsif @resources.class == Array
@@ -35,23 +36,23 @@ module Etsy
           end
         end
       end
-      params_dup = params_dup.merge(:api_key => Etsy.api_key) unless secure?
-      @parameters    = params_dup
+      parameters = parameters.merge(:api_key => Etsy.api_key) unless secure?
+      @parameters    = parameters
       @parameters[:fields] = fields_from(@parameters[:fields]) if @parameters[:fields]
     end
 
     def base_path # :nodoc:
-      parts = ['v2']
-      parts << 'sandbox' if Etsy.environment == :sandbox
-      parts << (secure? ? 'private' : 'public')
-
-      "/#{parts.join('/')}"
+      "/v2"
     end
 
     # Perform a GET request against the API endpoint and return the raw
     # response data
     def get
       client.get(endpoint_url)
+    end
+
+    def post
+      client.post(endpoint_url)
     end
 
     def client # :nodoc:
@@ -67,8 +68,8 @@ module Etsy
     end
 
     def query # :nodoc:
-      q = parameters.map {|k,v| "#{k}=#{v}"}.join('&')
-      q << "&includes=#{resources.map {|r| association(r)}.join(',')}" if resources
+      q = parameters.map {|k,v| "#{URI.escape(k.to_s)}=#{URI.escape(v.to_s)}"}.join('&')
+      q << "&includes=#{URI.escape(resources.map {|r| association(r)}.join(','))}" if resources
       q
     end
 
@@ -98,11 +99,11 @@ module Etsy
     end
 
     def basic_client
-      BasicClient.new(self.class.host)
+      BasicClient.new(Etsy.host)
     end
 
     def secure?
-      Etsy.access_mode == :read_write && !@token.nil? && !@secret.nil?
+      !@token.nil? && !@secret.nil?
     end
 
   end

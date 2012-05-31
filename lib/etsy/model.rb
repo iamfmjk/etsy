@@ -22,18 +22,29 @@ module Etsy
 
       def get(endpoint, options = {})
         objects = get_all(endpoint, options)
-        (objects.length == 1) ? objects[0] : objects
+        if objects.length == 0
+          nil
+        elsif objects.length == 1
+          objects[0]
+        else
+          objects
+        end
       end
 
       def get_all(endpoint, options={})
         response = Request.get(endpoint, options)
-        [response.result].flatten.map do |data|
+        result = response.result || [] # result may be null
+        [result].flatten.map do |data|
           if options[:access_token] && options[:access_secret]
             new(data, options[:access_token], options[:access_secret])
           else
             new(data)
           end
         end
+      end
+
+      def post(endpoint, options={})
+        Request.post(endpoint, options)
       end
 
       def find_one_or_more(endpoint, identifiers_and_options)
