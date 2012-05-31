@@ -1,6 +1,8 @@
-/pkg/
-/doc/
-/coverage/
-/.bundle
-/Gemfile.lock
-/.rvmrc
+pkg/
+doc/
+coverage/
+.bundle
+Gemfile.lock
+.rvmrc
+*.sw*
+*.orig
