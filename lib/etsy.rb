@@ -3,6 +3,7 @@ $:.unshift File.dirname(__FILE__)
 require 'net/http'
 require 'json'
 require 'oauth'
+require 'uri'
 
 require 'etsy/request'
 require 'etsy/response'
@@ -20,6 +21,9 @@ require 'etsy/image'
 require 'etsy/transaction'
 require 'etsy/address'
 require 'etsy/category'
+require 'etsy/payment_template'
+require 'etsy/country'
+require 'etsy/shipping_template'
 
 # = Etsy: A friendly Ruby interface to the Etsy API
 #
@@ -60,7 +64,11 @@ module Etsy
   class << self
     attr_accessor :api_key, :api_secret, :scope #scope is an array that will be joined with '+' on the OAuth consumer request
     attr_writer :callback_url
+    attr_writer :permission_scopes
   end
+
+  SANDBOX_HOST = 'sandbox.openapi.etsy.com'
+  PRODUCTION_HOST = 'openapi.etsy.com'
 
   # Set the environment, accepts either :sandbox or :production. Defaults to :sandbox
   # and will raise an exception when set to an unrecognized environment.
@@ -70,6 +78,7 @@ module Etsy
       raise(ArgumentError, "environment must be set to either :sandbox or :production")
     end
     @environment = environment
+    @host = (environment == :sandbox) ? SANDBOX_HOST : PRODUCTION_HOST
   end
 
   # The currently configured environment.
@@ -78,20 +87,8 @@ module Etsy
     @environment || :sandbox
   end
 
-  # Set the access mode, can either be :read_only or :read_write.  Defaults to :read_only
-  # and will raise an exception when set to an invalid value.
-  #
-  def self.access_mode=(mode)
-    unless [:read_only, :read_write].include?(mode)
-      raise(ArgumentError, "access mode must be set to either :read_only or :read_write")
-    end
-    @access_mode = mode
-  end
-
-  # The currently configured access mode
-  #
-  def self.access_mode
-    @access_mode || :read_only
+  def self.host # :nodoc:
+    @host || SANDBOX_HOST
   end
 
   # The configured callback URL or 'oob' if no callback URL is configured. This controls
@@ -99,6 +96,12 @@ module Etsy
   #
   def self.callback_url
     @callback_url || 'oob'
+  end
+
+  # OAuth permission scopes. Defines which private fields we can have access to.
+  #
+  def self.permission_scopes
+    @permission_scopes || []
   end
 
   # Find a user by username.  See Etsy::User for more information.
@@ -141,6 +144,18 @@ module Etsy
     verification_request.url
   end
 
+  def self.single_user(access_token, access_secret)
+    @credentials = {
+      :access_token => access_token,
+      :access_secret => access_secret
+    }
+    nil
+  end
+
+  def self.credentials
+    @credentials || {}
+  end
+
   private
 
   def self.verification_request
@@ -149,5 +164,9 @@ module Etsy
 
   def self.clear_for_new_authorization
     @verification_request = nil
+  end
+
+  def self.deprecate(message)
+    puts "DEPRECATED: #{message}."
   end
 end

@@ -7,8 +7,10 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.instance_variable_set(:@environment, nil)
       Etsy.instance_variable_set(:@access_mode, nil)
       Etsy.instance_variable_set(:@callback_url, nil)
+      Etsy.instance_variable_set(:@host, nil)
       Etsy.instance_variable_set(:@api_key, nil)
       Etsy.instance_variable_set(:@api_secret, nil)
+      Etsy.instance_variable_set(:@permission_scopes, nil)
     end
 
     should "be able to set and retrieve the API key" do
@@ -41,17 +43,18 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.api_secret.should == 'secret'
     end
 
-    should "be in read-mode by default" do
-      Etsy.access_mode.should == :read_only
+    should "know the host for the sandbox environment" do
+      Etsy.environment = :sandbox
+      Etsy.host.should == 'sandbox.openapi.etsy.com'
     end
 
-    should "be able to set the access mode to a read-write" do
-      Etsy.access_mode = :read_write
-      Etsy.access_mode.should == :read_write
+    should "know the host for the production environment" do
+      Etsy.environment = :production
+      Etsy.host.should == 'openapi.etsy.com'
     end
 
-    should "raise an exception when attempting to set an invalid access mode" do
-      lambda { Etsy.access_mode = :invalid }.should raise_error(ArgumentError)
+    should "default to sandbox host" do
+      Etsy.host.should == 'sandbox.openapi.etsy.com'
     end
 
     should "be able to set the callback url" do
@@ -61,6 +64,15 @@ class EtsyTest < Test::Unit::TestCase
 
     should "default callback to out-of-band" do
       Etsy.callback_url.should == 'oob'
+    end
+
+    should "default permission scopes to an empty array" do
+      Etsy.permission_scopes.should == []
+    end
+
+    should "be able to set the scopes" do
+      Etsy.permission_scopes = %w(a_scope another_scope)
+      Etsy.permission_scopes.should == ['a_scope', 'another_scope']
     end
   end
 

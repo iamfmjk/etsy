@@ -5,15 +5,17 @@ module Etsy
 
     context "An instance of the SecureClient class" do
 
-      should "be able to generate an OAuth consumer" do
+      should "be able to generate an OAuth consumer for the sandbox" do
+        Etsy.stubs(:environment).returns :sandbox
+        Etsy.stubs(:host).returns 'sandbox'
         Etsy.stubs(:api_key).returns('key')
         Etsy.stubs(:api_secret).returns('secret')
-        Etsy.stubs(:scope).returns(['scope_attr_1', 'scope_attr_2'])
+        Etsy.stubs(:permission_scopes).returns(['scope_one', 'scope_two'])
 
         OAuth::Consumer.stubs(:new).with('key', 'secret', {
-          :site               => 'http://openapi.etsy.com',
-          :request_token_path => '/v2/sandbox/oauth/request_token?scope=scope_attr_1+scope_attr_2',
-          :access_token_path  => '/v2/sandbox/oauth/access_token',
+          :site               => 'http://sandbox',
+          :request_token_path => '/v2/oauth/request_token?scope=scope_one+scope_two',
+          :access_token_path  => '/v2/oauth/access_token',
         }).returns('consumer')
 
         client = SecureClient.new
@@ -23,13 +25,14 @@ module Etsy
 
       should "be able to generate an OAuth consumer in production" do
         Etsy.stubs(:environment).returns :production
+        Etsy.stubs(:host).returns 'production'
         Etsy.stubs(:api_key).returns('key')
         Etsy.stubs(:api_secret).returns('secret')
-        Etsy.stubs(:scope).returns(['scope_attr_1', 'scope_attr_2'])
+        Etsy.stubs(:permission_scopes).returns(['scope_one', 'scope_two'])
 
         OAuth::Consumer.stubs(:new).with('key', 'secret', {
-          :site               => 'http://openapi.etsy.com',
-          :request_token_path => '/v2/oauth/request_token?scope=scope_attr_1+scope_attr_2',
+          :site               => 'http://production',
+          :request_token_path => '/v2/oauth/request_token?scope=scope_one+scope_two',
           :access_token_path  => '/v2/oauth/access_token',
         }).returns('consumer')
 
