@@ -18,6 +18,7 @@ module Etsy
     attribute :created, :from => :creation_tsz
 
     association :profile, :from => 'Profile'
+    association :shops, :from => 'Shops'
 
     # Retrieve one or more users by name or ID:
     #
@@ -40,8 +41,7 @@ module Etsy
     # The shop associated with this user.
     #
     def shop
-      options = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
-      @shop ||= Shop.find(username, options)
+      @shop ||= shops.first
     end
 
     # The addresses associated with this user.
@@ -65,6 +65,20 @@ module Etsy
         end
       end
       @profile
+    end
+
+    def shops
+      unless @shops
+        if associated_shops
+          @shops = associated_shops.map { |shop| Shop.new(shop) }
+        else
+          options = {:fields => 'user_id', :includes => 'Shops'}
+          options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+          tmp = User.find(username, options)
+          @shops = tmp.associated_shops.map { |shop| Shop.new(shop) }
+        end
+      end
+      @shops
     end
 
     # Time that this user was created
