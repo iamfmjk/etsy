@@ -35,6 +35,14 @@ module Etsy
         r.count.should == 2
       end
 
+      should "return a count of 0 when the response is paginated and the results are empty" do
+        raw_response = mock
+        raw_response.stubs(:body => '{ "count": 100, "results": null, "pagination": {} }')
+        r = Response.new(raw_response)
+
+        r.count.should == 0
+      end
+
       should "return an array if there are multiple results entries" do
         r = Response.new('')
         r.expects(:count).with().returns(2)

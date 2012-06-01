@@ -33,7 +33,11 @@ module Etsy
 
     # Number of records in the response results
     def count
-      to_hash['pagination'] ? to_hash['results'].size : to_hash['count']
+      if to_hash['pagination']
+        to_hash['results'].nil? ? 0 : to_hash['results'].size
+      else
+        to_hash['count']
+      end
     end
 
     # Results of the API request
