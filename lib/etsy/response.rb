@@ -19,7 +19,7 @@ module Etsy
 
     # Convert the raw JSON data to a hash
     def to_hash
-      check_data!
+      validate!
       @hash ||= json
     end
 
@@ -33,7 +33,7 @@ module Etsy
 
     # Number of records in the response results
     def count
-      if to_hash['pagination']
+      if paginated?
         to_hash['results'].nil? ? 0 : to_hash['results'].size
       else
         to_hash['count']
@@ -49,6 +49,10 @@ module Etsy
       !!(code =~ /2\d\d/)
     end
 
+    def paginated?
+      !!to_hash['pagination']
+    end
+
     private
 
     def data
@@ -59,11 +63,11 @@ module Etsy
       @hash ||= JSON.parse(data)
     end
 
-    def check_data!
-      raise OAuthTokenRevoked         if data == "oauth_problem=token_revoked"
-      raise MissingShopID             if data =~ /Shop with PK shop_id/
-      raise InvalidUserID             if data =~ /is not a valid user_id/
-      raise TemporaryIssue            if data =~ /Temporary Etsy issue|Resource temporarily unavailable|You have exceeded/
+    def validate!
+      raise OAuthTokenRevoked         if token_revoked?
+      raise MissingShopID             if missing_shop_id?
+      raise InvalidUserID             if invalid_user_id?
+      raise TemporaryIssue            if temporary_etsy_issue? || resource_unavailable? || exceeded_rate_limit?
       raise EtsyJSONInvalid.new(data) unless valid_json?
       true
     end
@@ -73,6 +77,30 @@ module Etsy
       return true
     rescue JSON::ParserError
       return false
+    end
+
+    def token_revoked?
+      data == "oauth_problem=token_revoked"
+    end
+
+    def missing_shop_id?
+      data =~ /Shop with PK shop_id/
+    end
+
+    def invalid_user_id?
+      data =~ /is not a valid user_id/
+    end
+
+    def temporary_etsy_issue?
+      data =~ /Temporary Etsy issue/
+    end
+
+    def resource_unavailable?
+      data =~ /Resource temporarily unavailable/
+    end
+
+    def exceeded_rate_limit?
+      data =~ /You have exceeded/
     end
 
   end
