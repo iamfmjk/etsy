@@ -19,11 +19,20 @@ module Etsy
         2.times { r.to_hash }
       end
 
-      should "have a record count" do
-        r = Response.new('')
-        r.expects(:to_hash).with().returns('count' => 1)
+      should "have a record count when the response is not paginated" do
+        raw_response = mock
+        raw_response.stubs(:body => '{ "count": 1 }')
+        r = Response.new(raw_response)
 
         r.count.should == 1
+      end
+
+      should "have a record count when the response is paginated" do
+        raw_response = mock
+        raw_response.stubs(:body => '{ "count": 100, "results": [{},{}], "pagination": {} }')
+        r = Response.new(raw_response)
+
+        r.count.should == 2
       end
 
       should "return an array if there are multiple results entries" do
