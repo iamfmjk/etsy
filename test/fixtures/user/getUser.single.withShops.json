@@ -1,0 +1,41 @@
+{
+  "count": 1,
+  "results": [{
+    "user_id": 5327518,
+    "login_name": "littletjane",
+    "creation_tsz": 1191381578,
+    "referred_by_user_id": null,
+    "feedback_info": {
+      "count": 417,
+      "score": 100
+    },
+    "Shops": [{
+      "shop_id":6952442,
+      "shop_name":"LittleJane",
+      "user_id":5327518,
+      "creation_tsz":1338484503,
+      "title":"",
+      "announcement":"",
+      "currency_code":"USD",
+      "is_vacation":false,
+      "vacation_message":null,
+      "sale_message":"",
+      "last_updated_tsz":1338490441,
+      "listing_active_count":1,
+      "login_name":"littletjane",
+      "alchemy_message":"",
+      "is_refusing_alchemy":false,
+      "policy_welcome":null,
+      "policy_payment":null,
+      "policy_shipping":null,
+      "policy_refunds":null,
+      "policy_additional":null,
+      "policy_seller_info":null,
+      "policy_updated_tsz":0,
+      "vacation_autoreply":null,
+      "url":"http://www.etsy.com/shop/LittleJane?utm_source=something&utm_medium=api&utm_campaign=api",
+      "image_url_760x100":null,
+      "num_favorers":0
+    }]
+  }]
+}
