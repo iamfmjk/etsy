@@ -75,7 +75,6 @@ module Etsy
       end
 
       context "with private response data" do
-
         setup do
           data = read_fixture('user/getUser.single.private.json')
           @user = User.new(data.first, 'token', 'secret')
@@ -84,7 +83,58 @@ module Etsy
         should "have an email address" do
           @user.email.should == 'reaganpr@gmail.com'
         end
+      end
 
+      context "requested with associated shops" do
+        setup do
+          data = read_fixture('user/getUser.single.withShops.json')
+          @user = User.new(data.first)
+        end
+
+        should "have shops" do
+          @user.shops.each do |shop|
+            shop.class.should == Shop
+          end
+        end
+
+        # This assumes for now that a user can have only one shop belonging to them
+        should "return the first shop belonging to the user" do
+          @user.shop.should == @user.shops.first
+        end
+      end
+      
+      context "requested without associated shops" do
+        setup do
+          @data_without_shops = read_fixture('user/getUser.single.json')
+          @data_with_shops = read_fixture('user/getUser.single.withShops.json')
+          @options = {:fields => 'user_id', :includes => 'Shops'}
+
+          @user_without_shops = User.new(@data_without_shops.first)
+          @user_with_shops = User.new(@data_with_shops.first)
+        end
+
+        should "make a call to the API to retrieve it if requested" do
+          User.expects(:find).with('littletjane', @options).returns @user_with_shops
+          @user_without_shops.shops
+        end
+
+        should "not call the api twice" do
+          User.expects(:find).once.with('littletjane', @options).returns @user_with_shops
+          @user_without_shops.shops
+          @user_without_shops.shops
+        end
+
+        should "return a list of populated shop instances" do
+          User.stubs(:find).with('littletjane', @options).returns @user_with_shops
+          @user_without_shops.shops.first.name.should == 'LittleJane'
+        end
+
+        should "make the call with authentication if oauth is used" do
+          user = User.new(@data_without_shops.first, 'token', 'secret')
+          oauth = {:access_token => 'token', :access_secret => 'secret'}
+          User.expects(:find).with('littletjane', @options.merge(oauth)).returns @user_with_shops
+          user.shops
+        end
       end
 
       context "requested with an associated profile" do
@@ -153,15 +203,6 @@ module Etsy
 
         user.created_at.should == Time.at(1)
       end
-    end
-
-    should "know the shop for a user" do
-      user = User.new
-      user.stubs(:username).with().returns('username')
-
-      Shop.stubs(:find).with('username', {}).returns('shop')
-
-      user.shop.should == 'shop'
     end
 
     should "know the addresses for a user" do
