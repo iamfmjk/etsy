@@ -1,0 +1,18 @@
+{
+  "count":1,
+  "results":[
+    {
+      "shop_section_id":11045327,
+      "title":"Blue Items",
+      "rank":3,
+      "user_id":9569349,
+      "active_listing_count":7
+    }
+  ],
+  "params":{
+    "shop_id":"6441123",
+    "shop_section_id":"11045327"
+  },
+  "type":"ShopSection",
+  "pagination":{}
+}

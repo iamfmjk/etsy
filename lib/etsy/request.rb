@@ -18,11 +18,17 @@ module Etsy
       Response.new(request.post)
     end
 
+    def self.put(resource_path, parameters = {})
+      request = Request.new(resource_path, parameters)
+      Response.new(request.put)
+    end
+
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
       @token = parameters.delete(:access_token) || Etsy.credentials[:access_token]
       @secret = parameters.delete(:access_secret) || Etsy.credentials[:access_secret]
       raise("Secure connection required. Please provide your OAuth credentials via :access_token and :access_secret in the parameters") if parameters.delete(:require_secure) && !secure?
+      @multipart_request = parameters.delete(:multipart)
       @resource_path = resource_path
       @resources     = parameters.delete(:includes)
       if @resources.class == String
@@ -52,7 +58,15 @@ module Etsy
     end
 
     def post
-      client.post(endpoint_url)
+      if multipart?
+        client.post_multipart(endpoint_url(:include_query => false), @parameters)
+      else
+        client.post(endpoint_url)
+      end
+    end
+
+    def put
+      client.put(endpoint_url)
     end
 
     def client # :nodoc:
@@ -88,8 +102,14 @@ module Etsy
       fields.is_a?(Array) ? fields.join(',') : fields
     end
 
-    def endpoint_url # :nodoc:
-      "#{base_path}#{@resource_path}?#{query}"
+    def endpoint_url(options = {}) # :nodoc:
+      url = "#{base_path}#{@resource_path}"
+      url += "?#{query}" if options.fetch(:include_query, true)
+      url
+    end
+
+    def multipart?
+      !!@multipart_request
     end
 
     private
