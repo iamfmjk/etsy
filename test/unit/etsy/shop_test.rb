@@ -26,7 +26,7 @@ module Etsy
       end
 
       should "allow a configurable limit when finding all shops" do
-        shops = mock_request('/shops', {:limit => 100}, 'Shop', 'findAllShop.json')
+        shops = mock_request('/shops', {:limit => 100, :offset => 0}, 'Shop', 'findAllShop.json')
         Shop.all(:limit => 100).should == shops
       end
 
