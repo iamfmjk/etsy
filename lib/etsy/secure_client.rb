@@ -73,7 +73,48 @@ module Etsy
       client.post(endpoint)
     end
 
+    def put(endpoint)
+      client.put(endpoint)
+    end
+
+    def post_multipart(endpoint, params = {})
+      Net::HTTP.new(Etsy.host).start do |http|
+        req = Net::HTTP::Post.new(endpoint)
+        add_multipart_data(req, params)
+        add_oauth(req)
+        res = http.request(req)
+      end
+    end
+
     private
+
+    # Encodes the request as multipart
+    def add_multipart_data(req, params)
+      crlf = "\r\n"
+      boundary = Time.now.to_i.to_s(16)
+      req["Content-Type"] = "multipart/form-data; boundary=#{boundary}"
+      body = ""
+      params.each do |key,value|
+        esc_key = CGI.escape(key.to_s)
+        body << "--#{boundary}#{crlf}"
+        if value.respond_to?(:read)
+          body << "Content-Disposition: form-data; name=\"#{esc_key}\"; filename=\"#{File.basename(value.path)}\"#{crlf}"
+          body << "Content-Type: image/jpeg#{crlf*2}"
+          body << value.read
+        else
+          body << "Content-Disposition: form-data; name=\"#{esc_key}\"#{crlf*2}#{value}"
+        end
+        body << crlf
+      end
+      body << "--#{boundary}--#{crlf*2}"
+      req.body = body
+      req["Content-Length"] = req.body.size
+    end
+
+    # Uses the OAuth gem to add the signed Authorization header
+    def add_oauth(req)
+      client.sign!(req)
+    end
 
     def has_access_data?
       !@attributes[:access_token].nil? && !@attributes[:access_secret].nil?
