@@ -16,6 +16,11 @@ If you want to be on the bleeding edge, install from GitHub:
     $ cd etsy
     $ rake gem && gem install pkg/etsy-<version>.gem
 
+=== Dependencies
+
+The gem has been verified to work with version 1.5.0 of json.
+It will likely work with higher versions, but this is unproven.
+
 == Usage
 
 === Public Mode
