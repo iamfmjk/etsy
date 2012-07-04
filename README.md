@@ -232,6 +232,23 @@ your patch, I will give you full commit access.  To submit patches:
 
 I ask that you not submit patches that include changes to the version or gemspec.
 
+### Basics steps for contributing using (https://github.com/defunkt/hub)
+
+    # Setup the project
+    git clone kytrinyx/etsy
+    git fork
+    bundle
+    rake
+    
+    # Normal flow
+    git checkout -b your-feature-or-bug
+    # Write your tests
+    # Make the tests pass
+    git add <CHANGES>
+    git commit -m "Some useful message"
+    git push -u YOUR-GITHUB-USERNAME your-feature-or-bug
+    git pull-request
+
 ## Contributors
 
 These people have helped make the Etsy gem what it is today:
