@@ -6,11 +6,13 @@ module Etsy
   end
 
   class ModelTest < Test::Unit::TestCase
+
+    def mock_empty_request(options = {})
+      body = options.delete(:body) { '{}' }
+      Request.expects(:new).with('', options).returns(stub(:get => stub(:body => body, :code => 200)))
+    end
+
     context 'An instance of a Model' do
-      def mock_empty_request(options = {})
-        body = options.delete(:body) { '{}' }
-        Request.expects(:new).with('', options).returns(stub(:get => stub(:body => body, :code => 200)))
-      end
 
       should 'perform no requests if :limit is 0' do
         Request.expects(:new).never
