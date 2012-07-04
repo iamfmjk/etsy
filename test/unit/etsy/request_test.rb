@@ -64,13 +64,13 @@ module Etsy
       should "be able to request a single association" do
         r = Request.new('/foo', {:includes => 'Thunder'})
         r.stubs(:parameters).with().returns({:a => :b})
-        r.query.should == 'a=b&includes=Thunder'
+        CGI.parse(r.query).should == { "a" => ["b"], "includes" => ["Thunder"] }
       end
 
       should "be able make simplified association requests" do
         r = Request.new('/foo', {:includes => ['Thunder', 'Lightning']})
         r.stubs(:parameters).with().returns({:a => :b})
-        r.query.should == 'a=b&includes=Thunder%2CLightning'
+        CGI.parse(r.query).should == { "a" => ["b"], "includes" => ["Thunder,Lightning"] }
       end
 
       should "be able to generate detailed association queries" do
@@ -107,7 +107,9 @@ module Etsy
         r = Request.new('/foo', params)
         r.stubs(:base_path).with().returns('/base')
         r.stubs(:parameters).with().returns(:a => 'b')
-        r.endpoint_url.should == '/base/foo?a=b&includes=Lightning%2CThunder'
+        uri = URI.parse(r.endpoint_url)
+        uri.path.should == '/base/foo'
+        CGI.parse(uri.query).should == { "a" => ["b"], "includes" => ["Lightning,Thunder"] }
       end
 
       should "be able to determine the endpoint URI when in read-only mode" do
