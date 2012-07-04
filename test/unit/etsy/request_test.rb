@@ -174,8 +174,8 @@ module Etsy
                     :access_token => 'token',
                     :access_secret => 'secret',
                     :fields => [:id],
-                    limit => 100,
-                    offset => 100 }
+                    :limit => 100,
+                    :offset => 100 }
         options_copy = options.dup
 
         Request.new('', options)
