@@ -6,11 +6,11 @@ require 'test/unit'
 require 'shoulda'
 require 'matchy'
 require 'mocha'
+require 'cgi'
 
 require File.expand_path('../../lib/etsy', __FILE__)
 
 class Test::Unit::TestCase
-
 
   def raw_fixture_data(filename)
     file = File.dirname(__FILE__) + "/fixtures/#{filename}"
