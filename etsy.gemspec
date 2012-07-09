@@ -14,23 +14,10 @@ Gem::Specification.new do |gem|
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name = "etsy"
+  gem.name          = "etsy"
   gem.require_paths = ["lib"]
-  gem.version = "0.2.1"
+  gem.version       = "0.2.1"
 
-  if gem.respond_to? :specification_version then
-    gem.specification_version = 3
-
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      gem.add_runtime_dependency("json", [">= 1.5.0"])
-      gem.add_runtime_dependency("oauth", ["~> 0.4.0"])
-    else
-      gem.add_dependency("json", [">= 1.5.0"])
-      gem.add_dependency("oauth", ["~> 0.4.0"])
-    end
-  else
-    gem.add_dependency("json", [">= 1.5.0"])
-    gem.add_dependency("oauth", ["~> 0.4.0"])
-  end
-
+  gem.add_dependency "json", ">= 1.5.0"
+  gem.add_dependency "oauth", "~> 0.4.0"
 end
