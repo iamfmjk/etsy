@@ -1,10 +1,7 @@
 # -*- encoding: utf-8 -*-
+require File.expand_path('../lib/etsy/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.required_rubygems_version = Gem::Requirement.new(">= 0") if gem.respond_to? :required_rubygems_version=
-  gem.rubygems_version = "1.8.10"
-
-  gem.authors       = ["Katrina Owen"]
   gem.authors       = ["Patrick Reagan", "Katrina Owen"]
   gem.email         = ["reaganpr@gmail.com", "katrina.owen@gmail.com"]
   gem.description   = %q{A friendly Ruby interface to the Etsy API}
@@ -16,7 +13,10 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "etsy"
   gem.require_paths = ["lib"]
-  gem.version       = "0.2.1"
+  gem.version       = Etsy::VERSION
+
+  gem.required_rubygems_version = Gem::Requirement.new(">= 0") if gem.respond_to? :required_rubygems_version=
+  gem.rubygems_version = "1.8.10"
 
   gem.add_dependency "json", ">= 1.5.0"
   gem.add_dependency "oauth", "~> 0.4.0"
