@@ -20,9 +20,13 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "json", ">= 1.5.0"
   gem.add_dependency "oauth", "~> 0.4.0"
+  gem.add_dependency "faraday", "~> 0.8.0"
+  gem.add_dependency "faraday_middleware", "~> 0.8.8"
 
   gem.add_development_dependency "rake", "~> 0.9.2.2"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
-  gem.add_development_dependency 'shoulda', '~> 3.0.0'
-  gem.add_development_dependency 'mocha', '~> 0.12.0'
+  gem.add_development_dependency "shoulda", "~> 3.0.0"
+  gem.add_development_dependency "mocha", "~> 0.12.0"
+  gem.add_development_dependency "rspec", "~> 2.11.0"
+  gem.add_development_dependency "vcr", "~> 2.2.3"
 end

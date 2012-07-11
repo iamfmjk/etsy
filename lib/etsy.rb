@@ -1,9 +1,13 @@
 $:.unshift File.dirname(__FILE__)
 
 require 'net/http'
+require 'faraday'
+require 'faraday_middleware'
 require 'json'
 require 'oauth'
 require 'uri'
+
+require 'etsy/client'
 
 require 'etsy/request'
 require 'etsy/response'
