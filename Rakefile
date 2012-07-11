@@ -13,7 +13,7 @@ end
 
 desc "Cleans out the api credentials from the code"
 task :clean do
-  puts "Cleaning out api credentials from project...."
+  print "Cleaning out api credentials from project....  "
   require File.join(File.dirname(__FILE__), 'spec/api_credentials')
 
   `find spec/cassettes/*.yml -exec sed -i '' 's/#{API_KEY}/API_KEY/' {} \\;`
@@ -22,7 +22,7 @@ end
 
 desc "Restores the api keys from the api_credentials file"
 task :unclean do
-  puts "Restoring credentials"
+  print "Restoring credentials....  "
   require File.join(File.dirname(__FILE__), 'spec/api_credentials')
 
   `find spec/cassettes/*.yml -exec sed -i '' 's/API_KEY/#{API_KEY}/' {} \\;`
