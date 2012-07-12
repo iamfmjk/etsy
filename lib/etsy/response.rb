@@ -73,7 +73,7 @@ module Etsy
       raise MissingShopID             if missing_shop_id?
       raise InvalidUserID             if invalid_user_id?
       raise TemporaryIssue            if temporary_etsy_issue? || resource_unavailable? || exceeded_rate_limit?
-      raise EtsyJSONInvalid.new(data) unless valid_json?
+      raise EtsyJSONInvalid.new("CODE: #{code}, BODY: #{data}") unless valid_json?
       true
     end
 
