@@ -6,5 +6,4 @@ Gemfile.lock
 .rvmrc
 *.sw*
 *.orig
-spec/api_credentials.rb
 coverage/
