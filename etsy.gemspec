@@ -22,6 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "oauth", "~> 0.4.0"
   gem.add_dependency "faraday", "~> 0.8.0"
   gem.add_dependency "faraday_middleware", "~> 0.8.8"
+  gem.add_dependency "jruby-openssl", "~> 0.7.7" if RUBY_PLATFORM == 'java'
 
   gem.add_development_dependency "rake", "~> 0.9.2.2"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
