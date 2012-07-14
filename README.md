@@ -1,6 +1,7 @@
 # Etsy
 
 [![Build Status](https://secure.travis-ci.org/kytrinyx/etsy.png)](http://travis-ci.org/kytrinyx/etsy)
+[![Dependency Status](https://gemnasium.com/kytrinyx/etsy.png)](https://gemnasium.com/kytrinyx/etsy)
 
 ## Description
 

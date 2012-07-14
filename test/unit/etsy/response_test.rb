@@ -71,10 +71,11 @@ module Etsy
 
       should "raise an invalid JSON exception if the response is not json" do
         raw_response = mock
-        raw_response.stubs(:body => "I am not JSON")
+        raw_response.stubs(:body => "I am not JSON", :code => 500)
         r = Response.new(raw_response)
 
         lambda { r.to_hash }.should raise_error(Etsy::EtsyJSONInvalid)
+        lambda { r.to_hash }.should raise_error("CODE: 500, BODY: I am not JSON")
       end
 
       should "raise OAuthTokenRevoked" do
