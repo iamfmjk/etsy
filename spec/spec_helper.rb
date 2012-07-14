@@ -1,5 +1,7 @@
-require 'simplecov'
-SimpleCov.start
+if ENV["TRAVIS"] != "true"
+  require 'simplecov'
+  SimpleCov.start
+end
 
 require 'vcr'
 require 'default_api_credentials'

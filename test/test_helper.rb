@@ -2,8 +2,12 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
-require 'simplecov'
-SimpleCov.start
+
+if ENV["TRAVIS"] != "true"
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require 'test/unit'
 require 'shoulda'
 require 'matchy'
