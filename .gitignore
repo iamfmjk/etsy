@@ -7,3 +7,4 @@ Gemfile.lock
 *.sw*
 *.orig
 spec/api_credentials.rb
+coverage/

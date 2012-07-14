@@ -1,7 +1,10 @@
-require 'etsy'
-require 'vcr'
+require 'simplecov'
+SimpleCov.start
 
+require 'vcr'
 require 'default_api_credentials'
+
+require 'etsy'
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/cassettes'

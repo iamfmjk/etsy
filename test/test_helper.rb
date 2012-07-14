@@ -2,6 +2,8 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
+require 'simplecov'
+SimpleCov.start
 require 'test/unit'
 require 'shoulda'
 require 'matchy'
