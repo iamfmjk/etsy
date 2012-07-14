@@ -4,7 +4,7 @@ module Etsy
   describe Client do
     use_vcr_cassette
 
-    subject { Client.new(:api_key => API_KEY) }
+    subject { Client.new(:api_key => Etsy::Test::API_KEY) }
 
     it "should be able to find a user" do
       subject.user("jonS2011").should == {

@@ -4,7 +4,7 @@ if ENV["TRAVIS"] != "true"
 end
 
 require 'vcr'
-require 'default_api_credentials'
+require 'api_credentials'
 
 require 'etsy'
 
@@ -17,6 +17,13 @@ VCR.configure do |c|
     CGI.parse(URI(req_1.uri).query) == CGI.parse(URI(req_2.uri).query)
   end
   c.default_cassette_options = { :match_requests_on => [:method, :host, :path, :parsed_query] }
+
+  # Add sensitive fields here
+  # Constants in Etsy::Test will be auto filtered
+  Etsy::Test.constants.each do |const|
+    c.filter_sensitive_data(const.to_s) { Etsy::Test.const_get(const) }
+  end
+
   c.hook_into :faraday
 end
 
