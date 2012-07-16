@@ -17,7 +17,7 @@ If you want to be on the bleeding edge, install from GitHub:
 
     $ git clone git://github.com/kytrinyx/etsy.git
     $ cd etsy
-    $ rake gem && gem install pkg/etsy-<version>.gem
+    $ rake install
 
 ### Dependencies
 
