@@ -15,7 +15,7 @@ Installing the latest stable version is simple:
 
 If you want to be on the bleeding edge, install from GitHub:
 
-    $ git clone git://github.com/reagent/etsy.git
+    $ git clone git://github.com/kytrinyx/etsy.git
     $ cd etsy
     $ rake gem && gem install pkg/etsy-<version>.gem
 
