@@ -20,7 +20,7 @@ module Etsy
 
     def request_token
       consumer = OAuth::Consumer.new(@api_key, @api_secret,
-        :site               => "http://openapi.etsy.com",
+        :site               => endpoint,
         :request_token_path => "/v2/oauth/request_token",
         :access_token_path  => "/v2/oauth/access_token"
       )
@@ -40,7 +40,7 @@ module Etsy
 
     def connection
       @connection ||= Faraday.new(
-        :url => endpoint,
+        :url => "#{endpoint}/v2",
         :params => default_params
       ) do |conn|
         conn.request :json
@@ -58,7 +58,7 @@ module Etsy
     end
 
     def endpoint
-      @environment == :production ? "http://openapi.etsy.com/v2" : "http://sandbox.openapi.etsy.com/v2"
+      @environment == :production ? "http://openapi.etsy.com" : "http://sandbox.openapi.etsy.com"
     end
 
     def default_params
