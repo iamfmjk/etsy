@@ -5,7 +5,8 @@ module Etsy
     subject do
       Client.new(
         :api_key    => Etsy::Test::API_KEY,
-        :api_secret => Etsy::Test::API_SECRET
+        :api_secret => Etsy::Test::API_SECRET,
+        :environment => Etsy::Test::ENVIRONMENT.to_sym
       )
     end
 

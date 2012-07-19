@@ -7,6 +7,7 @@ module Etsy
       @api_secret   = options[:api_secret]
       @oauth_token  = options[:oauth_token]
       @oauth_secret = options[:oauth_secret]
+      @environment = options[:environment] || :production
     end
 
     def myself
@@ -39,7 +40,7 @@ module Etsy
 
     def connection
       @connection ||= Faraday.new(
-        :url => "http://openapi.etsy.com/v2",
+        :url => endpoint,
         :params => default_params
       ) do |conn|
         conn.request :json
@@ -54,6 +55,10 @@ module Etsy
 
         conn.adapter Faraday.default_adapter
       end
+    end
+
+    def endpoint
+      @environment == :production ? "http://openapi.etsy.com/v2" : "http://sandbox.openapi.etsy.com/v2"
     end
 
     def default_params
