@@ -21,7 +21,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency "json", ">= 1.5.0"
   gem.add_dependency "oauth", "~> 0.4.0"
 
-  gem.add_development_dependency "rake", "~> 0.9.2.2"
+  gem.add_development_dependency "rake", "~> 0.9.2"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
   gem.add_development_dependency 'shoulda', '~> 3.1.0'
   gem.add_development_dependency 'mocha', '~> 0.12.0'
