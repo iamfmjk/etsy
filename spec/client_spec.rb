@@ -40,7 +40,6 @@ module Etsy
 
         it "should be able to get an oauth token" do
           request_token = subject.request_token
-          p request_token.params[:login_url]
           verifier      = Etsy::Test::OAUTH_VERIFIER
           subject.oauth_token(request_token, verifier).should == [Etsy::Test::OAUTH_TOKEN, Etsy::Test::OAUTH_SECRET]
         end
