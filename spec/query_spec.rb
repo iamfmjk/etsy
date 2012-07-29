@@ -43,7 +43,7 @@ describe Etsy::Query do
   end
 
   describe "a specific user" do
-    subject { Etsy::Query.new(:users, :key => 'cavetroll') }
+    subject { Etsy::Query.new(:users, 'cavetroll') }
     its(:endpoint) { should eq('/users/cavetroll') }
 
     context "with associations" do
@@ -66,12 +66,12 @@ describe Etsy::Query do
   end
 
   describe "a user's stuff" do
-    subject { Etsy::Query.new(:users, :key => 'cavetroll', :resource => :avatar) }
+    subject { Etsy::Query.new(:users, 'cavetroll', :avatar) }
     its(:endpoint) { should eq('/users/cavetroll/avatar') }
   end
 
   describe "a user's more specific stuff" do
-    subject { Etsy::Query.new(:users, :key => 'cavetroll', :resource => [:avatar, :src]) }
+    subject { Etsy::Query.new(:users, 'cavetroll', :avatar, :src) }
     its(:endpoint) { should eq('/users/cavetroll/avatar/src') }
   end
 

@@ -3,12 +3,10 @@ require 'cgi'
 module Etsy
   class Query
 
-    attr_reader :resource, :key, :sub_resource, :options, :associations
-    def initialize(resource = nil, options = {})
-      @resource = resource.to_s
-      @key = options.delete(:key)
-      @sub_resource = options.delete(:resource)
-      @options = options
+    attr_reader :resource, :options, :associations
+    def initialize(*resource)
+      @resource = resource.join('/')
+      @options = {}
       @associations = []
     end
 
@@ -29,7 +27,7 @@ module Etsy
     end
 
     def endpoint
-      ["", resource, key, sub_resource].compact.join("/")
+      "/#{resource}"
     end
 
     def query
