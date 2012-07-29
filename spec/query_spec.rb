@@ -35,6 +35,11 @@ describe Etsy::Query do
       subject.fields = %w(login_name user_id)
       expect(subject.query).to eq({:fields => 'login_name,user_id'})
     end
+
+    it "accepts arbitrary parameters" do
+      subject.keywords = 'zombie+party'
+      subject.keywords.should eq('zombie+party')
+    end
   end
 
   describe "a specific user" do

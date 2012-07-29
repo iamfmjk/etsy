@@ -16,28 +16,12 @@ module Etsy
       options.fetch(:limit) { 25 }
     end
 
-    def limit=(value)
-      options[:limit] = value
-    end
-
     def offset
       options.fetch(:offset) { 0 }
     end
 
-    def offset=(value)
-      options[:offset] = value
-    end
-
     def page
       options.fetch(:page) { 1 }
-    end
-
-    def page=(value)
-      options[:page] = value
-    end
-
-    def fields=(values)
-      options[:fields] = values
     end
 
     def include(resource)
@@ -61,6 +45,23 @@ module Etsy
     end
 
     private
+
+    def method_missing(method, *args, &block)
+      if assignment?(method)
+        key = method.to_s[0..-2].to_sym
+        options[key] = args.length == 1 ? args.first : args
+      elsif options.has_key?(method)
+        options[method]
+      else
+        super
+      end
+    end
+
+    def assignment?(method)
+      # Depending on the version of Ruby,
+      # s[-1] will return a character or a Fixnum
+      method.to_s[-1] == '='[0]
+    end
 
     def list(values)
       Array(values).join(',')
