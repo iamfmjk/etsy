@@ -39,10 +39,6 @@ module Etsy
       options[:fields] = values
     end
 
-    def to_s
-      endpoint + query
-    end
-
     def endpoint
       ["", resource, key, sub_resource].compact.join("/")
     end

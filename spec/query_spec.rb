@@ -2,7 +2,7 @@ require 'etsy/query'
 
 describe Etsy::Query do
   specify do
-    expect(Etsy::Query.new.to_s).to eq("/")
+    expect(Etsy::Query.new.endpoint).to eq("/")
   end
 
   describe "a simple user query" do
