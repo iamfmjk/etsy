@@ -43,17 +43,20 @@ module Etsy
       endpoint + query
     end
 
-    private
-
     def endpoint
       ["", resource, key, sub_resource].compact.join("/")
     end
 
     def query
       return '' unless options.size > 0
-
-      '?' + options.map { |k,v| "#{k}=#{list(v)}" }.join
+      params = {}
+      options.each do |k, v|
+        params[k] = list(v)
+      end
+      params
     end
+
+    private
 
     def list(values)
       Array(values).join(',')
