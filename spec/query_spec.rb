@@ -40,6 +40,24 @@ describe Etsy::Query do
   describe "a specific user" do
     subject { Etsy::Query.new(:users, :key => 'cavetroll') }
     its(:endpoint) { should eq('/users/cavetroll') }
+
+    context "with associations" do
+      it "takes a resource" do
+        subject.include(:addresses)
+        expect(subject.query).to eq({:includes => 'Addresses'})
+      end
+
+      it "takes more than one resource" do
+        subject.include(:addresses)
+        subject.include(:profile)
+        expect(subject.query).to eq({:includes => 'Addresses,Profile'})
+      end
+
+      it "takes multi-word resources" do
+        subject.include(:other_stuff)
+        expect(subject.query).to eq({:includes => 'OtherStuff'})
+      end
+    end
   end
 
   describe "a user's stuff" do
@@ -51,4 +69,5 @@ describe Etsy::Query do
     subject { Etsy::Query.new(:users, :key => 'cavetroll', :resource => [:avatar, :src]) }
     its(:endpoint) { should eq('/users/cavetroll/avatar/src') }
   end
+
 end

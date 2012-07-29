@@ -3,12 +3,13 @@ require 'cgi'
 module Etsy
   class Query
 
-    attr_reader :resource, :key, :sub_resource, :options
+    attr_reader :resource, :key, :sub_resource, :options, :associations
     def initialize(resource = nil, options = {})
       @resource = resource.to_s
       @key = options.delete(:key)
       @sub_resource = options.delete(:resource)
       @options = options
+      @associations = []
     end
 
     def limit
@@ -39,15 +40,22 @@ module Etsy
       options[:fields] = values
     end
 
+    def include(resource)
+      @associations << resource.to_s.split('_').map(&:capitalize).join
+    end
+
     def endpoint
       ["", resource, key, sub_resource].compact.join("/")
     end
 
     def query
-      return '' unless options.size > 0
+      return {} if options.size == 0 && associations.empty?
       params = {}
       options.each do |k, v|
         params[k] = list(v)
+      end
+      unless associations.empty?
+        params[:includes] = associations.join(',')
       end
       params
     end
