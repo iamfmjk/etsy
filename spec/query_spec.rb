@@ -16,24 +16,24 @@ describe Etsy::Query do
     it "overrides limit" do
       subject.limit = 10
       expect(subject.limit).to eq(10)
-      expect(subject.query).to eq(:limit => '10')
+      expect(subject.query).to eq({:limit => '10'})
     end
 
     it "overrides offset" do
       subject.offset = 3
       expect(subject.offset).to eq(3)
-      expect(subject.query).to eq(:offset => '3')
+      expect(subject.query).to eq({:offset => '3'})
     end
 
     it "overrides page" do
       subject.page = 2
       expect(subject.page).to eq(2)
-      expect(subject.query).to eq(:page => '2')
+      expect(subject.query).to eq({:page => '2'})
     end
 
     it "selects specific fields" do
       subject.fields = %w(login_name user_id)
-      expect(subject.query).to eq(:fields => 'login_name,user_id')
+      expect(subject.query).to eq({:fields => 'login_name,user_id'})
     end
   end
 
