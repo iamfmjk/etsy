@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'etsy/resource'
 
 describe Etsy::Resource do

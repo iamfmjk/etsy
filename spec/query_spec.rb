@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'etsy/query'
 
 describe Etsy::Query do
