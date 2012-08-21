@@ -1,4 +1,5 @@
 require 'cgi'
+require 'etsy/resource'
 
 module Etsy
   class Query
@@ -22,8 +23,8 @@ module Etsy
       options.fetch(:page) { 1 }
     end
 
-    def include(resource)
-      @associations << resource.to_s.split('_').map(&:capitalize).join
+    def include(resource, options = {})
+      @associations << Resource.new(resource, options) #.to_s.split('_').map(&:capitalize).join
     end
 
     def endpoint

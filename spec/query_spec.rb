@@ -47,21 +47,13 @@ describe Etsy::Query do
     its(:endpoint) { should eq('/users/cavetroll') }
 
     context "with associations" do
-      it "takes a resource" do
-        subject.include(:addresses)
-        expect(subject.query).to eq({:includes => 'Addresses'})
+
+      it "takes resources" do
+        subject.include(:addresses, :scope => :european)
+        subject.include(:profile, :limit => 1, :offset => 2, :fields => [:picture, :name])
+        expect(subject.query).to eq({:includes => 'Addresses:european,Profile(picture,name):2:1'})
       end
 
-      it "takes more than one resource" do
-        subject.include(:addresses)
-        subject.include(:profile)
-        expect(subject.query).to eq({:includes => 'Addresses,Profile'})
-      end
-
-      it "takes multi-word resources" do
-        subject.include(:other_stuff)
-        expect(subject.query).to eq({:includes => 'OtherStuff'})
-      end
     end
   end
 
