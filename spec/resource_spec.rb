@@ -41,4 +41,12 @@ describe Etsy::Resource do
     Etsy::Resource.new(:kitchen_sink, options).to_s.should eq('KitchenSink(water,soap):dirty:1337:42')
   end
 
+  it "nests resources" do
+    dinner = Etsy::Resource.new(:dinner, :fields => [:entre, :desert])
+    veggies = Etsy::Resource.new(:veggies, :limit => 3)
+    dressing = Etsy::Resource.new(:dressing, :scope => 'salty')
+    meal = dinner.include(veggies.include(dressing))
+    meal.to_s.should eq('Dinner(entre,desert)/Veggies:0:3/Dressing:salty')
+  end
+
 end

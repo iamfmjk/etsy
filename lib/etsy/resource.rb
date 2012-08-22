@@ -1,7 +1,7 @@
 module Etsy
   class Resource
 
-    attr_reader :name, :limit, :offset, :fields, :scope
+    attr_reader :name, :limit, :offset, :fields, :scope, :child
     def initialize(name, options = {})
       @name = name.to_s.split('_').map(&:capitalize).join
       @limit = options[:limit]
@@ -9,6 +9,17 @@ module Etsy
       @fields = options[:fields] || []
       @scope = options[:scope]
     end
+
+    def to_s
+      "#{name}#{selected_fields}#{scoped}#{range}#{child_resource}"
+    end
+
+    def include(resource)
+      @child = resource
+      self
+    end
+
+    private
 
     def range
       return unless offset || limit
@@ -21,15 +32,16 @@ module Etsy
     end
 
     def selected_fields
-      fields.empty? ? '' : "(#{fields.join(',')})"
+      "(#{fields.join(',')})" unless fields.empty?
     end
 
     def scoped
-      return ":#{scope}" if scope
+      ":#{scope}" if scope
     end
 
-    def to_s
-      "#{name}#{selected_fields}#{scoped}#{range}"
+    def child_resource
+      "/#{child}" if child
     end
+
   end
 end
