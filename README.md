@@ -29,7 +29,7 @@ It will likely work with higher versions, but this is unproven.
 ### Public Mode
 
 The Etsy API has two modes: public, and authenticated. Public mode only requires an
-API key (available from http://developer.etsy.com):
+API key (available from http://www.etsy.com/developers/ ):
 
     require 'rubygems'
     require 'etsy'
