@@ -174,5 +174,13 @@ module Etsy
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
     end
 
+    #Find all listings favored by a user
+    #
+    def self.find_all_favored_by_user(user_id, options = {})
+      favorite_listings = FavoriteListing.find_all_by_user_id(user_id, options)
+      listing_ids  = favorite_listings.map {|f| f.listing_id }.uniq
+      (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
+    end
+
   end
 end
