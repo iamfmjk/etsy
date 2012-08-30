@@ -10,6 +10,12 @@ module Etsy
       get_all("/shops/#{shop_id}/transactions", options)
     end
 
+    #Find all Transactions by the buyer_id
+    #
+    def self.find_all_by_buyer_id(user_id, options = {})
+      get_all("/users/#{user_id}/transactions", options)
+    end
+
     def buyer
       @buyer ||= User.find(buyer_id)
     end

@@ -182,5 +182,17 @@ module Etsy
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
     end
 
+    #Find all listings that have been bought by a user
+    #
+    def self.bought_listings(user_id, options = {})
+      includes = options.delete(:includes)
+
+      transactions = Transaction.find_all_by_buyer_id(user_id, options)
+      listing_ids  = transactions.map {|t| t.listing_id }.uniq
+
+      options = options.merge(:includes => includes) if includes
+      (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
+    end
+
   end
 end
