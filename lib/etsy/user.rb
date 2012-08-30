@@ -87,5 +87,14 @@ module Etsy
       Time.at(created)
     end
 
+    # Retrieve list of favorited items for this user
+    #
+    def favorites
+      unless @favorites
+        @favorites = Listing.find_all_favored_by_user(id, {:access_token => token, :access_secret => secret})
+      end
+      @favorites
+    end
+
   end
 end

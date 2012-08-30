@@ -10,6 +10,11 @@ module Etsy
         Transaction.find_all_by_shop_id(1, {'key' => 'value'}).should == transactions
       end
 
+      should "be able to find transactions for a buyer" do
+        transactions = mock_request('/users/1/transactions', {'key' => 'value'}, 'Transaction', 'findAllShopTransactions.json')
+        Transaction.find_all_by_buyer_id(1, {'key' => 'value'}).should == transactions
+      end
+
     end
 
     context "An instance of the Transaction class" do
