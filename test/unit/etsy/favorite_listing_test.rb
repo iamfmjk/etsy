@@ -6,7 +6,7 @@ module Etsy
     context "The FavoriteListing class" do
 
       should "be able to find favorite listings for a user" do
-        favorite_listings = mock_request('/listings/1/favorites/listings', {'key' => 'value'}, 'FavoriteListing', 'findAllFavoriteListings.json')
+        favorite_listings = mock_request('/users/1/favorites/listings', {'key' => 'value'}, 'FavoriteListing', 'findAllFavoriteListings.json')
         FavoriteListing.find_all_by_user_id(1, {'key' => 'value'}).should == favorite_listings
       end
 

@@ -7,7 +7,7 @@ module Etsy
     #Find all listings favorited by a user
     #
     def self.find_all_by_user_id(user_id, options = {})
-      get_all("/listings/#{user_id}/favorites/listings", options)
+      get_all("/users/#{user_id}/favorites/listings", options)
     end
   end
 end
