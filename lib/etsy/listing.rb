@@ -43,7 +43,8 @@ module Etsy
     attribute :ending, :from => :ending_tsz
 
     attributes :title, :description, :state, :url, :price, :quantity,
-               :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white
+               :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
+               :featured_rank, :occasion, :num_favorers, :user_id
 
     association :image, :from => 'Images'
 
