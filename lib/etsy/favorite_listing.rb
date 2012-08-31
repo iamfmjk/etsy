@@ -6,7 +6,7 @@ module Etsy
 
     #Create a new favorite listing
     #
-    def self.create(user listing, options = {})
+    def self.create(user, listing, options = {})
       options.merge!(:require_secure => true)
       post("/users/#{user.id}/favorites/listings/#{listing.id}", options)
     end
