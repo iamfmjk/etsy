@@ -8,8 +8,8 @@ module Etsy
 
     # Create a new client that will connect to the specified host
     #
-    def initialize(host)
-      @host = host
+    def initialize
+      @host = Etsy.host
     end
 
     def client # :nodoc:
