@@ -132,9 +132,8 @@ module Etsy
 
       should "know the client for read-only mode" do
         Etsy.stubs(:access_mode).returns(:read_only)
-        Etsy.stubs(:host).returns('example.com')
 
-        BasicClient.stubs(:new).with('example.com').returns('client')
+        BasicClient.stubs(:new).returns 'client'
 
         r = Request.new('')
 
@@ -143,9 +142,8 @@ module Etsy
 
       should "know the client for authenticated mode when there is no access token information" do
         Etsy.stubs(:access_mode).returns(:authenticated)
-        Etsy.stubs(:host).returns('example.com')
 
-        BasicClient.stubs(:new).with('example.com').returns('client')
+        BasicClient.stubs(:new).returns 'client'
 
         r = Request.new('')
 

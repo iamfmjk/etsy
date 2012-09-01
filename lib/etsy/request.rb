@@ -128,7 +128,7 @@ module Etsy
     end
 
     def basic_client
-      BasicClient.new(Etsy.host)
+      BasicClient.new
     end
 
     def secure?
