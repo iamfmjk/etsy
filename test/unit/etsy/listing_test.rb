@@ -213,5 +213,21 @@ module Etsy
       end
 
     end
+
+    context "with favorite listings data" do
+        setup do
+          data = read_fixture('listing/findAllShopListings.json')
+          @listing = Listing.new(data.first)
+          listing_1 = stub(:listing_id => @listing.id, :user_id => 1)
+          listing_2 = stub(:listing_id => @listing.id, :user_id => 2)
+          @favorite_listings = [listing_1, listing_2]
+        end
+
+        should "have all listings" do
+          FavoriteListing.stubs(:find_all_listings_favored_by).with(@listing.id, {:access_token => nil, :access_secret => nil}).returns(@favorite_listings)
+          User.stubs(:find).with([1, 2], {:access_token => nil, :access_secret => nil}).returns(['users'])
+          @listing.admirers({:access_token => nil, :access_secret => nil}).should == ['users']
+        end
+      end
   end
 end

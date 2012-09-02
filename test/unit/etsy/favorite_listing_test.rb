@@ -7,7 +7,12 @@ module Etsy
 
       should "be able to find favorite listings for a user" do
         favorite_listings = mock_request('/users/1/favorites/listings', {'key' => 'value'}, 'FavoriteListing', 'findAllFavoriteListings.json')
-        FavoriteListing.find_all_by_user_id(1, {'key' => 'value'}).should == favorite_listings
+        FavoriteListing.find_all_user_favorite_listings(1, {'key' => 'value'}).should == favorite_listings
+      end
+
+      should "be able to find favorite listings associated to a listing" do
+        favorite_listings = mock_request('/listings/1/favored-by', {'key' => 'value'}, 'FavoriteListing', 'findAllFavoriteListings.json')
+        FavoriteListing.find_all_listings_favored_by(1, {'key' => 'value'}).should == favorite_listings
       end
 
     end
