@@ -96,5 +96,14 @@ module Etsy
       @favorites
     end
 
+    #Return a set of listings that have been bought
+    #
+    def bought_listings
+      unless @bought_listings
+        @bought_listings = Listing.bought_listings(id, {:access_token => token, :access_secret => secret})
+      end
+      @bought_listings
+    end
+
   end
 end
