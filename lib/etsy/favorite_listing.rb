@@ -13,8 +13,14 @@ module Etsy
 
     #Find all listings favorited by a user
     #
-    def self.find_all_by_user_id(user_id, options = {})
+    def self.find_all_user_favorite_listings(user_id, options = {})
       get_all("/users/#{user_id}/favorites/listings", options)
+    end
+
+    #Find a set of favorelistings associated with a listing_id
+    #
+    def self.find_all_listings_favored_by(listing_id, options = {})
+      get_all("/listings/#{listing_id}/favored-by", options)  
     end
   end
 end

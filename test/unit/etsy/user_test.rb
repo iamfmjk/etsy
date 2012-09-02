@@ -214,7 +214,7 @@ module Etsy
         end
 
         should "have all listings" do
-          FavoriteListing.stubs(:find_all_by_user_id).with(@user.id, {:access_token => nil, :access_secret => nil}).returns(@favorite_listings)
+          FavoriteListing.stubs(:find_all_user_favorite_listings).with(@user.id, {:access_token => nil, :access_secret => nil}).returns(@favorite_listings)
           Listing.stubs(:find).with([1, 2], {:access_token => nil, :access_secret => nil}).returns(['listings'])
           @user.favorites.should == ['listings']
         end
