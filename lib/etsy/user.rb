@@ -91,7 +91,7 @@ module Etsy
     #
     def favorites
       unless @favorites
-        @favorites = Listing.find_all_favored_by_user(id, {:access_token => token, :access_secret => secret})
+        @favorites = Listing.find_all_user_favorite_listings(id, {:access_token => token, :access_secret => secret})
       end
       @favorites
     end

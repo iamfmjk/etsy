@@ -155,6 +155,15 @@ module Etsy
       Time.at(ending)
     end
 
+    #Return a list of users who have favorited this listing
+    #
+    def admirers(options = {})
+      options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+      favorite_listings = FavoriteListing.find_all_listings_favored_by(id, options)
+      user_ids  = favorite_listings.map {|f| f.user_id }.uniq
+      (user_ids.size > 0) ? Array(Etsy::User.find(user_ids, options)) : []
+    end
+
     private
 
     def self.valid?(state)
@@ -177,8 +186,8 @@ module Etsy
 
     #Find all listings favored by a user
     #
-    def self.find_all_favored_by_user(user_id, options = {})
-      favorite_listings = FavoriteListing.find_all_by_user_id(user_id, options)
+    def self.find_all_user_favorite_listings(user_id, options = {})
+      favorite_listings = FavoriteListing.find_all_user_favorite_listings(user_id, options)
       listing_ids  = favorite_listings.map {|f| f.listing_id }.uniq
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
     end
