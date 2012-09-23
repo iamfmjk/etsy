@@ -43,7 +43,8 @@ module Etsy
     attribute :ending, :from => :ending_tsz
 
     attributes :title, :description, :state, :url, :price, :quantity,
-               :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white
+               :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
+               :featured_rank, :occasion, :num_favorers, :user_id
 
     association :image, :from => 'Images'
 
@@ -154,6 +155,15 @@ module Etsy
       Time.at(ending)
     end
 
+    #Return a list of users who have favorited this listing
+    #
+    def admirers(options = {})
+      options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+      favorite_listings = FavoriteListing.find_all_listings_favored_by(id, options)
+      user_ids  = favorite_listings.map {|f| f.user_id }.uniq
+      (user_ids.size > 0) ? Array(Etsy::User.find(user_ids, options)) : []
+    end
+
     private
 
     def self.valid?(state)
@@ -168,6 +178,26 @@ module Etsy
       includes = options.delete(:includes)
 
       transactions = Transaction.find_all_by_shop_id(shop_id, options)
+      listing_ids  = transactions.map {|t| t.listing_id }.uniq
+
+      options = options.merge(:includes => includes) if includes
+      (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
+    end
+
+    #Find all listings favored by a user
+    #
+    def self.find_all_user_favorite_listings(user_id, options = {})
+      favorite_listings = FavoriteListing.find_all_user_favorite_listings(user_id, options)
+      listing_ids  = favorite_listings.map {|f| f.listing_id }.uniq
+      (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
+    end
+
+    #Find all listings that have been bought by a user
+    #
+    def self.bought_listings(user_id, options = {})
+      includes = options.delete(:includes)
+
+      transactions = Transaction.find_all_by_buyer_id(user_id, options)
       listing_ids  = transactions.map {|t| t.listing_id }.uniq
 
       options = options.merge(:includes => includes) if includes

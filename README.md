@@ -263,6 +263,7 @@ These people have helped make the Etsy gem what it is today:
 * [Trae Robrock](https://github.com/trobrock)
 * [Jimmy Tang](https://github.com/jimmytang)
 * [Julio Santos](https://github.com/julio)
+* [Roger Smith](https://github.com/rogsmith)
 
 ### Github Flow
 

@@ -203,6 +203,38 @@ module Etsy
 
         user.created_at.should == Time.at(1)
       end
+
+      context "with favorite listings data" do
+        setup do
+          data = read_fixture('user/getUser.single.withProfile.json')
+          @user = User.new(data.first)
+          listing_1 = stub(:listing_id => 1, :user_id => @user.id)
+          listing_2 = stub(:listing_id => 2, :user_id => @user.id)
+          @favorite_listings = [listing_1, listing_2]
+        end
+
+        should "have all listings" do
+          FavoriteListing.stubs(:find_all_user_favorite_listings).with(@user.id, {:access_token => nil, :access_secret => nil}).returns(@favorite_listings)
+          Listing.stubs(:find).with([1, 2], {:access_token => nil, :access_secret => nil}).returns(['listings'])
+          @user.favorites.should == ['listings']
+        end
+      end
+
+      context "with bought listings data" do
+        setup do
+          data = read_fixture('user/getUser.single.withProfile.json')
+          @user = User.new(data.first)
+          listing_1 = stub(:listing_id => 1, :user_id => @user.id)
+          listing_2 = stub(:listing_id => 2, :user_id => @user.id)
+          @bought_listings = [listing_1, listing_2]
+        end
+
+        should "have all listings" do
+          Transaction.stubs(:find_all_by_buyer_id).with(@user.id, {:access_token => nil, :access_secret => nil}).returns(@bought_listings)
+          Listing.stubs(:find).with([1, 2], {:access_token => nil, :access_secret => nil}).returns(['listings'])
+          @user.bought_listings.should == ['listings']
+        end
+      end
     end
 
     should "know the addresses for a user" do
