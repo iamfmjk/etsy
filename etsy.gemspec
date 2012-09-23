@@ -30,6 +30,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "shoulda", "~> 3.1.0"
   gem.add_development_dependency "mocha", "~> 0.12.0"
   # rspec version > 2.7.x breaks with jruby
+  # see http://jira.codehaus.org/browse/JRUBY-6324
   gem.add_development_dependency "rspec", "~> 2.7.0"
   gem.add_development_dependency "vcr", "~> 2.2.3"
   gem.add_development_dependency "webmock", "~> 1.8.7"
