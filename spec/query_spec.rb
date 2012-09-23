@@ -68,4 +68,10 @@ describe Etsy::Query do
     its(:endpoint) { should eq('/users/cavetroll/avatar/src') }
   end
 
+  it "properly delegates method missing" do
+    lambda {
+      subject.some_random_method
+    }.should raise_error NoMethodError
+  end
+
 end
