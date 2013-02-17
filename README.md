@@ -222,6 +222,24 @@ If you want a more fine-grained response, you can specify the associations as an
     >> association = {:resource => 'Images', :fields => ['red','green','blue'], :limit => 1, :offset => 0}
     >> Listing.find(1, {:includes => [association]})
 
+## Public mode vs authenticated calls
+
+This additional example should make clear the difference between issuing public versus authenticated requests: 
+
+### Public workflow
+
+    >> Etsy.api_key = 'key'
+	>> user = Etsy.user('user_id_or_name')
+	>> Etsy::Listing.find_all_by_shop_id(user.shop.id, :limit => 5)
+
+### Authenticated workflow
+
+    >> Etsy.api_key = 'key'
+	>> Etsy.api_secret = 'secret'
+    >> user = Etsy.myself(token, secret)
+	>> access = { :access_token => user.token, :access_secret => user.secret }
+	>> Etsy::Listing.find_all_by_shop_id(user.shop.id, access.merge(:limit => 5))
+	
 ## Contributing
 
 I have a "commit bit" policy for contributions to this repository. Once I accept
