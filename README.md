@@ -240,6 +240,46 @@ This additional example should make clear the difference between issuing public 
 	>> access = { :access_token => user.token, :access_secret => user.secret }
 	>> Etsy::Listing.find_all_by_shop_id(user.shop.id, access.merge(:limit => 5))
 	
+## Error handling
+
+Next versions of this gem will raise errors when requests are unsuccessful. The current version does not. 
+Use either of following workarounds:
+
+### Low-level API
+
+Instead of doing this:
+
+    >> Etsy::Request.get('/users/__SELF__', access).result 
+
+Write this:
+
+    >> Etsy::Request.get('/users/__SELF__', access).to_hash["results"]
+
+### Monkey patch
+
+This is Ruby, reopen the <code>Response</code> class anywhere in your codebase and redefine <code>result</code>:
+
+      class Etsy::Response
+        def result
+	      if success?
+	        results = to_hash['results'] || []
+	        count == 1 ? results.first : results
+	      else
+	       validate!
+	      end
+        end
+      end
+
+### Usage
+
+With the above in place, you can now rescue errors and act upon them:
+
+      begin
+        Etsy.myself(access.token, access.secret)		
+      rescue Etsy::OAuthTokenRevoked, Etsy::InvalidUserID, Etsy::MissingShopID, Etsy::EtsyJSONInvalid, Etsy::TemporaryIssue => e
+        puts e.message
+      end 
+
 ## Contributing
 
 I have a "commit bit" policy for contributions to this repository. Once I accept
