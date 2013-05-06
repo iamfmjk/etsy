@@ -270,6 +270,15 @@ This is Ruby, dammit. Reopen the <code>Response</code> class anywhere in your co
         end
       end
 
+### Usage
+
+With the above in place, you can now rescue errors and act upon them:
+
+      begin
+        Etsy.myself(access.token, access.secret)		
+      rescue Etsy::OAuthTokenRevoked, Etsy::InvalidUserID, Etsy::MissingShopID, Etsy::EtsyJSONInvalid, Etsy::TemporaryIssue => e
+        puts e.message
+      end 
 
 ## Contributing
 
