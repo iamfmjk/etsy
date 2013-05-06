@@ -257,7 +257,7 @@ Write this:
 
 ### Monkey patch
 
-This is Ruby, dammit. Reopen the <code>Response</code> class anywhere in your codebase and redefine <code>result</code>:
+This is Ruby, reopen the <code>Response</code> class anywhere in your codebase and redefine <code>result</code>:
 
       class Etsy::Response
         def result
