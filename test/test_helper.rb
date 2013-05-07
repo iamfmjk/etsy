@@ -5,7 +5,7 @@ require 'rubygems'
 require 'test/unit'
 require 'shoulda'
 require 'matchy'
-require 'mocha'
+require 'mocha/setup'
 require 'cgi'
 
 require File.expand_path('../../lib/etsy', __FILE__)
