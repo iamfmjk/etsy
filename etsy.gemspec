@@ -29,5 +29,5 @@ Gem::Specification.new do |gem|
   # on shoulda/context.rb:7
   # But then when you load active_support, shoulda-context decides
   # to load MiniTest
-  gem.add_development_dependency 'minitest'
+  gem.add_development_dependency 'minitest', "=4.7.4"
 end
