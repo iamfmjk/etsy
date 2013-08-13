@@ -77,8 +77,11 @@ module Etsy
       client.put(endpoint)
     end
 
-    def post_multipart(endpoint, params = {})
-      Net::HTTP.new(Etsy.host).start do |http|
+    def post_multipart(endpoint, params = {})      
+      client = Net::HTTP.new(Etsy.host, Etsy.protocol == "http" ? 80 : 443)
+      client.use_ssl = true if Etsy.protocol == "https"
+      
+      client.start do |http|
         req = Net::HTTP::Post.new(endpoint)
         add_multipart_data(req, params)
         add_oauth(req)
