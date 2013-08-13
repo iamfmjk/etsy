@@ -81,6 +81,17 @@ module Etsy
     @environment = environment
     @host = (environment == :sandbox) ? SANDBOX_HOST : PRODUCTION_HOST
   end
+  
+  def self.protocol=(protocol)
+    unless ["http", "https"].include?(protocol.to_s)
+      raise(ArgumentError, "protocol must be set to either 'http' or 'https'")
+    end
+    @protocol = protocol.to_s
+  end
+  
+  def self.protocol
+    @protocol || "http"
+  end
 
   # The currently configured environment.
   #
