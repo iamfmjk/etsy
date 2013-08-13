@@ -24,7 +24,7 @@ module Etsy
     def consumer # :nodoc:
       path = '/v2/oauth/'
       @consumer ||= OAuth::Consumer.new(Etsy.api_key, Etsy.api_secret, {
-        :site               => "http://#{Etsy.host}",
+        :site               => "#{Etsy.protocol}://#{Etsy.host}",
         :request_token_path => "#{path}request_token?scope=#{Etsy.permission_scopes.join('+')}",
         :access_token_path  => "#{path}access_token"
       })
