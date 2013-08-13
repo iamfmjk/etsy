@@ -57,6 +57,11 @@ module Etsy
       options.merge!(:require_secure => true)
       put("/listings/#{listing.id}", options)
     end
+    
+    def self.destroy(listing, options = {})
+      options.merge!(:require_secure => true)
+      delete("/listings/#{listing.id}", options)
+    end
 
     # Retrieve one or more listings by ID:
     #

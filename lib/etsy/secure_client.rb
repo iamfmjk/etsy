@@ -76,6 +76,10 @@ module Etsy
     def put(endpoint)
       client.put(endpoint)
     end
+    
+    def delete(endpoint)
+      client.delete(endpoint)
+    end
 
     def post_multipart(endpoint, params = {})      
       client = Net::HTTP.new(Etsy.host, Etsy.protocol == "http" ? 80 : 443)
