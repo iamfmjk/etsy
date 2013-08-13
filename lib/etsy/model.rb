@@ -83,6 +83,10 @@ module Etsy
       def put(endpoint, options={})
         Request.put(endpoint, options)
       end
+      
+      def delete(endpoint, options={})
+        Request.delete(endpoint, options)
+      end
 
       def find_one_or_more(endpoint, identifiers_and_options)
         options = options_from(identifiers_and_options)
