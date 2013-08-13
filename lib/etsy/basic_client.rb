@@ -13,7 +13,13 @@ module Etsy
     end
 
     def client # :nodoc:
-      @client ||= Net::HTTP.new(@host)
+      if @client
+        return @client
+      else
+        @client = Net::HTTP.new(@host, Etsy.protocol == "http" ? 80 : 443)
+        @client.use_ssl = true if Etsy.protocol == "https"
+        return @client
+      end
     end
 
     # Fetch a raw response from the specified endpoint
