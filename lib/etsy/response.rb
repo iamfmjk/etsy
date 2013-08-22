@@ -49,6 +49,11 @@ module Etsy
         []
       end
     end
+    
+    # Total number of results of the request
+    def total
+      @total ||= to_hash['count']
+    end
 
     def success?
       !!(code =~ /2\d\d/)
