@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "etsy"
   gem.require_paths = ["lib"]
   gem.version       = Etsy::VERSION
+  gem.license       = 'MIT'
 
   gem.required_rubygems_version = Gem::Requirement.new(">= 0") if gem.respond_to? :required_rubygems_version=
   gem.rubygems_version = "1.8.10"
