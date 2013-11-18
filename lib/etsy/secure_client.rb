@@ -24,7 +24,7 @@ module Etsy
     def consumer # :nodoc:
       path = '/v2/oauth/'
       @consumer ||= OAuth::Consumer.new(Etsy.api_key, Etsy.api_secret, {
-        :site               => "http://#{Etsy.host}",
+        :site               => "#{Etsy.protocol}://#{Etsy.host}",
         :request_token_path => "#{path}request_token?scope=#{Etsy.permission_scopes.join('+')}",
         :access_token_path  => "#{path}access_token"
       })
@@ -76,9 +76,16 @@ module Etsy
     def put(endpoint)
       client.put(endpoint)
     end
+    
+    def delete(endpoint)
+      client.delete(endpoint)
+    end
 
-    def post_multipart(endpoint, params = {})
-      Net::HTTP.new(Etsy.host).start do |http|
+    def post_multipart(endpoint, params = {})      
+      client = Net::HTTP.new(Etsy.host, Etsy.protocol == "http" ? 80 : 443)
+      client.use_ssl = true if Etsy.protocol == "https"
+      
+      client.start do |http|
         req = Net::HTTP::Post.new(endpoint)
         add_multipart_data(req, params)
         add_oauth(req)

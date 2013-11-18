@@ -8,10 +8,12 @@ if ENV["TRAVIS"] != "true"
   SimpleCov.start
 end
 
+require 'active_support' # workaround load issue with shoulda in rubinius
+require 'minitest/autorun' # workaround load issue with shoulda in rubinius
 require 'test/unit'
 require 'shoulda'
 require 'matchy'
-require 'mocha'
+require 'mocha/setup'
 require 'cgi'
 
 require File.expand_path('../../lib/etsy', __FILE__)

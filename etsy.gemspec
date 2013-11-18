@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "etsy"
   gem.require_paths = ["lib"]
   gem.version       = Etsy::VERSION
+  gem.license       = 'MIT'
 
   gem.required_rubygems_version = Gem::Requirement.new(">= 0") if gem.respond_to? :required_rubygems_version=
   gem.rubygems_version = "1.8.10"
@@ -25,14 +26,19 @@ Gem::Specification.new do |gem|
   gem.add_dependency "simple_oauth", "~> 0.1.8"
   gem.add_dependency "jruby-openssl", "~> 0.7.7" if RUBY_PLATFORM == 'java'
 
-  gem.add_development_dependency "rake", "~> 0.9.2"
+  gem.add_development_dependency "rake", "~> 10.0.4"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
-  gem.add_development_dependency "shoulda", "~> 3.1.0"
-  gem.add_development_dependency "mocha", "~> 0.12.0"
   # rspec version > 2.7.x breaks with jruby
   # see http://jira.codehaus.org/browse/JRUBY-6324
   gem.add_development_dependency "rspec", "~> 2.7.0"
   gem.add_development_dependency "vcr", "~> 2.2.3"
   gem.add_development_dependency "webmock", "~> 1.8.7"
   gem.add_development_dependency "simplecov", "~> 0.6.4"
+  gem.add_development_dependency 'shoulda', "~> 3.4.0"
+  gem.add_development_dependency 'mocha', "~> 0.13.3"
+  # shoulda-context blows up on ActiveSupport not being defined
+  # on shoulda/context.rb:7
+  # But then when you load active_support, shoulda-context decides
+  # to load MiniTest
+  gem.add_development_dependency 'minitest', "=4.7.4"
 end

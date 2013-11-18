@@ -26,9 +26,17 @@ module Etsy
     end
 
     def self.create(listing, image_path, options = {})
+      options.merge!(:require_secure => true)
       options[:image] = File.new(image_path)
       options[:multipart] = true
       post("/listings/#{listing.id}/images", options)
+    end
+
+    # Delete image
+    #
+    def self.destroy(listing, image, options = {})
+      options.merge!(:require_secure => true)
+      delete("/listings/#{listing.id}/images/#{image.id}", options)
     end
   end
 end

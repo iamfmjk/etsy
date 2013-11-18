@@ -67,9 +67,24 @@ module Etsy
   class Error < RuntimeError; end
 
   class << self
-    attr_accessor :api_key, :api_secret
     attr_writer :callback_url
     attr_writer :permission_scopes
+  end
+
+  # Make Etsy.api_key and Etsy.api_secret thread safe
+  #
+  def self.api_key
+    Thread.current[:etsy_api_key]
+  end
+
+  def self.api_key=(val)
+    Thread.current[:etsy_api_key] = val
+  end
+  def self.api_secret
+    Thread.current[:etsy_api_secret]
+  end
+  def self.api_secret=(val)
+    Thread.current[:etsy_api_secret] = val
   end
 
   SANDBOX_HOST = 'sandbox.openapi.etsy.com'
@@ -84,6 +99,17 @@ module Etsy
     end
     @environment = environment
     @host = (environment == :sandbox) ? SANDBOX_HOST : PRODUCTION_HOST
+  end
+  
+  def self.protocol=(protocol)
+    unless ["http", "https"].include?(protocol.to_s)
+      raise(ArgumentError, "protocol must be set to either 'http' or 'https'")
+    end
+    @protocol = protocol.to_s
+  end
+  
+  def self.protocol
+    @protocol || "http"
   end
 
   # The currently configured environment.

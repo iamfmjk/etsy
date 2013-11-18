@@ -4,6 +4,12 @@ module Etsy
   class ResponseTest < Test::Unit::TestCase
 
     context "An instance of the Response class" do
+      
+      should "be able to return the total" do
+        r = Response.new(stub(:body => '{ "count": 42 }'))
+        
+        r.total.should == 42
+      end
 
       should "be able to decode the JSON data to a hash" do
         data = '{ "foo":"bar" }'
