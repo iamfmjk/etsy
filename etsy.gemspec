@@ -30,7 +30,8 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
   # rspec version > 2.7.x breaks with jruby
   # see http://jira.codehaus.org/browse/JRUBY-6324
-  gem.add_development_dependency "rspec", "~> 2.7.0"
+  # apparently this has been fixed. See http://jira.codehaus.org/browse/JRUBY-6324?focusedCommentId=287912&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-287912
+  gem.add_development_dependency "rspec", "~> 2.12.0"
   gem.add_development_dependency "vcr", "~> 2.2.3"
   gem.add_development_dependency "webmock", "~> 1.8.7"
   gem.add_development_dependency "simplecov", "~> 0.6.4"
