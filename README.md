@@ -31,7 +31,6 @@ It will likely work with higher versions, but this is unproven.
 The Etsy API has two modes: public, and authenticated. Public mode only requires an
 API key (available from http://developer.etsy.com ):
 
-    require 'rubygems'
     require 'etsy'
 
     Etsy.api_key = 'foobar'
