@@ -114,18 +114,22 @@ module Etsy
         r = Response.new(raw_response)
 
         lambda { r.to_hash }.should raise_error(Etsy::TemporaryIssue)
+      end
 
+      should "raise ResourceUnavailable" do
         raw_response = mock
         raw_response.stubs(:body => "something Resource temporarily unavailable something")
         r = Response.new(raw_response)
 
-        lambda { r.to_hash }.should raise_error(Etsy::TemporaryIssue)
+        lambda { r.to_hash }.should raise_error(Etsy::ResourceUnavailable)
+      end
 
+      should "raise ExceededRateLimit" do
         raw_response = mock
         raw_response.stubs(:body => "something You have exceeded your API limit something")
         r = Response.new(raw_response)
 
-        lambda { r.to_hash }.should raise_error(Etsy::TemporaryIssue)
+        lambda { r.to_hash }.should raise_error(Etsy::ExceededRateLimit)
       end
 
       should "provide the code" do

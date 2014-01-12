@@ -4,6 +4,8 @@ module Etsy
   class MissingShopID < StandardError; end
   class EtsyJSONInvalid < StandardError; end
   class TemporaryIssue < StandardError; end
+  class ResourceUnavailable < TemporaryIssue; end
+  class ExceededRateLimit < TemporaryIssue; end
   class InvalidUserID < StandardError; end
 
   # = Response
@@ -77,7 +79,9 @@ module Etsy
       raise OAuthTokenRevoked         if token_revoked?
       raise MissingShopID             if missing_shop_id?
       raise InvalidUserID             if invalid_user_id?
-      raise TemporaryIssue            if temporary_etsy_issue? || resource_unavailable? || exceeded_rate_limit?
+      raise TemporaryIssue            if temporary_etsy_issue?
+      raise ResourceUnavailable       if resource_unavailable?
+      raise ExceededRateLimit         if exceeded_rate_limit?
       raise EtsyJSONInvalid.new("CODE: #{code}, BODY: #{data}") unless valid_json?
       true
     end
