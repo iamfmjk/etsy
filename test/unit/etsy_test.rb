@@ -4,6 +4,7 @@ class EtsyTest < Test::Unit::TestCase
 
   context "The Etsy module" do
     setup do
+      Etsy.instance_variable_set(:@protocol, nil)
       Etsy.instance_variable_set(:@environment, nil)
       Etsy.instance_variable_set(:@access_mode, nil)
       Etsy.instance_variable_set(:@callback_url, nil)
@@ -23,6 +24,15 @@ class EtsyTest < Test::Unit::TestCase
 
       Etsy::User.expects(:find).with('littletjane').returns(user)
       Etsy.user('littletjane').should == user
+    end
+
+    should "be able to set the protocol to a valid value" do
+      Etsy.protocol = 'http'
+      Etsy.protocol.should == 'http'
+    end
+
+    should "raise an exception when attempting to set an invalid protocol" do
+      lambda { Etsy.protocol = :invalid }.should raise_error(ArgumentError)
     end
 
     should "use the sandbox environment by default" do
@@ -78,6 +88,7 @@ class EtsyTest < Test::Unit::TestCase
 
   context "The Etsy module when set up properly" do
     setup do
+      Etsy.instance_variable_set(:@protocol, 'https')
       Etsy.instance_variable_set(:@environment, :sandbox)
       Etsy.instance_variable_set(:@access_mode, :read_write)
       Etsy.instance_variable_set(:@api_key, 'key')
