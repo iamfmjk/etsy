@@ -26,6 +26,10 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.user('littletjane').should == user
     end
 
+    should "use the https protocol by default" do
+      Etsy.protocol.should == "https"
+    end
+
     should "be able to set the protocol to a valid value" do
       Etsy.protocol = 'http'
       Etsy.protocol.should == 'http'

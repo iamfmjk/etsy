@@ -13,7 +13,7 @@ module Etsy
         Etsy.stubs(:permission_scopes).returns(['scope_one', 'scope_two'])
 
         OAuth::Consumer.stubs(:new).with('key', 'secret', {
-          :site               => 'http://sandbox',
+          :site               => 'https://sandbox',
           :request_token_path => '/v2/oauth/request_token?scope=scope_one+scope_two',
           :access_token_path  => '/v2/oauth/access_token',
         }).returns('consumer')
@@ -31,7 +31,7 @@ module Etsy
         Etsy.stubs(:permission_scopes).returns(['scope_one', 'scope_two'])
 
         OAuth::Consumer.stubs(:new).with('key', 'secret', {
-          :site               => 'http://production',
+          :site               => 'https://production',
           :request_token_path => '/v2/oauth/request_token?scope=scope_one+scope_two',
           :access_token_path  => '/v2/oauth/access_token',
         }).returns('consumer')
