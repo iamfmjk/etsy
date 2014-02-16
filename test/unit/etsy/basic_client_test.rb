@@ -7,6 +7,7 @@ module Etsy
 
       should "be able to construct a client" do
         Etsy.stubs(:host).returns 'example.com'
+        Etsy.stubs(:protocol).returns 'http'
         client = BasicClient.new
         Net::HTTP.stubs(:new).with('example.com', 80).returns('client')
 
