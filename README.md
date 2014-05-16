@@ -100,9 +100,9 @@ to the verification URL. A simple example using Sinatra:
 
 ### Environment
 
-The Etsy API has both a sandbox environment and a production environment.
+The Etsy API previously had both a sandbox environment and a production environment. They have recently eliminated the sandbox environment, but the ability to set the environment has been preserved in case it is implemented in v3.
 
-If nothing is set, the default is :sandbox.
+If nothing is set, the default is :production.
 
 You can set this using:
 
