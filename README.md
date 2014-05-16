@@ -45,7 +45,6 @@ The Etsy API has support for both retrieval of extended information and write su
 
 For simple authentication from the console, configure the necessary parameters:
 
-    require 'rubygems'
     require 'etsy'
 
     Etsy.api_key = 'key'
@@ -72,7 +71,6 @@ Authenticated calls can now be made by passing an access token and secret:
 
 The process for authenticating via a web application is similar, but requires the configuration of a callback URL:
 
-    require 'rubygems'
     require 'etsy'
 
     Etsy.api_key = 'key'
