@@ -39,13 +39,13 @@ class EtsyTest < Test::Unit::TestCase
       lambda { Etsy.protocol = :invalid }.should raise_error(ArgumentError)
     end
 
-    should "use the sandbox environment by default" do
-      Etsy.environment.should == :sandbox
+    should "use the production environment by default" do
+      Etsy.environment.should == :production
     end
 
     should "be able to set the environment to a valid value" do
-      Etsy.environment = :production
-      Etsy.environment.should == :production
+      Etsy.environment = :sandbox
+      Etsy.environment.should == :sandbox
     end
 
     should "raise an exception when attempting to set an invalid environment" do
@@ -67,8 +67,8 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.host.should == 'openapi.etsy.com'
     end
 
-    should "default to sandbox host" do
-      Etsy.host.should == 'sandbox.openapi.etsy.com'
+    should "default to production host" do
+      Etsy.host.should == 'openapi.etsy.com'
     end
 
     should "be able to set the callback url" do

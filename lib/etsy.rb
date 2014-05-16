@@ -111,11 +111,11 @@ module Etsy
   # The currently configured environment.
   #
   def self.environment
-    @environment || :sandbox
+    @environment || :production
   end
 
   def self.host # :nodoc:
-    @host || SANDBOX_HOST
+    @host || PRODUCTION_HOST
   end
 
   # The configured callback URL or 'oob' if no callback URL is configured. This controls
