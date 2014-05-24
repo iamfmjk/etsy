@@ -67,20 +67,24 @@ module Etsy
     attr_writer :permission_scopes
   end
 
-  # Make Etsy.api_key and Etsy.api_secret thread safe
+  # Make Etsy.api_key and Etsy.api_secret global but also local to threads
   #
   def self.api_key
-    Thread.current[:etsy_api_key]
+    Thread.current[:etsy_api_key] || @api_key
   end
 
-  def self.api_key=(val)
-    Thread.current[:etsy_api_key] = val
+  def self.api_key=(key)
+    @api_key ||= key
+    Thread.current[:etsy_api_key] = key
   end
+
   def self.api_secret
-    Thread.current[:etsy_api_secret]
+    Thread.current[:etsy_api_secret] || @api_secret
   end
-  def self.api_secret=(val)
-    Thread.current[:etsy_api_secret] = val
+  
+  def self.api_secret=(secret)
+    @api_secret ||= secret
+    Thread.current[:etsy_api_secret] = secret
   end
 
   SANDBOX_HOST = 'sandbox.openapi.etsy.com'

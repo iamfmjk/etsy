@@ -19,6 +19,41 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.api_key.should == 'key'
     end
 
+    should "be able to set and retrieve the API key across threads (global)" do
+      Etsy.api_key = 'key'
+      Thread.new do
+        Etsy.api_key.should == 'key'
+      end.join
+    end
+
+    should "be able to set and retrieve the API key inside a thread (thread local)" do
+      Etsy.api_key = 'key'
+      Thread.new do
+        Etsy.api_key = 'thread_local_key'
+        Etsy.api_key.should == 'thread_local_key'
+      end.join
+    end
+
+    should "be able to set and retrieve the API secret" do
+      Etsy.api_secret = 'secret'
+      Etsy.api_secret.should == 'secret'
+    end
+
+    should "be able to set and retrieve the API secret across threads (global)" do
+      Etsy.api_secret = 'secret'
+      Thread.new do
+        Etsy.api_secret.should == 'secret'
+      end.join
+    end
+
+    should "be able to set and retrieve the API secret inside a thread (thread local)" do
+      Etsy.api_secret = 'secret'
+      Thread.new do
+        Etsy.api_secret = 'thread_local_secret'
+        Etsy.api_secret.should == 'thread_local_secret'
+      end.join
+    end
+
     should "be able to find a user by username" do
       user = stub()
 
@@ -50,11 +85,6 @@ class EtsyTest < Test::Unit::TestCase
 
     should "raise an exception when attempting to set an invalid environment" do
       lambda { Etsy.environment = :invalid }.should raise_error(ArgumentError)
-    end
-
-    should "be able to set and retrieve the API secret" do
-      Etsy.api_secret = 'secret'
-      Etsy.api_secret.should == 'secret'
     end
 
     should "know the host for the sandbox environment" do
