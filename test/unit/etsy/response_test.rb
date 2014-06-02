@@ -80,8 +80,9 @@ module Etsy
         raw_response.stubs(:body => "I am not JSON", :code => 500)
         r = Response.new(raw_response)
 
-        lambda { r.to_hash }.should raise_error(Etsy::EtsyJSONInvalid)
-        lambda { r.to_hash }.should raise_error("CODE: 500, BODY: I am not JSON")
+        exception = assert_raises(Etsy::EtsyJSONInvalid) { r.to_hash }
+        assert_equal( 500, exception.code )
+        assert_equal( "I am not JSON", exception.data )
       end
 
       should "raise OAuthTokenRevoked" do

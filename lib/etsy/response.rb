@@ -2,11 +2,18 @@ module Etsy
 
   class OAuthTokenRevoked < StandardError; end
   class MissingShopID < StandardError; end
-  class EtsyJSONInvalid < StandardError; end
   class TemporaryIssue < StandardError; end
   class ResourceUnavailable < TemporaryIssue; end
   class ExceededRateLimit < TemporaryIssue; end
   class InvalidUserID < StandardError; end
+  class EtsyJSONInvalid < StandardError
+    attr_reader :code, :data
+    def initialize(args)
+      @code = args[:code]
+      @data = args[:data]
+    end  
+  end
+
 
   # = Response
   #
@@ -82,7 +89,7 @@ module Etsy
       raise TemporaryIssue            if temporary_etsy_issue?
       raise ResourceUnavailable       if resource_unavailable?
       raise ExceededRateLimit         if exceeded_rate_limit?
-      raise EtsyJSONInvalid.new("CODE: #{code}, BODY: #{data}") unless valid_json?
+      raise EtsyJSONInvalid.new({code: code, data: data}) unless valid_json?
       true
     end
 
