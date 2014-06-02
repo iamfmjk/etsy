@@ -89,7 +89,7 @@ module Etsy
       raise TemporaryIssue            if temporary_etsy_issue?
       raise ResourceUnavailable       if resource_unavailable?
       raise ExceededRateLimit         if exceeded_rate_limit?
-      raise EtsyJSONInvalid.new({code: code, data: data}) unless valid_json?
+      raise EtsyJSONInvalid.new({:code => code, :data => data}) unless valid_json?
       true
     end
 
