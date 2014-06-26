@@ -108,6 +108,15 @@ module Etsy
     @protocol = protocol.to_s
   end
   
+  # Allow throwing API errors
+  #
+  def self.silent_errors=(bool)
+    unless [TrueClass, FalseClass].include?(bool.class)
+      raise(ArgumentError, "Silent errors must be set to either true or false'")
+    end
+    @silent_errors = bool
+  end
+
   def self.protocol
     @protocol || "https"
   end
@@ -116,6 +125,12 @@ module Etsy
   #
   def self.environment
     @environment || :production
+  end
+
+  # The default will change to false for a 1.0 release (breaking changes)
+  #
+  def self.silent_errors
+    @silent_errors.nil? ? true : @silent_errors
   end
 
   def self.host # :nodoc:
