@@ -12,6 +12,7 @@ class EtsyTest < Test::Unit::TestCase
       Etsy.instance_variable_set(:@api_key, nil)
       Etsy.instance_variable_set(:@api_secret, nil)
       Etsy.instance_variable_set(:@permission_scopes, nil)
+      Etsy.instance_variable_set(:@silent_errors, nil)
     end
 
     should "be able to set and retrieve the API key" do
@@ -72,6 +73,19 @@ class EtsyTest < Test::Unit::TestCase
 
     should "raise an exception when attempting to set an invalid protocol" do
       lambda { Etsy.protocol = :invalid }.should raise_error(ArgumentError)
+    end
+
+    should "use silent errors by default" do
+      Etsy.silent_errors.should == true
+    end
+
+    should "be able to set silent errors to a valid value" do
+      Etsy.silent_errors = false
+      Etsy.silent_errors.should == false
+    end
+
+    should "raise an exception when attempting to set an invalid silent errors value" do
+      lambda { Etsy.silent_errors = :invalid }.should raise_error(ArgumentError)
     end
 
     should "use the production environment by default" do

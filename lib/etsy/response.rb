@@ -55,7 +55,7 @@ module Etsy
         results = to_hash['results'] || []
         count == 1 ? results.first : results
       else
-        []
+        Etsy.silent_errors ? [] : validate!
       end
     end
     
