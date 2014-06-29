@@ -108,6 +108,13 @@ You can set this using:
 
     Etsy.environment = :production
 
+## Error handling
+
+For legacy reasons, this gem does *not* raise errors when requests are unsuccessful.
+However, you can force errors to be thrown by configuring the `silent_errors` flag.
+
+    >>> Etsy.silent_errors = false
+
 ## DSL
 
 Use the Etsy::Request class to make flexible calls to the API.
@@ -221,7 +228,7 @@ If you want a more fine-grained response, you can specify the associations as an
 
 ## Public mode vs authenticated calls
 
-This additional example should make clear the difference between issuing public versus authenticated requests: 
+This additional example should make clear the difference between issuing public versus authenticated requests:
 
 ### Public workflow
 
@@ -236,13 +243,7 @@ This additional example should make clear the difference between issuing public 
     >> user = Etsy.myself(token, secret)
 	>> access = { :access_token => user.token, :access_secret => user.secret }
 	>> Etsy::Listing.find_all_by_shop_id(user.shop.id, access.merge(:limit => 5))
-	
-## Error handling
 
-For legacy reasons, this gem does *not* raise errors when requests are unsuccessful.
-However, you can force errors to be thrown by configuring the `silent_errors` flag.
-
-    >>> Etsy.silent_errors = false
 
 ## Contributing
 
