@@ -26,6 +26,7 @@ require 'etsy/country'
 require 'etsy/shipping_template'
 require 'etsy/section'
 require 'etsy/favorite_listing'
+require 'etsy/receipt'
 
 # = Etsy: A friendly Ruby interface to the Etsy API
 #
