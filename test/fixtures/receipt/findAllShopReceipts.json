@@ -1,0 +1,28 @@
+{ 
+  "count":1,
+  "results":
+    [
+      {
+        "receipt_id":27230877,
+        "buyer_user_id":12345,
+        "created_tsz":1412206858,
+        "quantity":5,
+        "listing_id":123456,
+        "name":"Mike Taylor",
+        "first_line":"123 Fun St",
+        "second_line":"#3b",
+        "city":"San Francisco",
+        "state":"CA",
+        "zip":"94501",
+        "country_id":201,
+        "payment_email":"foo@example.com",
+        "buyer_email":"bar@example.com"
+      }
+    ],
+  "params": { 
+              "shop_id":"5818087",
+              "limit":25,
+              "offset":0
+            },
+  "type":"Receipt"
+}
