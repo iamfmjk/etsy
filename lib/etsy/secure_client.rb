@@ -107,7 +107,7 @@ module Etsy
         if value.respond_to?(:read)
           body << "Content-Disposition: form-data; name=\"#{esc_key}\"; filename=\"#{File.basename(value.path)}\"#{crlf}"
           body << "Content-Type: image/jpeg#{crlf*2}"
-          body << value.read
+          body << open(value.path, "rb") {|io| io.read}
         else
           body << "Content-Disposition: form-data; name=\"#{esc_key}\"#{crlf*2}#{value}"
         end
