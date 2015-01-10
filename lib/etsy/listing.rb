@@ -123,7 +123,7 @@ module Etsy
     # The collection of images associated with this listing.
     #
     def images
-      @images ||= Image.find_all_by_listing_id(id)
+      @images ||= Image.find_all_by_listing_id(id, oauth)
     end
 
     # The primary image for this listing.
@@ -209,5 +209,10 @@ module Etsy
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
     end
 
+    private
+    
+    def oauth
+      oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
+    end
   end
 end

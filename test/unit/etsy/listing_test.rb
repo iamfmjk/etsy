@@ -196,14 +196,30 @@ module Etsy
         end
       end
 
-      should "have a collection of images" do
-        listing = Listing.new
-        listing.stubs(:id).with().returns(1)
+      context "with oauth" do
+        should "have a collection of images" do
+          listing = Listing.new
+          listing.stubs(:id).with().returns(1)
+          listing.stubs(:token).with().returns("token")
+          listing.stubs(:secret).with().returns("secret")
 
-        Image.stubs(:find_all_by_listing_id).with(1).returns('images')
+          Image.stubs(:find_all_by_listing_id).with(1, {access_token: "token", access_secret: "secret"}).returns('images')
 
-        listing.images.should == 'images'
+          listing.images.should == 'images'
+        end
       end
+
+      context "without oauth" do
+        should "have a collection of images" do
+          listing = Listing.new
+          listing.stubs(:id).with().returns(1)
+
+          Image.stubs(:find_all_by_listing_id).with(1, {}).returns('images')
+
+          listing.images.should == 'images'
+        end
+      end
+
 
       should "have a default image" do
         listing = Listing.new

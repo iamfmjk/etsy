@@ -21,8 +21,8 @@ module Etsy
 
     # Fetch all images for a given listing.
     #
-    def self.find_all_by_listing_id(listing_id)
-      get_all("/listings/#{listing_id}/images")
+    def self.find_all_by_listing_id(listing_id, options = {})
+      get_all("/listings/#{listing_id}/images", options)
     end
 
     def self.create(listing, image_path, options = {})
