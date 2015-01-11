@@ -5,11 +5,19 @@ module Etsy
 
     context "The Image class" do
 
-      should "be able to find all images for a listing" do
-        images = mock_request('/listings/1/images', {}, 'Image', 'findAllListingImages.json')
-        Image.find_all_by_listing_id(1).should == images
+      context "without oauth" do
+        should "be able to find all images for a listing" do
+          images = mock_request('/listings/1/images', {}, 'Image', 'findAllListingImages.json')
+          Image.find_all_by_listing_id(1, {}).should == images
+        end
       end
 
+      context "with options" do
+        should "be able to find all images for a listing with options in request" do
+          images = mock_request('/listings/1/images', {foo: "bar"}, 'Image', 'findAllListingImages.json')
+          Image.find_all_by_listing_id(1, {foo: "bar"}).should == images
+        end
+      end
     end
 
     context "An instance of the Image class" do
