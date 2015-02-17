@@ -26,6 +26,32 @@ It will likely work with higher versions, but this is unproven.
 
 ## Usage
 
+In order to try this out you'll need to create an app on [etsy.com/your/apps](https://www.etsy.com/your/apps).
+
+This will give you an api key and secret.
+
+Paste the following into IRB, replacing the api key and secret with the ones you got on Etsy:
+
+```ruby
+require 'etsy'
+Etsy.protocol = "https"
+Etsy.api_key = 'YOUR API KEY'
+Etsy.api_secret = 'YOUR SECRET'
+request = Etsy.request_token
+Etsy.verification_url
+```
+
+Paste the verification URL into your browser, and authorize the application. That will give you a page
+with a code on it. Paste the following into IRB, replacing the code:
+
+```ruby
+access = Etsy.access_token(request.token, request.secret, 'CODE')
+Etsy.myself(access.token, access.secret)
+```
+
+If you've received a 401 unauthorized error, then you likely don't have a valid api key and secret, or
+perhaps the verification url timed out.
+
 ### Public Mode
 
 The Etsy API has two modes: public, and authenticated. Public mode only requires an
