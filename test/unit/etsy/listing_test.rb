@@ -32,6 +32,16 @@ module Etsy
           Listing.find_all_by_shop_id(1, :state => :inactive).should == listings
         end
 
+        should "be able to find draft listings" do
+          listings = mock_request('/shops/1/listings/draft', {}, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1, :state => :draft).should == listings
+        end
+
+        should "be able to find sold_out listings" do
+          listings = mock_request('/shops/1/listings/sold_out', {}, 'Listing', 'findAllShopListings.json')
+          Listing.find_all_by_shop_id(1, :state => :sold_out).should == listings
+        end
+
         should "be able to find featured listings" do
           listings = mock_request('/shops/1/listings/featured', {}, 'Listing', 'findAllShopListings.json')
           Listing.find_all_by_shop_id(1, :state => :featured).should == listings

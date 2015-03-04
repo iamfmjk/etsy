@@ -33,7 +33,7 @@ module Etsy
     include Etsy::Model
 
     STATES = %w(active removed sold_out expired alchemy)
-    VALID_STATES = [:active, :expired, :inactive, :sold, :featured]
+    VALID_STATES = [:active, :expired, :inactive, :sold, :featured, :draft, :sold_out]
 
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
@@ -44,7 +44,8 @@ module Etsy
 
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
-               :featured_rank, :occasion, :num_favorers, :user_id
+               :featured_rank, :occasion, :num_favorers, :user_id,
+               :shipping_template_id, :who_made, :when_made
 
     association :image, :from => 'Images'
 
@@ -79,7 +80,7 @@ module Etsy
     # By default, pulls back the first 25 active listings.
     # Defaults can be overridden using :limit, :offset, and :state
     #
-    # Available states are :active, :expired, :inactive, :sold, and :featured
+    # Available states are :active, :expired, :inactive, :sold, and :featured, :draft, :sold_out
     # where :featured is a subset of the others.
     #
     # options = {
