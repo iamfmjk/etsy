@@ -133,6 +133,47 @@ module Etsy
       images.first
     end
 
+    def variations
+      self.class.get_all("/listings/#{id}/variations")
+    end
+
+    # If these are your desired variations:
+    # - Dimensions: 1 x 2 inches
+    # - Dimensions: 2 x 4 inches
+    #
+    # Then you first have to find the property ID of the property you want to vary. Eg:
+    #   Etsy::Variation::PropertySet.find_property_by_name("Dimensions").fetch("property_id")
+    #
+    # Then you can decide which options you want to set for this property.
+    # Eg:
+    #   Etsy::Variation::PropertySet.qualifying_properties_for_property("Dimension")
+    # => [{
+    #      "param"=>"dimensions_scale",
+    #      "description"=>"Sizing Scale",
+    #      "options"=>{
+    #        "Inches" => 344,
+    #        "Centimeters" => 345,
+    #        "Other" => 346
+    #      }
+    #    }]
+    #
+    # Put it all together for a call to add_variations:
+
+    #  property_id = Etsy::Variation::PropertySet.find_property_by_name("Dimensions").fetch("property_id")
+    #  scale = Etsy::Variation::PropertySet.qualifying_properties_for_property("Dimensions").detect {|qp| qp.fetch("description") == "Sizing Scale"}
+    #  my_listing.add_variations(
+    #    :variations => [
+    #      {"property_id" => property_id, "value" => "1 x 2", "is_available" => true, "price" => 1.23},
+    #      {"property_id" => property_id, "value" => "2 x 4", "is_available" => true, "price" => 2.34}
+    #    ],
+    #    scale.fetch("param") => scale.fetch("options").fetch("Inches")
+    #  )
+    def add_variations(options)
+      options[:variations] = JSON.dump(options.delete(:variations))
+      options[:require_secure] = true
+      self.class.post("/listings/#{id}/variations", options)
+    end
+
     def black_and_white?
       is_black_and_white
     end
