@@ -174,6 +174,12 @@ module Etsy
       self.class.post("/listings/#{id}/variations", options)
     end
 
+    def update_variations(options)
+      options[:variations] = JSON.dump(options.delete(:variations))
+      options[:require_secure] = true
+      self.class.put("/listings/#{id}/variations", options)
+    end
+
     def black_and_white?
       is_black_and_white
     end
@@ -209,6 +215,10 @@ module Etsy
       favorite_listings = FavoriteListing.find_all_listings_favored_by(id, options)
       user_ids  = favorite_listings.map {|f| f.user_id }.uniq
       (user_ids.size > 0) ? Array(Etsy::User.find(user_ids, options)) : []
+    end
+
+    def is_supply
+      !!@result.fetch("is_supply")
     end
 
     private
