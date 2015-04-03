@@ -93,6 +93,11 @@ Authenticated calls can now be made by passing an access token and secret:
 
     Etsy.myself(access.token, access.secret)
 
+The key and secret have to be passed in for the authenticated calls.
+    
+    auth = {:access_token=>access.token, :access_secret=>access.secret}
+    Etsy::Transaction.find_all_by_shop_id(shop_id, auth.merge(options))
+
 ### Web Application
 
 The process for authenticating via a web application is similar, but requires the configuration of a callback URL:
