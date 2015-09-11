@@ -1,11 +1,11 @@
-{ 
+{
   "count":1,
   "results":
     [
       {
         "receipt_id":27230877,
         "buyer_user_id":12345,
-        "created_tsz":1412206858,
+        "creation_tsz":1412206858,
         "quantity":5,
         "listing_id":123456,
         "name":"Mike Taylor",
@@ -19,7 +19,7 @@
         "buyer_email":"bar@example.com"
       }
     ],
-  "params": { 
+  "params": {
               "shop_id":"5818087",
               "limit":25,
               "offset":0
