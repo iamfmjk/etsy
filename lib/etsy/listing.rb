@@ -133,8 +133,9 @@ module Etsy
       images.first
     end
 
-    def variations
-      self.class.get_all("/listings/#{id}/variations")
+    def variations(options={})
+      options.merge!(:require_secure => true)
+      self.class.get_all("/listings/#{id}/variations", oauth.merge(options))
     end
 
     # If these are your desired variations:
