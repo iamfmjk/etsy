@@ -10,6 +10,11 @@ module Etsy
         Receipt.find_all_by_shop_id(1, {'key' => 'value'}).should == receipts
       end
 
+      should "be able to find receipts for a shop that also have a given status" do
+        receipts = mock_request('/shops/1/receipts/open', {'key' => 'value'}, 'Receipt', 'findAllShopReceipts.json')
+        Receipt.find_all_by_shop_id_and_status(1, 'open', {'key' => 'value'}).should == receipts
+      end
+
     end
 
     context "An instance of the Receipt class" do
@@ -86,6 +91,16 @@ module Etsy
         receipt.buyer.should == 'user'
       end
 
+      should "have transaction information" do
+        Transaction.stubs(:find_all_by_receipt_id).with(1, {:access_token=>'token',:access_secret=>'secret'}).returns('transactions')
+
+        receipt = Receipt.new
+        receipt.stubs(:id).with().returns(1)
+        receipt.stubs(:token).with().returns('token')
+        receipt.stubs(:secret).with().returns('secret')
+
+        receipt.transactions.should == 'transactions'
+      end
     end
 
   end
