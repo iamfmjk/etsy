@@ -12,12 +12,25 @@ module Etsy
       get_all("/shops/#{shop_id}/receipts", options)
     end
 
+    def self.find_all_by_shop_id_and_status(shop_id, status, options = {})
+      get_all("/shops/#{shop_id}/receipts/#{status}", options)
+    end
+
     def created_at
       Time.at(creation_tsz)
     end
 
     def buyer
       @buyer ||= User.find(buyer_id)
+    end
+
+    def transactions
+      unless @transactions
+        options = {}
+        options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+        @transactions = Transaction.find_all_by_receipt_id(id, options)
+      end
+      @transactions
     end
 
   end
