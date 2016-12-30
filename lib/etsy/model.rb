@@ -83,7 +83,7 @@ module Etsy
       def put(endpoint, options={})
         Request.put(endpoint, options)
       end
-      
+
       def delete(endpoint, options={})
         Request.delete(endpoint, options)
       end
