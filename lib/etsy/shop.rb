@@ -75,6 +75,10 @@ module Etsy
       Section.find_by_shop(self)
     end
 
+    def about
+      About.find_by_shop(self)
+    end
+
     private
     def oauth
       oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
