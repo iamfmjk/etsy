@@ -45,7 +45,8 @@ module Etsy
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id,
-               :shipping_template_id, :who_made, :when_made, :original_creation_tsz
+               :shipping_template_id, :who_made, :when_made,
+               :original_creation_tsz, :style, :category_path
 
     association :image, :from => 'Images'
 
@@ -58,7 +59,7 @@ module Etsy
       options.merge!(:require_secure => true)
       put("/listings/#{listing.id}", options)
     end
-    
+
     def self.destroy(listing, options = {})
       options.merge!(:require_secure => true)
       delete("/listings/#{listing.id}", options)
@@ -131,6 +132,13 @@ module Etsy
     #
     def image
       images.first
+    end
+
+    # Listing category name
+    #
+    def category
+      path = category_path.join('/')
+      @category ||= Category.find(path)
     end
 
     def variations(options={})
@@ -263,7 +271,7 @@ module Etsy
     end
 
     private
-    
+
     def oauth
       oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
     end
