@@ -28,6 +28,7 @@ require 'etsy/section'
 require 'etsy/favorite_listing'
 require 'etsy/receipt'
 require 'etsy/variation/property_set'
+require 'etsy/about'
 
 # = Etsy: A friendly Ruby interface to the Etsy API
 #
@@ -83,7 +84,7 @@ module Etsy
   def self.api_secret
     Thread.current[:etsy_api_secret] || @api_secret
   end
-  
+
   def self.api_secret=(secret)
     @api_secret ||= secret
     Thread.current[:etsy_api_secret] = secret
@@ -102,14 +103,14 @@ module Etsy
     @environment = environment
     @host = (environment == :sandbox) ? SANDBOX_HOST : PRODUCTION_HOST
   end
-  
+
   def self.protocol=(protocol)
     unless ["http", "https"].include?(protocol.to_s)
       raise(ArgumentError, "protocol must be set to either 'http' or 'https'")
     end
     @protocol = protocol.to_s
   end
-  
+
   # Allow throwing API errors
   #
   def self.silent_errors=(bool)

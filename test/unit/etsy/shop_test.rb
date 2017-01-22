@@ -98,6 +98,14 @@ module Etsy
 
         shop.listings.should == 'listings'
       end
+
+      should "have an About object" do
+        shop = Shop.new
+
+        About.stubs(:find_by_shop).with(shop).returns('about')
+
+        shop.about.should == 'about'
+      end
     end
 
   end
