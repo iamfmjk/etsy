@@ -30,6 +30,7 @@ module Etsy
     attribute :message, :from => :sale_message
     attribute :url, :from => :url
     attribute :favorers_count, :from => :num_favorers
+    attribute :icon_url, :from => 'icon_url_fullxfull'
 
     # Retrieve one or more shops by name or ID:
     #
