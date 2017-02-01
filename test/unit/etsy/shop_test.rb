@@ -52,6 +52,10 @@ module Etsy
           @shop.image_url.should == "http://ny-image3.etsy.com/iusb_760x100.8484779.jpg"
         end
 
+        should "have a value for :icon_url" do
+          @shop.icon_url.should == "https://img0.etsystatic.com/173/0/8740774/isla_fullxfull.22739584_nydzpho0.jpg"
+        end
+
         should "have a value for :url" do
           @shop.url.should == "http://www.etsy.com/shop/littletjane"
         end
