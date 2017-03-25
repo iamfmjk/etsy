@@ -230,6 +230,15 @@ module Etsy
         end
       end
 
+      context "with included images" do
+        should "not hit the API to get images" do
+          data = read_fixture('listing/getListing.single.includeImages.json')
+          listing = Listing.new(data.first)
+          Request.expects(:get).never
+
+          listing.images
+        end
+      end
 
       should "have a default image" do
         listing = Listing.new
