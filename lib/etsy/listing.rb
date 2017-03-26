@@ -125,7 +125,7 @@ module Etsy
     # The collection of images associated with this listing.
     #
     def images
-      @images ||= Image.find_all_by_listing_id(id, oauth)
+      @images ||= listing_images
     end
 
     # The primary image for this listing.
@@ -274,6 +274,14 @@ module Etsy
 
     def oauth
       oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
+    end
+
+    def listing_images
+      if result && result["Images"]
+        result["Images"].map { |hash| Image.new(hash) }
+      else
+        Image.find_all_by_listing_id(id, oauth)
+      end
     end
   end
 end
