@@ -190,7 +190,7 @@ module Etsy
         end
       end
 
-      %w(active removed sold_out expired alchemy).each do |state|
+      %w(active removed sold_out expired alchemy edit create private unavailable).each do |state|
         should "know that the listing is #{state}" do
           listing = Listing.new
           listing.expects(:state).with().returns(state.sub('_', ''))

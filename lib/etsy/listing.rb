@@ -32,7 +32,7 @@ module Etsy
 
     include Etsy::Model
 
-    STATES = %w(active removed sold_out expired alchemy)
+    STATES = %w(active removed sold_out expired alchemy edit create private unavailable)
     VALID_STATES = [:active, :expired, :inactive, :sold, :featured, :draft, :sold_out]
 
     attribute :id, :from => :listing_id
