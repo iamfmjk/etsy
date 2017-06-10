@@ -19,7 +19,16 @@ module Etsy
       }
       get("/shipping/templates/#{id}", options)
     end
-
+    
+    def self.find_entries(id, credentials = {})
+      options = {
+        :access_token => credentials[:access_token],
+        :access_secret => credentials[:access_secret],
+        :require_secure => true
+      }
+      get("/shipping/templates/#{id}/entries", options)
+    end
+    
     def self.find_by_user(user, credentials = {})
       options = {
         :access_token => credentials[:access_token],
