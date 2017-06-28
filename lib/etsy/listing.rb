@@ -41,6 +41,7 @@ module Etsy
     attribute :modified, :from => :last_modified_tsz
     attribute :currency, :from => :currency_code
     attribute :ending, :from => :ending_tsz
+    attribute :shop_section, :from => :shop_section_id
 
     attributes :title, :description, :state, :url, :price, :quantity,
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,

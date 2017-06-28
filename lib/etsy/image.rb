@@ -17,6 +17,8 @@ module Etsy
     attribute :square, :from => :url_75x75
     attribute :small, :from => :url_170x135
     attribute :thumbnail, :from => :url_570xN
+    attribute :height, :from => :full_height
+    attribute :width, :from => :full_width
     attribute :full, :from => :url_fullxfull
 
     # Fetch all images for a given listing.
