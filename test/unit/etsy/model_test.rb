@@ -30,9 +30,9 @@ module Etsy
       end
 
       should 'perform multiple requests if :limit is greater than 100' do
-        mock_empty_request(:limit => 100, :offset => 0).once
-        mock_empty_request(:limit => 50, :offset => 100).once
-
+        body = '{"count": 150, "pagination":{}}'
+        mock_empty_request(:limit => 100, :offset => 0, :body => body).once
+        mock_empty_request(:limit => 50, :offset => 100, :body => body).once
         TestModel.get_all('', :limit => 150)
       end
 
@@ -52,7 +52,7 @@ module Etsy
       end
 
       should 'perform multiple requests if :limit is :all and count is greater than 100' do
-        body = '{"count": 210}'
+        body = '{"count": 210, "pagination": {}}'
         mock_empty_request(:limit => 100, :offset => 0, :body => body).once
         mock_empty_request(:limit => 100, :offset => 100, :body => body).once
         mock_empty_request(:limit => 10, :offset => 200, :body => body).once
