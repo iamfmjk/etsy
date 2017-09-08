@@ -26,5 +26,9 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
   gem.add_development_dependency 'shoulda', "~> 3.4.0"
   gem.add_development_dependency 'mocha', "~> 0.13.3"
+  # shoulda-context blows up on ActiveSupport not being defined
+  # on shoulda/context.rb:7
+  # But then when you load active_support, shoulda-context decides
+  # to load MiniTest
   gem.add_development_dependency 'test-unit', "~>3.2.5"
 end
