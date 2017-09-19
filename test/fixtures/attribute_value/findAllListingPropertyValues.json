@@ -1,0 +1,44 @@
+
+{
+  "count":4,
+  "results":
+  [
+    {
+      "property_id": 200,
+      "property_name": "Primary color",
+      "scale_id": null,
+      "scale_name": null,
+      "value_ids": [1213],
+      "values": ["Beige"]
+    },
+    {
+      "property_id": 52047899002,
+      "property_name": "Secondary color",
+      "scale_id": null,
+      "scale_name": null,
+      "value_ids": [1],
+      "values": ["Black"]
+    },
+    {
+      "property_id": 47626759834,
+      "property_name": "Height",
+      "scale_id": 5,
+      "scale_name": "Inches",
+      "value_ids": [0],
+      "values": ["15"]
+    },
+    {
+      "property_id": 47626759898,
+      "property_name": "Width",
+      "scale_id": 5,
+      "scale_name": "Inches",
+      "value_ids": [0],
+      "values": ["25"]
+    }
+  ],
+  "params":
+  {
+    "listing_id":"59495892"
+  },
+  "type":"ListingPropertyValue"
+}

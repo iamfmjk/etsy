@@ -47,7 +47,8 @@ module Etsy
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id,
                :shipping_template_id, :who_made, :when_made,
-               :original_creation_tsz, :style, :category_path
+               :original_creation_tsz, :style, :category_path,
+               :taxonomy_id, :taxonomy_attributes
 
     association :image, :from => 'Images'
 
@@ -140,6 +141,13 @@ module Etsy
     def category
       path = category_path.join('/')
       @category ||= Category.find(path)
+    end
+
+    # Returns the taxonomy defined attributes for the listing
+    #
+    def taxonomy_attributes(options={})
+      options.merge!(:require_secure => true)
+      self.class.get_all("/listings/#{id}/attributes", oauth.merge(options))
     end
 
     def variations(options={})
