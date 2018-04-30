@@ -19,6 +19,8 @@ module Etsy
 
     association :profile, :from => 'Profile'
     association :shops, :from => 'Shops'
+    association :bill_charges, :from => 'BillCharges'
+    association :bill_payments, :from => 'BillPayments'
 
     # Retrieve one or more users by name or ID:
     #
@@ -79,6 +81,34 @@ module Etsy
         end
       end
       @shops
+    end
+
+    def bill_charges
+      unless @bill_charges
+        if associated_bill_charges
+          @bill_charges = associated_bill_charges.map { |bill_charge| BillCharge.new(bill_charge) }
+        else
+          options = {:fields => 'user_id', :includes => 'BillCharges'}
+          options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+          tmp = User.find(username, options)
+          @bill_charges = tmp.associated_bill_charges.map { |bill_charge| BillCharge.new(bill_charge) }
+        end
+      end
+      @bill_charges
+    end
+
+    def bill_payments
+      unless @bill_payments
+        if associated_bill_payments
+          @bill_payments = associated_bill_payments.map { |bill_payment| BillPayment.new(bill_payment) }
+        else
+          options = {:fields => 'user_id', :includes => 'BillPayments'}
+          options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+          tmp = User.find(username, options)
+          @bill_payments = tmp.associated_bill_payments.map { |bill_payment| BillPayment.new(bill_payment) }
+        end
+      end
+      @bill_payments
     end
 
     # Time that this user was created
