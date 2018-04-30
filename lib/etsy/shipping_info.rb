@@ -21,7 +21,7 @@ module Etsy
         :access_secret => credentials[:access_secret],
         :require_secure => true
       }
-      get("/listings/#{listing_id}/shipping/info", options)
+      get_all("/listings/#{listing_id}/shipping/info", options)
     end
   end
 end
