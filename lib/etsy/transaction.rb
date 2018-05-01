@@ -22,6 +22,18 @@ module Etsy
       get_all("/shops/#{shop_id}/transactions", options)
     end
 
+    def created_at
+      Time.at(created)
+    end
+
+    def shipped_at
+      Time.at(shipped)
+    end
+
+    def paid_at
+      Time.at(paid)
+    end
+
     #Find all Transactions by the buyer_id
     #
     def self.find_all_by_buyer_id(user_id, options = {})
