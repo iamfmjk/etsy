@@ -11,6 +11,10 @@ module Etsy
     attributes :quantity, :listing_id, :name, :first_line, :second_line, :city, :state, :zip, :country_id,
                :payment_email, :buyer_email
 
+    def self.find(*identifiers_and_options)
+      find_one_or_more('receipts', identifiers_and_options)
+    end
+
     def self.find_all_by_shop_id(shop_id, options = {})
       get_all("/shops/#{shop_id}/receipts", options)
     end

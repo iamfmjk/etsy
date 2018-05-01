@@ -34,6 +34,10 @@ module Etsy
       Time.at(paid)
     end
 
+    def self.find(*identifiers_and_options)
+      find_one_or_more('transactions', identifiers_and_options)
+    end
+
     #Find all Transactions by the buyer_id
     #
     def self.find_all_by_buyer_id(user_id, options = {})
