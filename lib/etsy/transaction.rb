@@ -53,15 +53,21 @@ module Etsy
     end
 
     def receipt
-      @receipt ||= Receipt.find(receipt_id)
+      @receipt ||= Receipt.find(receipt_id, oauth)
     end
 
     def buyer
-      @buyer ||= User.find(buyer_id)
+      @buyer ||= User.find(buyer_id, oauth)
     end
 
     def listing
-      @listing ||= Listing.find(listing_id)
+      @listing ||= Listing.find(listing_id, oauth)
+    end
+
+    private
+
+    def oauth
+      oauth = (token && secret) ? {:access_token => token, :access_secret => secret} : {}
     end
 
   end
