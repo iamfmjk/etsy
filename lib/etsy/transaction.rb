@@ -56,5 +56,9 @@ module Etsy
       @buyer ||= User.find(buyer_id)
     end
 
+    def listing
+      @listing ||= Listing.find(listing_id)
+    end
+
   end
 end
