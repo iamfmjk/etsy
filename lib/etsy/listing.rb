@@ -38,6 +38,7 @@ module Etsy
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
     attribute :created, :from => :creation_tsz
+    attribute :original_created, :from => :original_creation_tsz
     attribute :modified, :from => :last_modified_tsz
     attribute :currency, :from => :currency_code
     attribute :ending, :from => :ending_tsz
@@ -212,6 +213,11 @@ module Etsy
     #
     def created_at
       Time.at(created)
+    end
+
+    # Time that this listing was originally created
+    def original_created_at
+      Time.at(original_created)
     end
 
     # Time that this listing was last modified
