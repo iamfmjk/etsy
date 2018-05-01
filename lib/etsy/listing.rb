@@ -53,7 +53,7 @@ module Etsy
     association :image, :from => 'Images'
 
     def transactions
-      @transactions ||= Transaction.find_all_by_listing_id(id)
+      @transactions ||= Transaction.find_all_by_listing_id(id, oauth)
     end
 
     def self.create(options = {})
