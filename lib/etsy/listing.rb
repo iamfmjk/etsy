@@ -52,6 +52,10 @@ module Etsy
 
     association :image, :from => 'Images'
 
+    def transactions
+      @transactions ||= Transaction.find_all_by_listing_id(id)
+    end
+
     def self.create(options = {})
       options.merge!(:require_secure => true)
       post("/listings", options)
