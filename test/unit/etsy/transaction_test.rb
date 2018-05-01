@@ -47,7 +47,7 @@ module Etsy
       end
 
       should "know the buyer" do
-        User.stubs(:find).with(1).returns('user')
+        User.stubs(:find).with(1, {}).returns('user')
 
         transaction = Transaction.new
         transaction.stubs(:buyer_id).with().returns(1)
