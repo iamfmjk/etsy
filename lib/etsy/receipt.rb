@@ -20,7 +20,7 @@ module Etsy
     end
 
     def created_at
-      Time.at(creation)
+      Time.at(created)
     end
 
     def buyer

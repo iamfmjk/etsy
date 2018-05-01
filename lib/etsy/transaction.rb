@@ -32,6 +32,9 @@ module Etsy
       get_all("/receipts/#{receipt_id}/transactions", options)
     end
 
+    def receipt
+      @receipt ||= Receipt.find(receipt_id)
+    end
 
     def buyer
       @buyer ||= User.find(buyer_id)
