@@ -48,8 +48,7 @@ module Etsy
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id,
                :shipping_template_id, :who_made, :when_made,
-               :original_creation_tsz, :style, :category_path,
-               :taxonomy_id, :taxonomy_attributes
+               :style, :category_path, :taxonomy_id, :taxonomy_attributes
 
     association :image, :from => 'Images'
 
