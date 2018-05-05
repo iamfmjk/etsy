@@ -56,6 +56,10 @@ module Etsy
       @transactions ||= Transaction.find_all_by_listing_id(id, oauth)
     end
 
+    def receipts
+      transactions.map{|t|t.receipt}
+    end
+
     def self.create(options = {})
       options.merge!(:require_secure => true)
       post("/listings", options)
