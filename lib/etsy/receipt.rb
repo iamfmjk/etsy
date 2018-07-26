@@ -5,8 +5,15 @@ module Etsy
     attribute :id, :from => :receipt_id
     attribute :buyer_id, :from => :buyer_user_id
 
+    attribute :created, :from => :creation_tsz
+    attribute :last_modified, :from => :last_modified_tsz
+
     attributes :quantity, :listing_id, :name, :first_line, :second_line, :city, :state, :zip, :country_id,
-               :payment_email, :buyer_email, :creation_tsz
+               :payment_email, :buyer_email
+
+    def self.find(*identifiers_and_options)
+      find_one_or_more('receipts', identifiers_and_options)
+    end
 
     def self.find_all_by_shop_id(shop_id, options = {})
       get_all("/shops/#{shop_id}/receipts", options)
@@ -17,7 +24,7 @@ module Etsy
     end
 
     def created_at
-      Time.at(creation_tsz)
+      Time.at(created)
     end
 
     def buyer

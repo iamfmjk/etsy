@@ -38,6 +38,7 @@ module Etsy
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
     attribute :created, :from => :creation_tsz
+    attribute :original_created, :from => :original_creation_tsz
     attribute :modified, :from => :last_modified_tsz
     attribute :currency, :from => :currency_code
     attribute :ending, :from => :ending_tsz
@@ -47,10 +48,17 @@ module Etsy
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id,
                :shipping_template_id, :who_made, :when_made,
-               :original_creation_tsz, :style, :category_path,
-               :taxonomy_id, :taxonomy_attributes
+               :style, :category_path, :taxonomy_id, :taxonomy_attributes
 
     association :image, :from => 'Images'
+
+    def transactions
+      @transactions ||= Transaction.find_all_by_listing_id(id, oauth)
+    end
+
+    def receipts
+      transactions.map{|t|t.receipt}
+    end
 
     def self.create(options = {})
       options.merge!(:require_secure => true)
@@ -212,6 +220,11 @@ module Etsy
     #
     def created_at
       Time.at(created)
+    end
+
+    # Time that this listing was originally created
+    def original_created_at
+      Time.at(original_created)
     end
 
     # Time that this listing was last modified
