@@ -188,6 +188,10 @@ module Etsy
         should "have a value for :black_and_white?" do
           @listing.black_and_white?.should == false
         end
+
+        should "have a value for :is_supply?" do
+          @listing.is_supply.should == false
+        end
       end
 
       %w(active removed sold_out expired alchemy).each do |state|

@@ -248,6 +248,10 @@ module Etsy
       (user_ids.size > 0) ? Array(Etsy::User.find(user_ids, options)) : []
     end
 
+    def is_supply
+      @result.fetch('is_supply') == 'true'
+    end
+
     private
 
     def self.valid?(state)

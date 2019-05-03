@@ -23,7 +23,8 @@
         "brightness": 100,
         "is_black_and_white": false,
         "url": "http://www.etsy.com/listing/59495892/initials-carved-into-tree-love-stamp",
-        "views": 37
+        "views": 37,
+        "is_supply": "false"
     },
     {
         "listing_id": 59495804,
@@ -48,7 +49,8 @@
         "brightness": 100,
         "is_black_and_white": false,
         "url": "http://www.etsy.com/listing/59495804/faux-bois-heart-hand-carved-stamp",
-        "views": 78
+        "views": 78,
+        "is_supply": "true"
     }],
     "params": {
         "limit": "2",
