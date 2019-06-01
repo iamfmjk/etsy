@@ -14,6 +14,7 @@ module Etsy
 
     include Etsy::Model
 
+    attribute :id, :from => :listing_image_id
     attribute :square, :from => :url_75x75
     attribute :small, :from => :url_170x135
     attribute :thumbnail, :from => :url_570xN

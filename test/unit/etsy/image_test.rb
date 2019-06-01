@@ -28,6 +28,10 @@ module Etsy
           @image = Image.new(data.first)
         end
 
+        should "have a value for :id" do
+          @image.id.should == 185073072
+        end
+
         should "have a value for :square" do
           @image.square.should == "http://ny-image0.etsy.com/il_75x75.185073072.jpg"
         end
