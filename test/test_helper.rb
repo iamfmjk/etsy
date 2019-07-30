@@ -2,6 +2,12 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
+
+if ENV["TRAVIS"] != "true"
+  require 'simplecov'
+  SimpleCov.start
+end
+
 require 'active_support' # workaround load issue with shoulda in rubinius
 require 'test/unit'
 require 'shoulda'

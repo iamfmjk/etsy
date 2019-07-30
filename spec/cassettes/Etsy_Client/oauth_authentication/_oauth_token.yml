@@ -1,0 +1,93 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://openapi.etsy.com/v2/oauth/request_token
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - OAuth gem v0.4.6
+      Content-Length:
+      - '0'
+      Authorization:
+      - OAuth oauth_body_hash="2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D", oauth_callback="oob",
+        oauth_consumer_key="API_KEY", oauth_nonce="7WdBjh8hY5jACA2OiDlVVruJ9Na0D1yPRIXTzqDDu8",
+        oauth_signature="y1YFjp5DZLkCDrMtw%2FuEMrOXb1E%3D", oauth_signature_method="HMAC-SHA1",
+        oauth_timestamp="1342710012", oauth_version="1.0"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 19 Jul 2012 15:00:11 GMT
+      Server:
+      - Apache
+      Set-Cookie:
+      - etala=259736404.806750375.1342710011.1342710011.1342710011.1.0; expires=Sun,
+        20-Jul-2014 02:37:43 GMT; path=/; domain=.etsy.com
+      - etalb=259736404.1.10.1342710011; expires=Thu, 19-Jul-2012 15:30:11 GMT; path=/;
+        domain=.etsy.com
+      X-Etsy-Request-Uuid:
+      - oX5g8eUPX87kx0tLqERD1Z7nP8SK
+      Content-Length:
+      - '334'
+      X-Cnection:
+      - close
+      Content-Type:
+      - application/x-www-form-urlencoded
+    body:
+      encoding: US-ASCII
+      string: login_url=https%3A%2F%2Fwww.etsy.com%2Foauth%2Fsignin%3Foauth_consumer_key%3DAPI_KEY%26oauth_token%3De1b0bd62cc6d16a5783cd2bcf20a23%26service%3Dv2_prod&oauth_token=e1b0bd62cc6d16a5783cd2bcf20a23&oauth_token_secret=c5b0077b78&oauth_callback_confirmed=true&oauth_consumer_key=API_KEY&oauth_callback=oob
+    http_version: 
+  recorded_at: Thu, 19 Jul 2012 15:00:13 GMT
+- request:
+    method: post
+    uri: http://openapi.etsy.com/v2/oauth/access_token
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - ! '*/*'
+      User-Agent:
+      - OAuth gem v0.4.6
+      Content-Length:
+      - '0'
+      Authorization:
+      - OAuth oauth_body_hash="2jmj7l5rSw0yVb%2FvlWAYkK%2FYBwk%3D", oauth_consumer_key="API_KEY",
+        oauth_nonce="IgJEx28ih8Kg2MuDJRwOw8G0z5gSC7y9g5D1JKgI", oauth_signature="IouzF5lG9uW1YD5Z%2BG03%2F9dt4sI%3D",
+        oauth_signature_method="HMAC-SHA1", oauth_timestamp="1342710133", oauth_token="e1b0bd62cc6d16a5783cd2bcf20a23",
+        oauth_verifier="OAUTH_VERIFIER", oauth_version="1.0"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 19 Jul 2012 15:02:11 GMT
+      Server:
+      - Apache
+      Set-Cookie:
+      - etala=259736404.415337487.1342710131.1342710131.1342710131.1.0; expires=Sun,
+        20-Jul-2014 02:39:43 GMT; path=/; domain=.etsy.com
+      - etalb=259736404.1.10.1342710131; expires=Thu, 19-Jul-2012 15:32:11 GMT; path=/;
+        domain=.etsy.com
+      X-Etsy-Request-Uuid:
+      - ZOibyVmi0nEwENLRqb9LFHTKGpEc
+      Content-Length:
+      - '72'
+      X-Cnection:
+      - close
+      Content-Type:
+      - application/x-www-form-urlencoded
+    body:
+      encoding: US-ASCII
+      string: oauth_token=OAUTH_TOKEN&oauth_token_secret=OAUTH_SECRET
+    http_version: 
+  recorded_at: Thu, 19 Jul 2012 15:02:13 GMT
+recorded_with: VCR 2.2.3

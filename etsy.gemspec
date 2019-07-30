@@ -21,9 +21,20 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "json", ">= 1.5.0"
   gem.add_dependency "oauth", "~> 0.4.0"
+  gem.add_dependency "faraday", "~> 0.8.0"
+  gem.add_dependency "faraday_middleware", "~> 0.8.8"
+  gem.add_dependency "simple_oauth", "~> 0.1.8"
+  gem.add_dependency "jruby-openssl", "~> 0.7.7" if RUBY_PLATFORM == 'java'
 
   gem.add_development_dependency "rake", "~> 10.0.4"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
+  # rspec version > 2.7.x breaks with jruby
+  # see http://jira.codehaus.org/browse/JRUBY-6324
+  # apparently this has been fixed. See http://jira.codehaus.org/browse/JRUBY-6324?focusedCommentId=287912&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-287912
+  gem.add_development_dependency "rspec", "~> 2.12.0"
+  gem.add_development_dependency "vcr", "~> 2.2.3"
+  gem.add_development_dependency "webmock", "~> 1.8.7"
+  gem.add_development_dependency "simplecov", "~> 0.6.4"
   gem.add_development_dependency 'shoulda', "~> 3.4.0"
   gem.add_development_dependency 'mocha', "~> 0.13.3"
   # shoulda-context blows up on ActiveSupport not being defined
