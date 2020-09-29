@@ -104,7 +104,7 @@ module Etsy
           k.nil? || v.nil? || (k.respond_to?(:empty?) && k.empty?) || (v.respond_to?(:empty?) && v.empty?)
         }.map { |k, v| "#{to_url(k.to_s)}=#{to_url(v)}" }.join('&')
       else
-        URI.encode_www_form_component(val.to_s)
+        Addressable::URI.escape(val.to_s)
       end
     end
 

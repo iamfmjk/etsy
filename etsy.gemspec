@@ -21,6 +21,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency "json", ">= 1.5.0"
   gem.add_dependency "oauth", ">= 0.5.5"
+  gem.add_dependency "addressable", "~> 2.7"
 
   gem.add_development_dependency "rake", "~> 12.3.3"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
