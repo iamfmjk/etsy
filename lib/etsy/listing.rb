@@ -48,12 +48,18 @@ module Etsy
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id,
                :shipping_template_id, :who_made, :when_made,
-               :style, :category_path, :taxonomy_id, :taxonomy_attributes
+               :style, :category_path, :taxonomy_id, :taxonomy_attributes,
+               :sku, :category_id, :taxonomy_path,
+               :has_variations, :should_auto_renew
 
     association :image, :from => 'Images'
 
     def transactions
       @transactions ||= Transaction.find_all_by_listing_id(id, oauth)
+    end
+
+    def inventory
+      Inventory.find_all_by_listing_id(id, oauth)
     end
 
     def receipts
