@@ -50,7 +50,7 @@ module Etsy
                :shipping_template_id, :who_made, :when_made,
                :style, :category_path, :taxonomy_id, :taxonomy_attributes,
                :sku, :category_id, :taxonomy_path,
-               :has_variations, :should_auto_renew
+               :has_variations, :should_auto_renew, :is_digital
 
     association :image, :from => 'Images'
 
@@ -59,7 +59,7 @@ module Etsy
     end
 
     def inventory
-      Inventory.find_all_by_listing_id(id, oauth)
+      Inventory.find_by_listing_id(id, oauth)
     end
 
     def receipts

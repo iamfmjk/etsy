@@ -3,8 +3,8 @@ module Etsy
     include Etsy::Model
 
     attributes :products, :price_on_property, :quantity_on_property, :sku_on_property
-    def self.find_all_by_listing_id(listing_id, options={})
-      get_all("/listings/#{listing_id}/inventory", options)
+    def self.find_by_listing_id(listing_id, options={})
+      get("/listings/#{listing_id}/inventory", options)
     end
 
     private
