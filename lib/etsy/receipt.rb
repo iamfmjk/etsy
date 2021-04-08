@@ -2,11 +2,11 @@ module Etsy
   class Receipt
     include Model
 
-    attribute :id, :from => :receipt_id
-    attribute :buyer_id, :from => :buyer_user_id
+    attribute :id, from: :receipt_id
+    attribute :buyer_id, from: :buyer_user_id
 
-    attribute :created, :from => :creation_tsz
-    attribute :last_modified, :from => :last_modified_tsz
+    attribute :created, from: :creation_tsz
+    attribute :last_modified, from: :last_modified_tsz
 
     attributes :quantity, :listing_id, :name, :first_line, :second_line, :city, :state, :zip, :country_id,
                :formatted_address, :payment_method, :payment_email, :buyer_email,
@@ -36,11 +36,19 @@ module Etsy
     def transactions
       unless @transactions
         options = {}
-        options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+        options = options.merge(access_token: token, access_secret: secret) if token && secret
         @transactions = Transaction.find_all_by_receipt_id(id, options)
       end
       @transactions
     end
 
+    def all_transactions
+      unless @all_transactions
+        options = {}
+        options = options.merge(access_token: token, access_secret: secret) if token && secret
+        @all_transactions = Transaction.find_all_by_receipt_id(id, options.merge({ limit: :all }))
+      end
+      @all_transactions
+    end
   end
 end

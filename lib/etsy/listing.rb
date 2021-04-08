@@ -58,12 +58,20 @@ module Etsy
       @transactions ||= Transaction.find_all_by_listing_id(id, oauth)
     end
 
+    def all_transactions
+      @all_transactions ||= Transaction.find_all_by_listing_id(id, oauth.merge({ limit: :all }))
+    end
+
     def inventory
       Inventory.find_by_listing_id(id, oauth)
     end
 
     def receipts
-      transactions.map{|t|t.receipt}
+      transactions.map(&:receipt)
+    end
+
+    def all_receipts
+      all_transactions.map(&:receipt)
     end
 
     def self.create(options = {})
@@ -250,7 +258,7 @@ module Etsy
     def admirers(options = {})
       options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
       favorite_listings = FavoriteListing.find_all_listings_favored_by(id, options)
-      user_ids  = favorite_listings.map {|f| f.user_id }.uniq
+      user_ids  = favorite_listings.map(&:user_id).uniq
       (user_ids.size > 0) ? Array(Etsy::User.find(user_ids, options)) : []
     end
 
@@ -272,7 +280,7 @@ module Etsy
       includes = options.delete(:includes)
 
       transactions = Transaction.find_all_by_shop_id(shop_id, options)
-      listing_ids  = transactions.map {|t| t.listing_id }.uniq
+      listing_ids  = transactions.map(&:listing_id).uniq
 
       options = options.merge(:includes => includes) if includes
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
@@ -282,7 +290,7 @@ module Etsy
     #
     def self.find_all_user_favorite_listings(user_id, options = {})
       favorite_listings = FavoriteListing.find_all_user_favorite_listings(user_id, options)
-      listing_ids  = favorite_listings.map {|f| f.listing_id }.uniq
+      listing_ids  = favorite_listings.map(&:listing_id).uniq
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
     end
 
@@ -292,7 +300,7 @@ module Etsy
       includes = options.delete(:includes)
 
       transactions = Transaction.find_all_by_buyer_id(user_id, options)
-      listing_ids  = transactions.map {|t| t.listing_id }.uniq
+      listing_ids  = transactions.map(&:listing_id).uniq
 
       options = options.merge(:includes => includes) if includes
       (listing_ids.size > 0) ? Array(find(listing_ids, options)) : []
