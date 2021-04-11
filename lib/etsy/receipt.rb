@@ -27,7 +27,7 @@ module Etsy
 
     def self.submit_tracking_by_shop_id(shop_id, receipt_id, options = {})
       options.merge!(:require_secure => true)
-      put("/shops/#{shop_id}/receipts/#{receipt_id}/tracking", options)
+      post("/shops/#{shop_id}/receipts/#{receipt_id}/tracking", options)
     end
 
     def created_at
