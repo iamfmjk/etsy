@@ -7,6 +7,11 @@ module Etsy
       get("/listings/#{listing_id}/inventory", options)
     end
 
+    def self.update_inventory(listing_id, options={})
+      options.merge!(:require_secure => true)
+      put("/listings/#{listing_id}/inventory", options)
+    end
+
     private
 
     def oauth
