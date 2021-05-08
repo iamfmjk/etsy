@@ -12,5 +12,9 @@ module Etsy
     def self.find(shop, id)
       get("/shops/#{shop.id}/sections/#{id}")
     end
+
+    def self.create(shop, options)
+      post("/shops/#{shop.id}/sections", options)
+    end
   end
 end
