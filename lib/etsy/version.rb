@@ -1,3 +1,3 @@
 module Etsy
-  VERSION = "0.3.14.4"
+  VERSION = "0.3.14.5"
 end
