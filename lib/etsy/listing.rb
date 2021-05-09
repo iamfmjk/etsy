@@ -146,6 +146,10 @@ module Etsy
       get_all("/listings/active", options)
     end
 
+    def files
+      @files ||= ListingFile.find_files_by_listing(id, oauth)
+    end
+
     # The collection of images associated with this listing.
     #
     def images
