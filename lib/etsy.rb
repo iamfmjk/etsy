@@ -35,6 +35,8 @@ require 'etsy/receipt'
 require 'etsy/variation/property_set'
 require 'etsy/about'
 require 'etsy/inventory'
+require 'etsy/taxonomy'
+require 'etsy/listing_file'
 
 # = Etsy: A friendly Ruby interface to the Etsy API
 #

@@ -146,10 +146,6 @@ module Etsy
       get_all("/listings/active", options)
     end
 
-    def self.upload_listing_file(listing_id, options)
-      post("/listings/#{listing_id}/files", options)
-    end
-
     # The collection of images associated with this listing.
     #
     def images
