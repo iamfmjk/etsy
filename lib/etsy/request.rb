@@ -22,6 +22,11 @@ module Etsy
       request = Request.new(resource_path, parameters)
       Response.new(request.put)
     end
+
+    def self.put_body(resource_path, parameters = {})
+      request = Request.new(resource_path, parameters)
+      Response.new(request.put_body)
+    end
     
     def self.delete(resource_path, parameters = {})
       request = Request.new(resource_path, parameters)
@@ -74,6 +79,10 @@ module Etsy
 
     def put
       client.put(endpoint_url)
+    end
+
+    def put_body
+      client.put_body(endpoint_url(:include_query => false), @parameters)
     end
     
     def delete

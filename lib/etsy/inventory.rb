@@ -9,7 +9,7 @@ module Etsy
 
     def self.update_inventory(listing_id, options={})
       options.merge!(:require_secure => true)
-      put("/listings/#{listing_id}/inventory", options)
+      put_body("/listings/#{listing_id}/inventory", options)
     end
 
     def self.update_inventory_post(listing_id, options={})

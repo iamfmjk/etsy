@@ -76,6 +76,20 @@ module Etsy
     def put(endpoint)
       client.put(endpoint)
     end
+
+    def put_body(endpoint, body)
+      # https = Net::HTTP.new(Etsy.host, Etsy.protocol == "http" ? 80 : 443)
+      # https.use_ssl = true if Etsy.protocol == "https"
+      #
+      # client.start do |http|
+      #   req = Net::HTTP::Put.new(endpoint)
+      #   add_oauth(req)
+      #   req["Content-Type"] = "application/x-www-form-urlencoded"
+      #   req.form_data = body
+      #   res = http.request(req)
+      # end
+      client.put(endpoint, body, { 'Content-Type' => 'application/x-www-form-urlencoded' })
+    end
     
     def delete(endpoint)
       client.delete(endpoint)
