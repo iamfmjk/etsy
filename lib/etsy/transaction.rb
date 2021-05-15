@@ -15,7 +15,7 @@ module Etsy
                :tags, :materials, :image_listing_id, :receipt_id,
                :is_digital, :file_data, :listing_id, :url, :product_data,
                :variations, :transaction_type, :buyer_feedback_id,
-               :seller_feedback_id
+               :seller_feedback_id, :shipping_cost
 
 
     def self.find_all_by_shop_id(shop_id, options = {})

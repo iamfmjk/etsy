@@ -2,14 +2,16 @@ module Etsy
   class Receipt
     include Model
 
-    attribute :id, :from => :receipt_id
-    attribute :buyer_id, :from => :buyer_user_id
+    attribute :id, from: :receipt_id
+    attribute :buyer_id, from: :buyer_user_id
 
-    attribute :created, :from => :creation_tsz
-    attribute :last_modified, :from => :last_modified_tsz
+    attribute :created, from: :creation_tsz
+    attribute :last_modified, from: :last_modified_tsz
 
     attributes :quantity, :listing_id, :name, :first_line, :second_line, :city, :state, :zip, :country_id,
-               :payment_email, :buyer_email
+               :formatted_address, :payment_method, :payment_email, :buyer_email,
+               :message_from_seller, :message_from_buyer, :was_paid, :was_shipped,
+               :grandtotal, :adjusted_grandtotal, :buyer_adjusted_grandtotal, :shipments
 
     def self.find(*identifiers_and_options)
       find_one_or_more('receipts', identifiers_and_options)
@@ -23,6 +25,11 @@ module Etsy
       get_all("/shops/#{shop_id}/receipts/#{status}", options)
     end
 
+    def self.submit_tracking_by_shop_id(shop_id, receipt_id, options = {})
+      options.merge!(:require_secure => true)
+      post("/shops/#{shop_id}/receipts/#{receipt_id}/tracking", options)
+    end
+
     def created_at
       Time.at(created)
     end
@@ -34,11 +41,19 @@ module Etsy
     def transactions
       unless @transactions
         options = {}
-        options = options.merge(:access_token => token, :access_secret => secret) if (token && secret)
+        options = options.merge(access_token: token, access_secret: secret) if token && secret
         @transactions = Transaction.find_all_by_receipt_id(id, options)
       end
       @transactions
     end
 
+    def all_transactions
+      unless @all_transactions
+        options = {}
+        options = options.merge(access_token: token, access_secret: secret) if token && secret
+        @all_transactions = Transaction.find_all_by_receipt_id(id, options.merge({ limit: :all }))
+      end
+      @all_transactions
+    end
   end
 end

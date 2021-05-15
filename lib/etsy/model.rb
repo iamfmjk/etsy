@@ -84,6 +84,10 @@ module Etsy
         Request.put(endpoint, options)
       end
 
+      def put_body(endpoint, options={})
+        Request.put_body(endpoint, options)
+      end
+
       def delete(endpoint, options={})
         Request.delete(endpoint, options)
       end
