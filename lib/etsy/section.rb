@@ -6,7 +6,7 @@ module Etsy
     attribute :id, :from => :shop_section_id
 
     def self.find_by_shop(shop)
-      get("/shops/#{shop.id}/sections")
+      get_all("/shops/#{shop.id}/sections")
     end
 
     def self.find(shop, id)
