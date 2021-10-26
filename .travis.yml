@@ -2,12 +2,7 @@ language: ruby
 rvm:
   #- 1.9.3
   - jruby-19mode
-  - rbx
   - 2.1.5
 
 before_install:
   - gem install bundler -v 1.17.3
-
-matrix:
-  allow_failures:
-    - rvm: rbx
