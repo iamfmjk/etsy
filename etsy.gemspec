@@ -2,8 +2,8 @@
 require File.expand_path('../lib/etsy/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Patrick Reagan", "Katrina Owen"]
-  gem.email         = ["reaganpr@gmail.com", "katrina.owen@gmail.com"]
+  gem.authors       = ["Iuliia Kolomiiets", "Patrick Reagan", "Katrina Owen"]
+  gem.email         = ["etsygeminfo@gmail.com, reaganpr@gmail.com", "katrina.owen@gmail.com" ]
   gem.description   = %q{A friendly Ruby interface to the Etsy API}
   gem.summary       = %q{Provides a friendly ruby-like wrapper for the Etsy API}
   gem.homepage      = "http://github.com/kytrinyx/etsy"
