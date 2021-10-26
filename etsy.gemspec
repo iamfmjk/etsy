@@ -20,7 +20,7 @@ Gem::Specification.new do |gem|
   gem.rubygems_version = "1.8.10"
 
   gem.add_dependency "json", ">= 1.5.0"
-  gem.add_dependency "oauth", "~> 0.4.0"
+  gem.add_dependency "oauth", ">= 0.5.5"
 
   gem.add_development_dependency "rake", "~> 10.0.4"
   gem.add_development_dependency "jnunemaker-matchy", "~> 0.4.0"
