@@ -7,3 +7,7 @@ rvm:
 
 before_install:
   - gem install bundler
+
+matrix:
+  allow_failures:
+    - rvm: 3.0.2
