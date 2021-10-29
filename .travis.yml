@@ -5,8 +5,11 @@ rvm:
   - 2.7.4
   - 3.0.2
 
+dist: bionic
+
 before_install:
   - gem install bundler
+  - sudo apt-get update && sudo apt-get install apt-transport-https ca-certificates -y && sudo update-ca-certificates
 
 matrix:
   allow_failures:
