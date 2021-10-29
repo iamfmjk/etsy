@@ -22,13 +22,13 @@ module Etsy
       request = Request.new(resource_path, parameters)
       Response.new(request.put)
     end
-    
+
     def self.delete(resource_path, parameters = {})
       request = Request.new(resource_path, parameters)
       Response.new(request.delete)
     end
-    
-    
+
+
 
     # Create a new request for the resource with optional parameters
     def initialize(resource_path, parameters = {})
@@ -75,7 +75,7 @@ module Etsy
     def put
       client.put(endpoint_url)
     end
-    
+
     def delete
       client.delete(endpoint_url)
     end
@@ -104,7 +104,7 @@ module Etsy
           k.nil? || v.nil? || (k.respond_to?(:empty?) && k.empty?) || (v.respond_to?(:empty?) && v.empty?)
         }.map { |k, v| "#{to_url(k.to_s)}=#{to_url(v)}" }.join('&')
       else
-        URI.escape(val.to_s, Regexp.new("[^#{URI::PATTERN::UNRESERVED}]"))
+        URI.encode_www_form_component(val.to_s)
       end
     end
 
