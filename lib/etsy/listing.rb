@@ -26,14 +26,19 @@ module Etsy
   # [removed?] Has this listing been removed?
   # [sold_out?] Is this listing sold out?
   # [expired?] Has this listing expired?
-  # [alchemy?] Is this listing an Alchemy item? (i.e. requested by an Etsy user)
+  # [edit?] Is this listing inactive?
+  # [draft?] Is this listing in draft mode / not yet published?
+  # [private?] Is this a private listing?
+  # [unavailable?] Has this listing been removed by Etsy admins?
+
   #
   class Listing
 
     include Etsy::Model
 
-    STATES = %w(active removed sold_out expired alchemy)
-    VALID_STATES = [:active, :expired, :inactive, :sold, :featured, :draft, :sold_out]
+    STATES = %w(active removed sold_out expired edit draft private unavailable)
+    #TODO: re-check valid states
+    VALID_STATES = [:active, :draft, :expired, :featured, :inactive, :sold, :sold_out]
 
     attribute :id, :from => :listing_id
     attribute :view_count, :from => :views
