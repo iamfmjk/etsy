@@ -78,7 +78,6 @@ module Etsy
           Listing.stubs(:find).with([1, 2], {:other => :params}).returns(['listings'])
 
           Listing.find_all_by_shop_id(1, :state => :sold, :other => :params).should == ['listings']
-
         end
 
         should "not ask the API for listings if there are no transactions" do
