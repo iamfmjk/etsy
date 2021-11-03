@@ -254,7 +254,7 @@ module Etsy
     end
 
     def is_supply
-      !!@result.fetch("is_supply")
+      @result.fetch('is_supply') == 'true'
     end
 
     private
