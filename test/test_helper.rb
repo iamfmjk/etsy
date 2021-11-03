@@ -2,7 +2,6 @@
 $:.reject! { |e| e.include? 'TextMate' }
 
 require 'rubygems'
-require 'active_support' # workaround load issue with shoulda in rubinius
 require 'test/unit'
 require 'shoulda'
 require 'matchy'
