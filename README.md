@@ -1,7 +1,6 @@
 # Etsy
 
 [![Build Status](https://secure.travis-ci.org/kytrinyx/etsy.png)](http://travis-ci.org/kytrinyx/etsy)
-[![Dependency Status](https://gemnasium.com/kytrinyx/etsy.png)](https://gemnasium.com/kytrinyx/etsy)
 
 ## Description
 
@@ -15,7 +14,7 @@ Installing the latest stable version is simple:
 
 If you want to be on the bleeding edge, install from GitHub:
 
-    $ git clone git://github.com/kytrinyx/etsy.git
+    $ git clone git://github.com/iamfmjk/etsy.git
     $ cd etsy
     $ rake install
 
@@ -94,7 +93,7 @@ Authenticated calls can now be made by passing an access token and secret:
     Etsy.myself(access.token, access.secret)
 
 The key and secret have to be passed in for the authenticated calls.
-    
+
     auth = {:access_token=>access.token, :access_secret=>access.secret}
     Etsy::Transaction.find_all_by_shop_id(shop_id, auth.merge(options))
 
