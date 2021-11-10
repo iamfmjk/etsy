@@ -19,6 +19,7 @@ module Etsy
   # [saturation] The saturation of the listing's primary image (HSV color).
   # [brightness] The value of the listing's primary image (HSV color).
   # [black_and_white?] True if the listing's primary image is in black & white.
+  # [has_variations?] True if variations are available for this Listing.
   #
   # Additionally, the following queries on this item are available:
   #
@@ -53,7 +54,7 @@ module Etsy
                :tags, :materials, :hue, :saturation, :brightness, :is_black_and_white,
                :featured_rank, :occasion, :num_favorers, :user_id,
                :shipping_template_id, :who_made, :when_made,
-               :style, :category_path, :taxonomy_id, :taxonomy_attributes
+               :style, :category_path, :taxonomy_id, :taxonomy_attributes, :has_variations
 
     association :image, :from => 'Images'
 
@@ -161,6 +162,10 @@ module Etsy
     def taxonomy_attributes(options={})
       options.merge!(:require_secure => true)
       self.class.get_all("/listings/#{id}/attributes", oauth.merge(options))
+    end
+
+    def has_variations?
+      has_variations
     end
 
     def variations(options={})
